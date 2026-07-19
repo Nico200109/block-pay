@@ -3095,11 +3095,11 @@ function renderComingSoon() {
       : null;
     if (idx != null && POOL[idx] && !shown.has(idx)) {
       shown.add(idx);
-      picks.push({ item: POOL[idx], label: `Offre #${i + 1} — Prochainement` });
+      picks.push({ item: POOL[idx], label: `Offre #${i + 1} — Dans quelques secondes` });
     }
   });
 
-  // Priorité 2 : articles actifs (affichés en ce moment — à exclure du "à venir")
+  // Exclure les articles actifs en cours
   [0, 1].forEach(i => {
     const s = fbStates[i];
     if (s && s.itemIndex != null) shown.add(s.itemIndex);
@@ -3110,12 +3110,12 @@ function renderComingSoon() {
     const candidates = POOL
       .map((item, idx) => ({ item, idx }))
       .filter(({ idx }) => !shown.has(idx));
-    const step = Math.max(1, Math.floor(candidates.length / (4 - picks.length)));
+    const step = Math.max(1, Math.floor(candidates.length / Math.max(1, 4 - picks.length)));
     for (let k = 0; picks.length < 4 && k < candidates.length; k += step) {
       const { item, idx } = candidates[k];
       if (!shown.has(idx)) {
         shown.add(idx);
-        picks.push({ item, label: `À partir de ${item.minPrice} €` });
+        picks.push({ item, label: `Prochainement · À partir de ${item.minPrice} €` });
       }
     }
   }
