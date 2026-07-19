@@ -3379,8 +3379,25 @@ function startAuctions() {
       const prevItemIndex = fbStates[i] ? fbStates[i].itemIndex : null;
       fbStates[i] = data;
 
-      // Enregistrer dans l'historique quand un nouvel article est RÉELLEMENT affiché
-      // (confirmation Firebase = source de vérité, pas un pick spéculatif)
+      // Synchroniser le statut des articles vendeur en temps réel
+      const _curItem  = POOL[data.itemIndex];
+      const _prevItem = prevItemIndex != null ? POOL[prevItemIndex] : null;
+
+      if (data.status === 'rotating' && _curItem && _curItem.fbKey) {
+        // Article vendu → sold
+        _setSellerItemStatus(_curItem.fbKey, _curItem.sellerId, 'sold');
+      }
+      if (data.status === 'active' && data.itemIndex !== prevItemIndex) {
+        if (_curItem && _curItem.fbKey) {
+          // Nouvel article entré en slot → active
+          _setSellerItemStatus(_curItem.fbKey, _curItem.sellerId, 'active');
+        }
+        if (_prevItem && _prevItem.fbKey && prevStatus !== 'rotating') {
+          // Article précédent parti sans vente (expiration) → remettre en pending
+          _setSellerItemStatus(_prevItem.fbKey, _prevItem.sellerId, 'pending');
+        }
+      }
+
       if (data.status === 'active' && data.itemIndex !== prevItemIndex && POOL[data.itemIndex]) {
         recordItemShown(POOL[data.itemIndex].name);
       }
@@ -4750,6 +4767,11 @@ function initSellerAuth() {
     // Migration : articles soumis avant items-queue → les injecter dans la file
     if (user) _migrateLegacySellerItems(user.uid);
   });
+}
+
+function _setSellerItemStatus(fbKey, uid, status) {
+  db.ref('items-queue/' + fbKey + '/status').set(status);
+  if (uid) db.ref('seller-items/' + uid + '/' + fbKey + '/status').set(status);
 }
 
 function _migrateLegacySellerItems(uid) {
