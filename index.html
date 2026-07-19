@@ -4552,8 +4552,8 @@ function _doBotLock(slot, buyer) {
       });
     }, 3000);
 
-    // 3️⃣ Toast paiement à ~2-3s (avant que la rotation ne remplace l'article)
-    const payDelay = 2000 + Math.floor(Math.random() * 1000);
+    // 3️⃣ Toast paiement après 8 à 20s — sans ville
+    const payDelay = (8 + Math.floor(Math.random() * 12)) * 1000;
     setTimeout(() => {
       db.ref('winners').push({
         name:  buyer,
