@@ -3082,22 +3082,50 @@ const MIN_PRICE = 10; // plancher absolu de sécurité (jamais en dessous)
 function renderComingSoon() {
   const grid = document.getElementById('coming-soon-grid');
   if (!grid) return;
-  const activeIdx = new Set([
-    fbStates[0] != null ? fbStates[0].itemIndex : -1,
-    fbStates[1] != null ? fbStates[1].itemIndex : -1
-  ]);
-  const candidates = POOL
-    .map((item, idx) => ({ item, idx }))
-    .filter(({ idx }) => !activeIdx.has(idx));
-  // Sélection déterministe : on prend 4 items espacés régulièrement
-  const step = Math.max(1, Math.floor(candidates.length / 4));
-  const picks = [0, 1, 2, 3].map(k => candidates[(k * step) % candidates.length]).filter(Boolean);
-  grid.innerHTML = picks.map(({ item }) => `
+
+  const shown = new Set();
+  const picks = [];
+
+  // Priorité 1 : nextItemIndex Firebase (article réellement prévu dans la rotation)
+  [0, 1].forEach(i => {
+    const s = fbStates[i];
+    if (!s) return;
+    const idx = (s.status === 'rotating' || s.status === 'locked') && s.nextItemIndex != null
+      ? s.nextItemIndex
+      : null;
+    if (idx != null && POOL[idx] && !shown.has(idx)) {
+      shown.add(idx);
+      picks.push({ item: POOL[idx], label: `Offre #${i + 1} — Prochainement` });
+    }
+  });
+
+  // Priorité 2 : articles actifs (affichés en ce moment — à exclure du "à venir")
+  [0, 1].forEach(i => {
+    const s = fbStates[i];
+    if (s && s.itemIndex != null) shown.add(s.itemIndex);
+  });
+
+  // Compléter avec des items du POOL non encore montrés
+  if (picks.length < 4) {
+    const candidates = POOL
+      .map((item, idx) => ({ item, idx }))
+      .filter(({ idx }) => !shown.has(idx));
+    const step = Math.max(1, Math.floor(candidates.length / (4 - picks.length)));
+    for (let k = 0; picks.length < 4 && k < candidates.length; k += step) {
+      const { item, idx } = candidates[k];
+      if (!shown.has(idx)) {
+        shown.add(idx);
+        picks.push({ item, label: `À partir de ${item.minPrice} €` });
+      }
+    }
+  }
+
+  grid.innerHTML = picks.slice(0, 4).map(({ item, label }) => `
     <div class="coming-soon-card">
       <img class="coming-soon-img" src="${item.img}" alt="${item.name}">
       <div class="coming-soon-info">
         <div class="coming-soon-name">${item.name}</div>
-        <div class="coming-soon-label">Prochainement · À partir de ${item.minPrice} €</div>
+        <div class="coming-soon-label">${label}</div>
       </div>
     </div>`).join('');
 }
@@ -4524,8 +4552,8 @@ function _doBotLock(slot, buyer) {
       });
     }, 3000);
 
-    // 3️⃣ Toast paiement après 8 à 20s — sans ville
-    const payDelay = (8 + Math.floor(Math.random() * 12)) * 1000;
+    // 3️⃣ Toast paiement à ~2-3s (avant que la rotation ne remplace l'article)
+    const payDelay = 2000 + Math.floor(Math.random() * 1000);
     setTimeout(() => {
       db.ref('winners').push({
         name:  buyer,
