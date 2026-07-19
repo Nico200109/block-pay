@@ -3092,6 +3092,9 @@ function renderComingSoon() {
     if (s.nextItemIndex != null) excluded.add(s.nextItemIndex);
   });
 
+  // Si la file Firebase n'est pas encore chargée, en générer une localement
+  if (rotationQueue.length === 0) _refillRotationQueue();
+
   // Prendre les 4 premiers de la file qui ne sont pas en cours
   const picks = [];
   for (const idx of rotationQueue) {
@@ -3101,7 +3104,7 @@ function renderComingSoon() {
     if (picks.length >= 4) break;
   }
 
-  if (picks.length === 0) { grid.innerHTML = ''; return; }
+  if (picks.length === 0) return;
 
   grid.innerHTML = picks.map(idx => {
     const item = POOL[idx];
@@ -3231,8 +3234,13 @@ function _refillRotationQueue() {
 
 function initRotationQueue() {
   db.ref('meta/rotationQueue').on('value', snap => {
-    const q = snap.val();
-    if (q && Array.isArray(q) && q.length >= 4) {
+    const raw = snap.val();
+    // Firebase peut retourner un objet {0:x, 1:y,...} au lieu d'un tableau
+    let q = null;
+    if (Array.isArray(raw)) q = raw;
+    else if (raw && typeof raw === 'object') q = Object.values(raw).map(Number);
+
+    if (q && q.length >= 4) {
       rotationQueue = q;
     } else {
       _refillRotationQueue();
