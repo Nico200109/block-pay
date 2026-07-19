@@ -1870,11 +1870,17 @@
     }
     .v-photo-zone-text { font-size: 0.85rem; color: var(--muted); pointer-events: none; }
     .v-photo-zone-text strong { color: var(--accent); }
-    .v-photo-previews { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 12px; }
-    .v-photo-thumb { position: relative; width: 80px; height: 80px; }
+    .v-photo-previews { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 14px; }
+    .v-photo-thumb { position: relative; width: 110px; height: 82px; border-radius: 6px; overflow: hidden; box-shadow: 0 1px 4px rgba(0,0,0,0.12); }
     .v-photo-thumb img {
       width: 100%; height: 100%; object-fit: cover;
-      border-radius: 2px; border: 1px solid var(--border);
+      border-radius: 6px; display: block;
+    }
+    .v-photo-thumb-label {
+      position: absolute; bottom: 0; left: 0; right: 0;
+      font-size: 0.6rem; font-weight: 600; letter-spacing: 0.3px;
+      text-align: center; padding: 2px 4px;
+      background: rgba(0,0,0,0.45); color: #fff; border-radius: 0 0 6px 6px;
     }
     .v-photo-thumb-del {
       position: absolute; top: -6px; right: -6px;
@@ -2727,7 +2733,7 @@
           <input type="file" id="aa-photos" accept="image/*" multiple onchange="handlePhotoChange(this)">
           <div class="v-photo-zone-text">
             <strong>Choisir des photos</strong> ou prendre en direct<br>
-            <span style="font-size:0.75rem">JPG, PNG, WEBP — max 5 Mo / photo</span>
+            <span style="font-size:0.75rem">JPG, PNG, WEBP · Fond neutre recommandé · Compressé automatiquement</span>
           </div>
         </div>
         <div class="v-photo-previews" id="aa-previews"></div>
@@ -3077,7 +3083,14 @@ const POOL = [
   { name:'Pochette en cuir · Artisan parisien',    price:65,  minPrice:28,  img:'images/pochette.jpg',           desc:'Pochette cuir grainé naturel, compartiment intérieur, fermeture zip YKK, fabriquée à Paris.', cat:'Accessoires', stock:1 },
 ];
 
+const POOL_BASE_SIZE = POOL.length; // 35 articles fixes — indices stables
 const MIN_PRICE = 10; // plancher absolu de sécurité (jamais en dessous)
+
+// Optimisation Cloudinary : qualité auto + format moderne (WebP/AVIF)
+function cloudinaryOpt(url) {
+  if (!url || !url.includes('cloudinary.com')) return url;
+  return url.replace('/upload/', '/upload/w_900,c_limit,q_auto,f_auto/');
+}
 
 function renderComingSoon() {
   const grid = document.getElementById('coming-soon-grid');
@@ -3294,6 +3307,9 @@ function startAuctions() {
 
   // Initialiser la file de rotation (affiche les prochains articles)
   initRotationQueue();
+
+  // Charger les articles vendeurs dans la rotation
+  loadSellerQueue();
 
   // Démarrer la simulation d'acheteurs après 3 secondes
   setTimeout(() => startBotSimulation(), 3000);
@@ -4731,30 +4747,19 @@ function initSellerAuth() {
     if (document.getElementById('page-vendeur').classList.contains('active')) {
       refreshVendeurPage();
     }
+    // Migration : articles soumis avant items-queue → les injecter dans la file
+    if (user) _migrateLegacySellerItems(user.uid);
   });
+}
 
-  // Charger les articles vendeurs dans le POOL en temps réel
-  db.ref('seller-items').on('value', snap => {
-    for (let i = POOL.length - 1; i >= 0; i--) {
-      if (POOL[i].fromFirebase) POOL.splice(i, 1);
-    }
-    const data = snap.val();
-    if (!data) return;
-    Object.values(data).forEach(sellerItems => {
-      Object.values(sellerItems || {}).forEach(item => {
-        if (item.status === 'active' || item.status === 'pending') {
-          POOL.push({
-            name: item.name,
-            price: item.price,
-            minPrice: item.minPrice,
-            img: (item.imgs && item.imgs[0]) || '',
-            desc: item.desc,
-            cat: item.cat,
-            sellerId: item.sellerId,
-            sellerName: item.sellerName,
-            fromFirebase: true
-          });
-        }
+function _migrateLegacySellerItems(uid) {
+  db.ref('seller-items/' + uid).once('value', snap => {
+    const items = snap.val();
+    if (!items) return;
+    Object.entries(items).forEach(([key, item]) => {
+      if (!item || item.status === 'sold') return;
+      db.ref('items-queue/' + key).once('value', s => {
+        if (!s.val()) db.ref('items-queue/' + key).set({ ...item, uid });
       });
     });
   });
@@ -4916,9 +4921,14 @@ function renderPhotoPreviews() {
   const container = document.getElementById('aa-previews');
   if (!container) return;
   container.innerHTML = selectedPhotos.map((f, i) => {
-    const url = URL.createObjectURL(f);
+    const url  = URL.createObjectURL(f);
+    const size = f.size > 1024 * 1024
+      ? (f.size / (1024 * 1024)).toFixed(1) + ' Mo'
+      : Math.round(f.size / 1024) + ' Ko';
+    const label = i === 0 ? 'Photo principale' : 'Photo ' + (i + 1);
     return `<div class="v-photo-thumb">
       <img src="${url}" alt="photo ${i + 1}">
+      <div class="v-photo-thumb-label">${label} · ${size}</div>
       <button class="v-photo-thumb-del" onclick="removePhoto(${i})">✕</button>
     </div>`;
   }).join('');
@@ -4927,6 +4937,86 @@ function renderPhotoPreviews() {
 function removePhoto(idx) {
   selectedPhotos.splice(idx, 1);
   renderPhotoPreviews();
+}
+
+// ─── File d'attente vendeurs ────────────────────────────────────────────────
+// Map fbKey → indice POOL stable (jamais modifié une fois assigné)
+const _sellerItemMap = new Map();
+
+function _normalizeSellerItem(key, item) {
+  const raw = item.imgs && item.imgs[0] ? item.imgs[0] : '';
+  return {
+    name:        item.name,
+    price:       item.price,
+    minPrice:    item.minPrice,
+    img:         cloudinaryOpt(raw),
+    imgs:        (item.imgs || []).map(cloudinaryOpt),
+    desc:        item.desc || '',
+    cat:         item.cat || 'Divers',
+    stock:       1,
+    sellerId:    item.sellerId,
+    sellerName:  item.sellerName || '',
+    fbKey:       key,
+    fromSeller:  true
+  };
+}
+
+function loadSellerQueue() {
+  // items-queue = nœud global lisible par tous, écrit par chaque vendeur lors de la soumission
+  db.ref('items-queue').on('value', snap => {
+    const val = snap.val();
+    if (!val) return;
+
+    let addedNew = false;
+    Object.entries(val).forEach(([key, item]) => {
+      if (!item || item.status === 'sold') return; // ignorer les articles vendus
+
+      if (_sellerItemMap.has(key)) {
+        // Mise à jour en place — l'indice POOL ne change pas
+        const idx = _sellerItemMap.get(key);
+        Object.assign(POOL[idx], _normalizeSellerItem(key, item));
+      } else {
+        // Nouvel article → ajout à la fin du POOL (indice permanent)
+        const idx = POOL.length;
+        _sellerItemMap.set(key, idx);
+        POOL.push(_normalizeSellerItem(key, item));
+        // Priorité : le mettre en tête de la file de rotation
+        if (!rotationQueue.includes(idx)) {
+          rotationQueue.unshift(idx);
+          addedNew = true;
+        }
+      }
+    });
+
+    if (addedNew) db.ref('meta/rotationQueue').set(rotationQueue);
+    renderComingSoon();
+  });
+}
+
+// ─── Compression photo côté client ──────────────────────────────────────────
+async function compressPhoto(file) {
+  return new Promise(resolve => {
+    const img = new Image();
+    const url = URL.createObjectURL(file);
+    img.onload = () => {
+      URL.revokeObjectURL(url);
+      const MAX = 1400;
+      let w = img.width, h = img.height;
+      if (w > MAX || h > MAX) {
+        if (w >= h) { h = Math.round(h * MAX / w); w = MAX; }
+        else        { w = Math.round(w * MAX / h); h = MAX; }
+      }
+      const canvas = document.createElement('canvas');
+      canvas.width = w; canvas.height = h;
+      canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+      canvas.toBlob(
+        blob => resolve(new File([blob], file.name.replace(/\.[^.]+$/, '.jpg'), { type: 'image/jpeg' })),
+        'image/jpeg', 0.82
+      );
+    };
+    img.onerror = () => { URL.revokeObjectURL(url); resolve(file); }; // fallback sans compression
+    img.src = url;
+  });
 }
 
 async function submitArticle() {
@@ -4959,9 +5049,9 @@ async function submitArticle() {
     const imgUrls = [];
 
     for (let i = 0; i < selectedPhotos.length; i++) {
-      const file = selectedPhotos[i];
+      const compressed = await compressPhoto(selectedPhotos[i]);
       const fd = new FormData();
-      fd.append('file', file);
+      fd.append('file', compressed);
       fd.append('upload_preset', 'blockandpay');
       const res = await fetch('https://api.cloudinary.com/v1_1/blockandpay/image/upload', { method: 'POST', body: fd });
       const data = await res.json();
@@ -4983,7 +5073,9 @@ async function submitArticle() {
       createdAt: new Date().toISOString()
     };
 
+    // Sauvegarder dans l'espace vendeur ET dans la file de rotation globale
     await db.ref('seller-items/' + uid + '/' + articleId).set(articleData);
+    await db.ref('items-queue/' + articleId).set({ ...articleData, uid });
 
     db.ref('sellers/' + uid + '/articlesCount').transaction(v => (v || 0) + 1);
 
