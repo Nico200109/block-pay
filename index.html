@@ -3032,52 +3032,75 @@ function deleteCard() {
 // ============================================
 const POOL = [
   // Vintage
-  { name:'Veste en jean Levi\'s 501 · Années 90', price:85,  minPrice:35,  img:'images/veste-jean.webp',        desc:'Veste en jean Levi\'s vintage années 90, taille M, délavage original, état excellent. Pièce unique.', cat:'Vintage' },
-  { name:'Blouson cuir noir · Rock vintage',       price:150, minPrice:70,  img:'images/blouson-cuir.webp',      desc:'Blouson cuir véritable noir, style rock, taille M, patine naturelle, fermetures YKK.', cat:'Vintage' },
-  { name:'Robe à fleurs · Années 70',              price:65,  minPrice:25,  img:'images/robe-fleurs.jpg',        desc:'Robe fleurie vintage années 70, tissu léger, taille S/M, imprimé d\'époque en excellent état.', cat:'Vintage' },
-  { name:'Cardigan laine mérinos · Vintage',       price:55,  minPrice:22,  img:'images/cardigan.jpg',           desc:'Cardigan laine mérinos douce, boutons vintage, taille M, coloris ivoire. Parfait état.', cat:'Vintage' },
-  { name:'Jean Levi\'s 501 · Délavé années 90',   price:75,  minPrice:32,  img:'images/jean-levi.jpg',          desc:'Jean Levi\'s 501 délavé authentique années 90, taille 30x32, coupe droite, peu porté.', cat:'Vintage' },
-  { name:'Sweat universitaire vintage USA',        price:55,  minPrice:22,  img:'images/sweat.jpg',              desc:'Sweat college vintage américain 90s, taille L, imprimé vintage, coton épais, très bon état.', cat:'Vintage' },
-  { name:'Trench-coat camel · Vintage 80s',        price:120, minPrice:55,  img:'images/trench.jpg',             desc:'Trench-coat camel style années 80, doublure soie, taille L, très bon état. Coupe intemporelle.', cat:'Vintage' },
-  { name:'Chemise western à carreaux · 90s',       price:45,  minPrice:18,  img:'images/chemise-western.jpg',    desc:'Chemise western vintage à carreaux rouges, taille L, boutons nacre, excellent état général.', cat:'Vintage' },
-  { name:'Veste blazer à carreaux · Années 80',    price:90,  minPrice:38,  img:'images/veste-blazer.jpg',       desc:'Blazer à carreaux façon prince-de-galles, taille M, épaulettes légères, doublure soie.', cat:'Vintage' },
-  { name:'Robe longue bohème · Vintage 70s',       price:70,  minPrice:28,  img:'images/robe-longue.jpg',        desc:'Robe longue bohème années 70, tissu fleuri, taille S, très bon état, pièce rare.', cat:'Vintage' },
+  { name:'Veste en jean Levi\'s 501 · Années 90', price:85,  minPrice:35,  img:'images/veste-jean.webp',        desc:'Veste en jean Levi\'s vintage années 90, taille M, délavage original, état excellent.', cat:'Vintage', stock:1 },
+  { name:'Blouson cuir noir · Rock vintage',       price:150, minPrice:70,  img:'images/blouson-cuir.webp',      desc:'Blouson cuir véritable noir, style rock, taille M, patine naturelle, fermetures YKK.', cat:'Vintage', stock:1 },
+  { name:'Robe à fleurs · Années 70',              price:65,  minPrice:25,  img:'images/robe-fleurs.jpg',        desc:'Robe fleurie vintage années 70, tissu léger, taille S/M, imprimé d\'époque en excellent état.', cat:'Vintage', stock:1 },
+  { name:'Cardigan laine mérinos · Vintage',       price:55,  minPrice:22,  img:'images/cardigan.jpg',           desc:'Cardigan laine mérinos douce, boutons vintage, taille M, coloris ivoire. Parfait état.', cat:'Vintage', stock:1 },
+  { name:'Jean Levi\'s 501 · Délavé années 90',   price:75,  minPrice:32,  img:'images/jean-levi.jpg',          desc:'Jean Levi\'s 501 délavé authentique années 90, taille 30x32, coupe droite, peu porté.', cat:'Vintage', stock:1 },
+  { name:'Sweat universitaire vintage USA',        price:55,  minPrice:22,  img:'images/sweat.jpg',              desc:'Sweat college vintage américain 90s, taille L, imprimé vintage, coton épais, très bon état.', cat:'Vintage', stock:2 },
+  { name:'Trench-coat camel · Vintage 80s',        price:120, minPrice:55,  img:'images/trench.jpg',             desc:'Trench-coat camel style années 80, doublure soie, taille L, très bon état. Coupe intemporelle.', cat:'Vintage', stock:1 },
+  { name:'Chemise western à carreaux · 90s',       price:45,  minPrice:18,  img:'images/chemise-western.jpg',    desc:'Chemise western vintage à carreaux rouges, taille L, boutons nacre, excellent état général.', cat:'Vintage', stock:1 },
+  { name:'Veste blazer à carreaux · Années 80',    price:90,  minPrice:38,  img:'images/veste-blazer.jpg',       desc:'Blazer à carreaux façon prince-de-galles, taille M, épaulettes légères, doublure soie.', cat:'Vintage', stock:1 },
+  { name:'Robe longue bohème · Vintage 70s',       price:70,  minPrice:28,  img:'images/robe-longue.jpg',        desc:'Robe longue bohème années 70, tissu fleuri, taille S, très bon état, pièce rare.', cat:'Vintage', stock:1 },
 
   // Sneakers
-  { name:'Nike Air Force 1 · White/White',         price:110, minPrice:65,  img:'images/nike-af1.jpg',           desc:'Nike Air Force 1 coloris blanc, pointure 42, portées 2 fois, état quasi-neuf, avec boîte.', cat:'Sneakers' },
-  { name:'Nike Dunk Low · Panda Black/White',      price:145, minPrice:80,  img:'images/nike-dunk.jpg',          desc:'Nike Dunk Low Panda, pointure 44, état 9/10, portées 3 fois, boîte incluse.', cat:'Sneakers' },
-  { name:'Converse Chuck 70 · Black Hi',           price:75,  minPrice:35,  img:'images/converse.jpg',           desc:'Converse Chuck 70 High noires, pointure 42, modèle premium, canvas renforcé, peu portées.', cat:'Sneakers' },
-  { name:'Vans Old Skool · Checkerboard',          price:65,  minPrice:28,  img:'images/vans.jpg',               desc:'Vans Old Skool damier noir/blanc, pointure 41, peu portées, semelle propre, état excellent.', cat:'Sneakers' },
-  { name:'New Balance 574 · Navy/Grey',            price:95,  minPrice:50,  img:'images/nb574.jpg',              desc:'New Balance 574 marine et gris, pointure 43, semelle d\'origine intacte, très bon état.', cat:'Sneakers' },
-  { name:'Adidas Samba OG · White/Black',          price:120, minPrice:65,  img:'images/adidas.jpg',             desc:'Adidas Samba OG blanc et noir, pointure 42, cuir véritable, état excellent, avec boîte.', cat:'Sneakers' },
-  { name:'New Balance 990v5 · Grey Made in USA',   price:190, minPrice:110, img:'images/nb990.jpg',              desc:'New Balance 990v5 gris Made in USA, pointure 43, légèrement portées, état 9/10.', cat:'Sneakers' },
-  { name:'Jordan 1 Mid · Chicago Black Toe',       price:175, minPrice:95,  img:'images/jordan1.jpg',            desc:'Air Jordan 1 Mid Chicago Black Toe, pointure 43, portées 5 fois, état 8/10, sans boîte.', cat:'Sneakers' },
+  { name:'Nike Air Force 1 · White/White',         price:110, minPrice:65,  img:'images/nike-af1.jpg',           desc:'Nike Air Force 1 coloris blanc, pointure 42, portées 2 fois, état quasi-neuf, avec boîte.', cat:'Sneakers', stock:2 },
+  { name:'Nike Dunk Low · Panda Black/White',      price:145, minPrice:80,  img:'images/nike-dunk.jpg',          desc:'Nike Dunk Low Panda, pointure 44, état 9/10, portées 3 fois, boîte incluse.', cat:'Sneakers', stock:1 },
+  { name:'Converse Chuck 70 · Black Hi',           price:75,  minPrice:35,  img:'images/converse.jpg',           desc:'Converse Chuck 70 High noires, pointure 42, modèle premium, canvas renforcé, peu portées.', cat:'Sneakers', stock:3 },
+  { name:'Vans Old Skool · Checkerboard',          price:65,  minPrice:28,  img:'images/vans.jpg',               desc:'Vans Old Skool damier noir/blanc, pointure 41, peu portées, semelle propre, état excellent.', cat:'Sneakers', stock:2 },
+  { name:'New Balance 574 · Navy/Grey',            price:95,  minPrice:50,  img:'images/nb574.jpg',              desc:'New Balance 574 marine et gris, pointure 43, semelle d\'origine intacte, très bon état.', cat:'Sneakers', stock:2 },
+  { name:'Adidas Samba OG · White/Black',          price:120, minPrice:65,  img:'images/adidas.jpg',             desc:'Adidas Samba OG blanc et noir, pointure 42, cuir véritable, état excellent, avec boîte.', cat:'Sneakers', stock:1 },
+  { name:'New Balance 990v5 · Grey Made in USA',   price:190, minPrice:110, img:'images/nb990.jpg',              desc:'New Balance 990v5 gris Made in USA, pointure 43, légèrement portées, état 9/10.', cat:'Sneakers', stock:1 },
+  { name:'Jordan 1 Mid · Chicago Black Toe',       price:175, minPrice:95,  img:'images/jordan1.jpg',            desc:'Air Jordan 1 Mid Chicago Black Toe, pointure 43, portées 5 fois, état 8/10, sans boîte.', cat:'Sneakers', stock:1 },
 
   // Collectors
-  { name:'Display Pokémon Écarlate & Violet',      price:180, minPrice:95,  img:'images/display-pokemon.jpg',    desc:'Display 36 boosters Pokémon EV01 Écarlate & Violet, neuf scellé, édition française.', cat:'Collectors' },
-  { name:'Coffret Pokémon Dresseur d\'élite EV',   price:65,  minPrice:32,  img:'images/coffret-pokemon.jpg',    desc:'Coffret Dresseur d\'Élite Pokémon Écarlate & Violet, scellé, contient boosters exclusifs.', cat:'Collectors' },
-  { name:'Figurine Son Goku Ultra Instinct',       price:95,  minPrice:48,  img:'images/figurine-goku.jpg',      desc:'Figurine Dragon Ball Super Son Goku Ultra Instinct, 30cm, édition collector, boîte d\'origine.', cat:'Collectors' },
-  { name:'Pack Magic : The Gathering Commander',   price:75,  minPrice:38,  img:'images/pack-magic.webp',        desc:'Deck Commander Magic The Gathering, édition récente scellée, 100 cartes dont foils exclusives.', cat:'Collectors' },
-  { name:'Manette PS5 DualSense · Édition limitée',price:110, minPrice:60,  img:'images/manette.jpg',            desc:'Manette PS5 DualSense coloris édition limitée, peu utilisée, état 9/10, câble USB-C inclus.', cat:'Collectors' },
-  { name:'Keycaps Set Artisan · Thème Sakura',     price:55,  minPrice:25,  img:'images/keycaps.jpg',            desc:'Set keycaps artisan thème Sakura, PBT double-shot, compatible Cherry MX, 108 touches.', cat:'Collectors' },
-  { name:'Booster Box One Piece OP-03',            price:120, minPrice:65,  img:'images/booster-box.jpg',        desc:'Booster Box One Piece OP-03 Pillars of Strength, 24 boosters scellés, édition japonaise.', cat:'Collectors' },
-  { name:'Figurine Link · Legend of Zelda',        price:85,  minPrice:40,  img:'images/figurine-link.jpg',      desc:'Figurine Link Breath of the Wild, 25cm, édition limitée, avec accessoires et socle.', cat:'Collectors' },
+  { name:'Display Pokémon Écarlate & Violet',      price:180, minPrice:95,  img:'images/display-pokemon.jpg',    desc:'Display 36 boosters Pokémon EV01 Écarlate & Violet, neuf scellé, édition française.', cat:'Collectors', stock:3 },
+  { name:'Coffret Pokémon Dresseur d\'élite EV',   price:65,  minPrice:32,  img:'images/coffret-pokemon.jpg',    desc:'Coffret Dresseur d\'Élite Pokémon Écarlate & Violet, scellé, contient boosters exclusifs.', cat:'Collectors', stock:2 },
+  { name:'Figurine Son Goku Ultra Instinct',       price:95,  minPrice:48,  img:'images/figurine-goku.jpg',      desc:'Figurine Dragon Ball Super Son Goku Ultra Instinct, 30cm, édition collector, boîte d\'origine.', cat:'Collectors', stock:1 },
+  { name:'Pack Magic : The Gathering Commander',   price:75,  minPrice:38,  img:'images/pack-magic.webp',        desc:'Deck Commander Magic The Gathering, édition récente scellée, 100 cartes dont foils exclusives.', cat:'Collectors', stock:4 },
+  { name:'Manette PS5 DualSense · Édition limitée',price:110, minPrice:60,  img:'images/manette.jpg',            desc:'Manette PS5 DualSense coloris édition limitée, peu utilisée, état 9/10, câble USB-C inclus.', cat:'Collectors', stock:1 },
+  { name:'Keycaps Set Artisan · Thème Sakura',     price:55,  minPrice:25,  img:'images/keycaps.jpg',            desc:'Set keycaps artisan thème Sakura, PBT double-shot, compatible Cherry MX, 108 touches.', cat:'Collectors', stock:2 },
+  { name:'Booster Box One Piece OP-03',            price:120, minPrice:65,  img:'images/booster-box.jpg',        desc:'Booster Box One Piece OP-03 Pillars of Strength, 24 boosters scellés, édition japonaise.', cat:'Collectors', stock:5 },
+  { name:'Figurine Link · Legend of Zelda',        price:85,  minPrice:40,  img:'images/figurine-link.jpg',      desc:'Figurine Link Breath of the Wild, 25cm, édition limitée, avec accessoires et socle.', cat:'Collectors', stock:1 },
 
   // Bijoux
-  { name:'Collier chaîne dorée · Plaqué or 18k',  price:45,  minPrice:18,  img:'images/collier.jpg',            desc:'Collier chaîne fine plaqué or 18k, longueur 45cm, fermoir mousqueton, anti-allergique.', cat:'Bijoux' },
-  { name:'Bracelet jonc argent · Fait main',       price:38,  minPrice:15,  img:'images/bracelet.jpg',           desc:'Bracelet jonc argent 925 fait main, diamètre 65mm, gravure intérieure possible, poinçon garanti.', cat:'Bijoux' },
-  { name:'Boucles d\'oreilles créoles dorées',     price:32,  minPrice:12,  img:'images/boucles.jpg',            desc:'Créoles dorées 3cm de diamètre, plaqué or 18k, fermoir clip sécurisé, hypoallergénique.', cat:'Bijoux' },
-  { name:'Bague chevalière argent massif',         price:55,  minPrice:22,  img:'images/bague.jpg',              desc:'Chevalière argent 925 massif, gravure possible, taille 54-62, poinçon garantie française.', cat:'Bijoux' },
+  { name:'Collier chaîne dorée · Plaqué or 18k',  price:45,  minPrice:18,  img:'images/collier.jpg',            desc:'Collier chaîne fine plaqué or 18k, longueur 45cm, fermoir mousqueton, anti-allergique.', cat:'Bijoux', stock:3 },
+  { name:'Bracelet jonc argent · Fait main',       price:38,  minPrice:15,  img:'images/bracelet.jpg',           desc:'Bracelet jonc argent 925 fait main, diamètre 65mm, gravure intérieure possible, poinçon garanti.', cat:'Bijoux', stock:2 },
+  { name:'Boucles d\'oreilles créoles dorées',     price:32,  minPrice:12,  img:'images/boucles.jpg',            desc:'Créoles dorées 3cm de diamètre, plaqué or 18k, fermoir clip sécurisé, hypoallergénique.', cat:'Bijoux', stock:4 },
+  { name:'Bague chevalière argent massif',         price:55,  minPrice:22,  img:'images/bague.jpg',              desc:'Chevalière argent 925 massif, gravure possible, taille 54-62, poinçon garantie française.', cat:'Bijoux', stock:2 },
 
   // Accessoires
-  { name:'Sac tote bag canvas · Sérigraphie FR',   price:40,  minPrice:16,  img:'images/sac-tote.jpg',           desc:'Tote bag canvas épais 420g, anses renforcées, format A4, sérigraphie artisanale française.', cat:'Accessoires' },
-  { name:'Casquette 6-panel · Broderie premium',   price:45,  minPrice:18,  img:'images/casquette.jpg',          desc:'Casquette 6 panneaux coton, broderie personnalisée, réglage sangle cuir, taille unique.', cat:'Accessoires' },
-  { name:'Ceinture cuir artisanale · Made in FR',  price:55,  minPrice:24,  img:'images/ceinture.jpg',           desc:'Ceinture cuir végétal tannage naturel, largeur 30mm, boucle laiton, fabriquée en France.', cat:'Accessoires' },
-  { name:'Lunettes de soleil · Style vintage 70s', price:48,  minPrice:20,  img:'images/lunettes.jpg',           desc:'Lunettes soleil monture acétate écaille, verres polarisés UV400, style années 70 revisité.', cat:'Accessoires' },
-  { name:'Pochette en cuir · Artisan parisien',    price:65,  minPrice:28,  img:'images/pochette.jpg',           desc:'Pochette cuir grainé naturel, compartiment intérieur, fermeture zip YKK, pièce unique.', cat:'Accessoires' },
+  { name:'Sac tote bag canvas · Sérigraphie FR',   price:40,  minPrice:16,  img:'images/sac-tote.jpg',           desc:'Tote bag canvas épais 420g, anses renforcées, format A4, sérigraphie artisanale française.', cat:'Accessoires', stock:5 },
+  { name:'Casquette 6-panel · Broderie premium',   price:45,  minPrice:18,  img:'images/casquette.jpg',          desc:'Casquette 6 panneaux coton, broderie personnalisée, réglage sangle cuir, taille unique.', cat:'Accessoires', stock:3 },
+  { name:'Ceinture cuir artisanale · Made in FR',  price:55,  minPrice:24,  img:'images/ceinture.jpg',           desc:'Ceinture cuir végétal tannage naturel, largeur 30mm, boucle laiton, fabriquée en France.', cat:'Accessoires', stock:2 },
+  { name:'Lunettes de soleil · Style vintage 70s', price:48,  minPrice:20,  img:'images/lunettes.jpg',           desc:'Lunettes soleil monture acétate écaille, verres polarisés UV400, style années 70 revisité.', cat:'Accessoires', stock:3 },
+  { name:'Pochette en cuir · Artisan parisien',    price:65,  minPrice:28,  img:'images/pochette.jpg',           desc:'Pochette cuir grainé naturel, compartiment intérieur, fermeture zip YKK, fabriquée à Paris.', cat:'Accessoires', stock:1 },
 ];
 
 const MIN_PRICE = 10; // plancher absolu de sécurité (jamais en dessous)
+
+function renderComingSoon() {
+  const grid = document.getElementById('coming-soon-grid');
+  if (!grid) return;
+  const activeIdx = new Set([
+    fbStates[0] != null ? fbStates[0].itemIndex : -1,
+    fbStates[1] != null ? fbStates[1].itemIndex : -1
+  ]);
+  const candidates = POOL
+    .map((item, idx) => ({ item, idx }))
+    .filter(({ idx }) => !activeIdx.has(idx));
+  // Sélection déterministe : on prend 4 items espacés régulièrement
+  const step = Math.max(1, Math.floor(candidates.length / 4));
+  const picks = [0, 1, 2, 3].map(k => candidates[(k * step) % candidates.length]).filter(Boolean);
+  grid.innerHTML = picks.map(({ item }) => `
+    <div class="coming-soon-card">
+      <img class="coming-soon-img" src="${item.img}" alt="${item.name}">
+      <div class="coming-soon-info">
+        <div class="coming-soon-name">${item.name}</div>
+        <div class="coming-soon-label">Prochainement · À partir de ${item.minPrice} €</div>
+      </div>
+    </div>`).join('');
+}
 
 // Fallback image par catégorie si l'image principale échoue
 const CAT_FALLBACK = {
@@ -3328,6 +3351,7 @@ function startAuctions() {
 
       renderSlot(i);
       startUITimer(i);
+      renderComingSoon();
 
       // Fondu d'entrée après mise à jour du contenu
       if ((rotEnded || itemChanged) && card) {
