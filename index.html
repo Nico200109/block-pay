@@ -2713,6 +2713,8 @@
           <option value="Collectors">Collectors</option>
           <option value="Bijoux">Bijoux</option>
           <option value="Accessoires">Accessoires</option>
+          <option value="Tech">Tech</option>
+          <option value="Autre">Autre</option>
         </select>
       </div>
       <div class="v-field-row">
@@ -2725,6 +2727,11 @@
           <label>Prix plancher (€)</label>
           <input type="number" id="aa-minprice" placeholder="35" min="1">
           <div class="v-field-hint">Inférieur au prix départ</div>
+        </div>
+        <div class="v-field">
+          <label>Quantité en stock</label>
+          <input type="number" id="aa-stock" placeholder="1" min="1" max="99" value="1">
+          <div class="v-field-hint">Nombre d'exemplaires disponibles</div>
         </div>
       </div>
       <div class="v-field">
@@ -4975,7 +4982,7 @@ function _normalizeSellerItem(key, item) {
     imgs:        (item.imgs || []).map(cloudinaryOpt),
     desc:        item.desc || '',
     cat:         item.cat || 'Divers',
-    stock:       1,
+    stock:       item.stock || 1,
     sellerId:    item.sellerId,
     sellerName:  item.sellerName || '',
     fbKey:       key,
@@ -5049,6 +5056,7 @@ async function submitArticle() {
   const cat      = document.getElementById('aa-cat').value;
   const price    = parseFloat(document.getElementById('aa-price').value);
   const minPrice = parseFloat(document.getElementById('aa-minprice').value);
+  const stock    = Math.max(1, parseInt(document.getElementById('aa-stock').value) || 1);
 
   if (!name)                              { showToast('error', 'Champ manquant', 'Nom de l\'article requis.'); return; }
   if (!desc)                              { showToast('error', 'Champ manquant', 'Description requise.'); return; }
@@ -5087,7 +5095,7 @@ async function submitArticle() {
     const sellerName  = (sellerSnap.val() || '').split(' ')[0];
 
     const articleData = {
-      name, desc, cat, price, minPrice,
+      name, desc, cat, price, minPrice, stock,
       imgs: imgUrls,
       sellerId: uid,
       sellerName: sellerName,
@@ -5105,6 +5113,7 @@ async function submitArticle() {
     selectedPhotos = [];
 
     ['aa-name', 'aa-desc', 'aa-price', 'aa-minprice'].forEach(id => { document.getElementById(id).value = ''; });
+    document.getElementById('aa-stock').value = '1';
     document.getElementById('aa-name-count').textContent = '0/80';
     document.getElementById('aa-desc-count').textContent = '0/300';
     renderPhotoPreviews();
