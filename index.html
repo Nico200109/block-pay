@@ -4623,8 +4623,21 @@ function _doBotLock(slot, buyer) {
         date:  new Date().toLocaleDateString('fr-FR'),
         bot:   true
       });
-      // Événement de paiement — visible sur tous les appareils simultanément
       db.ref('events').push({ type: 'pay', buyer, item: item.name, price: lockPrice, ts: serverNow() });
+      // Traçabilité vendeur pour les ventes bot
+      if (item.sellerId) {
+        const commission   = Math.round(lockPrice * 0.12 * 100) / 100;
+        const vendorRevenue = Math.round((lockPrice - commission) * 100) / 100;
+        db.ref('seller-sales/' + item.sellerId).push({
+          articleName: item.name,
+          salePrice:   lockPrice,
+          commission,
+          vendorRevenue,
+          date:        new Date().toISOString(),
+          buyerName:   buyer
+        });
+        db.ref('sellers/' + item.sellerId + '/totalRevenue').transaction(v => (v || 0) + vendorRevenue);
+      }
     }, payDelay);
   }); // fin transaction lock
 } // fin _doBotLock
@@ -4883,7 +4896,7 @@ function loadSellerDashboard() {
     if (el) el.textContent = 'Bonjour ' + prenom;
   });
 
-  db.ref('seller-items/' + uid).once('value', snap => {
+  db.ref('seller-items/' + uid).on('value', snap => {
     const data  = snap.val() || {};
     const items = Object.entries(data).filter(([, v]) => v.status === 'active' || v.status === 'pending');
     const el = document.getElementById('v-stat-online');
@@ -4895,19 +4908,23 @@ function loadSellerDashboard() {
       container.innerHTML = '<div class="v-empty-state">Aucun article en ligne pour l\'instant.</div>';
       return;
     }
-    container.innerHTML = items.map(([, v]) => `
-      <div class="v-article-row">
+    container.innerHTML = items.map(([, v]) => {
+      const badge = v.status === 'pending' ? 'En attente'
+                  : v.status === 'active'  ? 'En rotation'
+                  : 'En ligne';
+      return `<div class="v-article-row">
         <img class="v-article-img" src="${v.imgs && v.imgs[0] || ''}" alt="${v.name}" onerror="this.style.display='none'">
         <div class="v-article-info">
           <div class="v-article-name">${v.name}</div>
           <div class="v-article-meta">${v.cat} · départ ${v.price} €</div>
         </div>
-        <span class="v-article-badge ${v.status}">${v.status === 'pending' ? 'En attente' : 'En ligne'}</span>
+        <span class="v-article-badge ${v.status}">${badge}</span>
         <div class="v-article-price">${v.price} €</div>
-      </div>`).join('');
+      </div>`;
+    }).join('');
   });
 
-  db.ref('seller-sales/' + uid).once('value', snap => {
+  db.ref('seller-sales/' + uid).on('value', snap => {
     const data  = snap.val() || {};
     const sales = Object.values(data);
     const elSold = document.getElementById('v-stat-sold');
