@@ -3083,51 +3083,36 @@ function renderComingSoon() {
   const grid = document.getElementById('coming-soon-grid');
   if (!grid) return;
 
-  const shown = new Set();
-  const picks = [];
-
-  // Priorité 1 : nextItemIndex Firebase (article réellement prévu dans la rotation)
+  // Exclure les articles actuellement en slot (actifs ou nextItemIndex réservé)
+  const excluded = new Set();
   [0, 1].forEach(i => {
     const s = fbStates[i];
     if (!s) return;
-    const idx = (s.status === 'rotating' || s.status === 'locked') && s.nextItemIndex != null
-      ? s.nextItemIndex
-      : null;
-    if (idx != null && POOL[idx] && !shown.has(idx)) {
-      shown.add(idx);
-      picks.push({ item: POOL[idx], label: `Offre #${i + 1} — Dans quelques secondes` });
-    }
+    if (s.itemIndex != null) excluded.add(s.itemIndex);
+    if (s.nextItemIndex != null) excluded.add(s.nextItemIndex);
   });
 
-  // Exclure les articles actifs en cours
-  [0, 1].forEach(i => {
-    const s = fbStates[i];
-    if (s && s.itemIndex != null) shown.add(s.itemIndex);
-  });
-
-  // Compléter avec des items du POOL non encore montrés
-  if (picks.length < 4) {
-    const candidates = POOL
-      .map((item, idx) => ({ item, idx }))
-      .filter(({ idx }) => !shown.has(idx));
-    const step = Math.max(1, Math.floor(candidates.length / Math.max(1, 4 - picks.length)));
-    for (let k = 0; picks.length < 4 && k < candidates.length; k += step) {
-      const { item, idx } = candidates[k];
-      if (!shown.has(idx)) {
-        shown.add(idx);
-        picks.push({ item, label: `Prochainement · À partir de ${item.minPrice} €` });
-      }
+  // Prendre les 4 premiers de la file qui ne sont pas en cours
+  const picks = [];
+  for (const idx of rotationQueue) {
+    if (!excluded.has(idx) && POOL[idx] && !picks.includes(idx)) {
+      picks.push(idx);
     }
+    if (picks.length >= 4) break;
   }
 
-  grid.innerHTML = picks.slice(0, 4).map(({ item, label }) => `
-    <div class="coming-soon-card">
+  if (picks.length === 0) { grid.innerHTML = ''; return; }
+
+  grid.innerHTML = picks.map(idx => {
+    const item = POOL[idx];
+    return `<div class="coming-soon-card">
       <img class="coming-soon-img" src="${item.img}" alt="${item.name}">
       <div class="coming-soon-info">
         <div class="coming-soon-name">${item.name}</div>
-        <div class="coming-soon-label">${label}</div>
+        <div class="coming-soon-label">Prochainement · À partir de ${item.minPrice} €</div>
       </div>
-    </div>`).join('');
+    </div>`;
+  }).join('');
 }
 
 // Fallback image par catégorie si l'image principale échoue
@@ -3226,37 +3211,62 @@ function fmtTime(sec) {
   return m + ':' + (s < 10 ? '0' : '') + s;
 }
 
-// Historique glissant des articles récents — évite les répétitions
-// Persisté dans Firebase pour survivre aux rechargements de page
-const _itemHistory = [];
-const HISTORY_SIZE = 6; // ne pas réafficher les 6 derniers articles
+// File d'attente de rotation — stockée dans Firebase pour être partagée entre appareils
+let rotationQueue = []; // indices dans POOL, dans l'ordre de passage
 
-// Historique purement en memoire - pas de persistance Firebase
+function _refillRotationQueue() {
+  const activeIdx = new Set(
+    [fbStates[0], fbStates[1]]
+      .map(s => s ? s.itemIndex : -1)
+      .filter(i => i >= 0)
+  );
+  const indices = POOL.map((_, i) => i).filter(i => !activeIdx.has(i));
+  // Mélange Fisher-Yates
+  for (let i = indices.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [indices[i], indices[j]] = [indices[j], indices[i]];
+  }
+  rotationQueue = [...rotationQueue, ...indices];
+}
 
-/**
- * Enregistre un article dans l'historique quand il est RÉELLEMENT affiché.
- * Appelé uniquement depuis le listener Firebase quand status='active' et itemIndex change.
- */
-function recordItemShown(itemName) {
-  if (!itemName || _itemHistory.includes(itemName)) return;
-  _itemHistory.push(itemName);
-  if (_itemHistory.length > HISTORY_SIZE) _itemHistory.shift();
+function initRotationQueue() {
+  db.ref('meta/rotationQueue').on('value', snap => {
+    const q = snap.val();
+    if (q && Array.isArray(q) && q.length >= 4) {
+      rotationQueue = q;
+    } else {
+      _refillRotationQueue();
+      db.ref('meta/rotationQueue').set(rotationQueue);
+    }
+    renderComingSoon();
+  });
 }
 
 /**
- * Choisit un article sans répéter les récents.
- * NE met PAS à jour l'historique — c'est recordItemShown() qui le fait,
- * uniquement quand l'article est confirmé affiché (évite de polluer l'historique
- * avec des picks de transactions qui échouent).
+ * Choisit le prochain article depuis la file déterministe.
+ * L'article est retiré de la file et Firebase est mis à jour.
  */
 function pickItem(excl1, excl2) {
-  const excluded = new Set([excl1, excl2, ..._itemHistory]);
-  let available = POOL.filter(it => !excluded.has(it.name));
-  // Fallback progressif si trop d'exclusions
-  if (available.length < 3) available = POOL.filter(it => it.name !== excl1 && it.name !== excl2);
-  if (available.length === 0) available = POOL.slice();
-  return available[Math.floor(Math.random() * available.length)];
+  const idx = rotationQueue.findIndex(i => {
+    const it = POOL[i];
+    return it && it.name !== excl1 && it.name !== excl2;
+  });
+  let item;
+  if (idx !== -1) {
+    item = POOL[rotationQueue[idx]];
+    rotationQueue.splice(idx, 1);
+    if (rotationQueue.length < 8) _refillRotationQueue();
+    db.ref('meta/rotationQueue').set(rotationQueue);
+  } else {
+    // Fallback si la file est vide ou tous exclus
+    const available = POOL.filter(it => it.name !== excl1 && it.name !== excl2);
+    item = available[Math.floor(Math.random() * available.length)] || POOL[0];
+  }
+  return item;
 }
+
+// recordItemShown conservé pour compatibilité (plus utilisé par pickItem)
+function recordItemShown() {}
 
 // ============================================
 // DÉMARRAGE — écoute Firebase en temps réel
@@ -3273,6 +3283,9 @@ function startAuctions() {
         <div style="font-size:0.9rem">Chargement de l'offre…</div>
       </div>`;
   });
+
+  // Initialiser la file de rotation (affiche les prochains articles)
+  initRotationQueue();
 
   // Démarrer la simulation d'acheteurs après 3 secondes
   setTimeout(() => startBotSimulation(), 3000);
