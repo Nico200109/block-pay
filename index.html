@@ -3271,27 +3271,28 @@ function startAuctions() {
         rotRecovery[i] = null;
       }
 
+      // Masquer la carte AVANT renderSlot pour éviter le flash de la nouvelle image
+      const rotEnded    = prevStatus === 'rotating' && data.status !== 'rotating';
+      const itemChanged = prevItemIndex !== null && prevItemIndex !== data.itemIndex;
+      const card = document.getElementById('card-' + i);
+      if ((rotEnded || itemChanged) && card) {
+        card.style.transition = 'none';
+        card.style.opacity = '0';
+      }
+
       renderSlot(i);
       startUITimer(i);
 
-      // Fondu d'entrée : se déclenche quand l'article change (fin de rotation
-      // OU changement direct via initSlot) — élimine le saut visuel
-      const rotEnded   = prevStatus === 'rotating' && data.status !== 'rotating';
-      const itemChanged = prevItemIndex !== null && prevItemIndex !== data.itemIndex;
-      if (rotEnded || itemChanged) {
-        const card = document.getElementById('card-' + i);
-        if (card) {
-          card.style.transition = 'none';
-          card.style.opacity = '0';
-          requestAnimationFrame(() => requestAnimationFrame(() => {
-            card.style.transition = 'opacity 0.45s ease';
-            card.style.opacity = '1';
-            card.addEventListener('transitionend', () => {
-              card.style.transition = '';
-              card.style.opacity = '';
-            }, { once: true });
-          }));
-        }
+      // Fondu d'entrée après mise à jour du contenu
+      if ((rotEnded || itemChanged) && card) {
+        requestAnimationFrame(() => requestAnimationFrame(() => {
+          card.style.transition = 'opacity 0.4s ease';
+          card.style.opacity = '1';
+          card.addEventListener('transitionend', () => {
+            card.style.transition = '';
+            card.style.opacity = '';
+          }, { once: true });
+        }));
       }
     });
   });
