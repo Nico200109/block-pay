@@ -1844,6 +1844,12 @@
     .v-article-badge.active  { background: rgba(39,174,96,0.1); color: var(--green); }
     .v-article-badge.sold    { background: rgba(0,0,0,0.05); color: var(--muted); }
     .v-empty-state { padding: 40px 0; color: var(--muted); font-size: 0.9rem; text-align: center; }
+    .v-article-remove {
+      background: none; border: 1px solid var(--border); border-radius: 4px;
+      color: var(--muted); font-size: 0.75rem; padding: 4px 8px; cursor: pointer;
+      transition: color 0.15s, border-color 0.15s; white-space: nowrap;
+    }
+    .v-article-remove:hover { color: #c0392b; border-color: #c0392b; }
 
     /* Form article */
     .v-form-modal .modal-inner { max-width: 540px; max-height: 90vh; overflow-y: auto; }
@@ -4809,6 +4815,54 @@ function initSellerAuth() {
 function _setSellerItemStatus(fbKey, uid, status) {
   db.ref('items-queue/' + fbKey + '/status').set(status);
   if (uid) db.ref('seller-items/' + uid + '/' + fbKey + '/status').set(status);
+
+  // Notification vendeur si c'est son propre article
+  if (sellerUser && sellerUser.uid === uid) {
+    if (status === 'sold') {
+      db.ref('items-queue/' + fbKey + '/name').once('value', s => {
+        const name = s.val() || 'Votre article';
+        showToast('success', 'Article vendu !', name + ' a été vendu. Consultez votre historique.');
+      });
+    } else if (status === 'active') {
+      db.ref('items-queue/' + fbKey + '/name').once('value', s => {
+        const name = s.val() || 'Votre article';
+        showToast('info', 'En rotation', name + ' est maintenant en vente en direct !');
+      });
+    } else if (status === 'pending') {
+      db.ref('items-queue/' + fbKey + '/name').once('value', s => {
+        const name = s.val() || 'Votre article';
+        showToast('info', 'Remis en file', name + ' repassera bientôt en rotation.');
+      });
+    }
+  }
+
+  // Remettre en tête de file si l'article revient en attente
+  if (status === 'pending') {
+    const idx = _sellerItemMap.get(fbKey);
+    if (idx != null && !rotationQueue.includes(idx)) {
+      rotationQueue.unshift(idx);
+      db.ref('meta/rotationQueue').set(rotationQueue);
+      renderComingSoon();
+    }
+  }
+}
+
+function removeSellerArticle(fbKey, name) {
+  if (!sellerUser) return;
+  if (!confirm('Retirer "' + name + '" de la vente ?')) return;
+  const uid = sellerUser.uid;
+  db.ref('seller-items/' + uid + '/' + fbKey + '/status').set('removed');
+  db.ref('items-queue/' + fbKey + '/status').set('removed');
+  // Retirer de la file de rotation
+  const idx = _sellerItemMap.get(fbKey);
+  if (idx != null) {
+    const pos = rotationQueue.indexOf(idx);
+    if (pos !== -1) {
+      rotationQueue.splice(pos, 1);
+      db.ref('meta/rotationQueue').set(rotationQueue);
+    }
+  }
+  showToast('info', 'Article retiré', '"' + name + '" a été retiré de la vente.');
 }
 
 function _migrateLegacySellerItems(uid) {
@@ -4915,7 +4969,7 @@ function loadSellerDashboard() {
 
   db.ref('seller-items/' + uid).on('value', snap => {
     const data  = snap.val() || {};
-    const items = Object.entries(data).filter(([, v]) => v.status === 'active' || v.status === 'pending');
+    const items = Object.entries(data).filter(([, v]) => v.status === 'active' || v.status === 'pending' || v.status === 'rotating');
     const el = document.getElementById('v-stat-online');
     if (el) el.textContent = items.length;
 
@@ -4925,10 +4979,11 @@ function loadSellerDashboard() {
       container.innerHTML = '<div class="v-empty-state">Aucun article en ligne pour l\'instant.</div>';
       return;
     }
-    container.innerHTML = items.map(([, v]) => {
+    container.innerHTML = items.map(([key, v]) => {
       const badge = v.status === 'pending' ? 'En attente'
                   : v.status === 'active'  ? 'En rotation'
                   : 'En ligne';
+      const canRemove = v.status === 'pending'; // on ne retire pas un article en rotation
       return `<div class="v-article-row">
         <img class="v-article-img" src="${v.imgs && v.imgs[0] || ''}" alt="${v.name}" onerror="this.style.display='none'">
         <div class="v-article-info">
@@ -4937,6 +4992,7 @@ function loadSellerDashboard() {
         </div>
         <span class="v-article-badge ${v.status}">${badge}</span>
         <div class="v-article-price">${v.price} €</div>
+        ${canRemove ? `<button class="v-article-remove" onclick="removeSellerArticle('${key}','${v.name}')">Retirer</button>` : ''}
       </div>`;
     }).join('');
   });
