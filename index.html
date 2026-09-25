@@ -622,7 +622,8 @@
     .price-val.warn { color: var(--gold); }
     .price-val.danger { color: var(--red); }
 
-    .price-col-right { text-align:right; flex-shrink:0; width:128px; }
+    .price-col-right { text-align:right; flex-shrink:0; }
+    .price-val { white-space: nowrap; }
     .saved-lbl { font-variant-numeric:tabular-nums; }
 
     .price-bar-wrap {
@@ -1614,7 +1615,7 @@
       .card-desc { font-size: 0.75rem; margin-bottom: 6px; }
       .price-label { font-size: 0.63rem; }
       .price-val { font-size: 1.8rem; }
-      .price-col-right { width: 110px; }
+      .price-col-right { width: auto; }
       .saved-lbl { display: none; }
       .card-btn { padding: 12px 10px; font-size: 0.875rem; min-height: 48px; margin-top: 4px; }
       .card-timer { padding: 8px 10px; margin-bottom: 8px; }
@@ -1695,7 +1696,7 @@
       .cat-grid { grid-template-columns: repeat(2, 1fr); gap: 8px; }
       .cat-card-img { height: 85px; }
       .stat-num { font-size: 1.6rem; }
-      .price-col-right { width: 95px; }
+      .price-col-right { width: auto; }
       .price-val { font-size: 1.6rem; }
       .items-grid { padding: 0 10px 80px; gap: 10px; }
     }
