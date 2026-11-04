@@ -80,15 +80,21 @@
     .cats { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 28px; }
     .cats span { border: 1px solid #d8d0c4; padding: 4px 12px; font-size: .82rem; background: var(--white); }
 
-    section.sellers { margin-top: 70px; background: var(--text); color: #f5f2ed; padding: 40px; display: grid;
-      grid-template-columns: 1.4fr 1fr; gap: 32px; align-items: center; }
-    section.sellers h2 { color: #fff; margin-bottom: 12px; }
-    section.sellers ul { list-style: none; font-size: .95rem; }
-    section.sellers li { padding: 4px 0 4px 22px; position: relative; }
-    section.sellers li::before { content: "—"; position: absolute; left: 0; color: #c9a27c; }
-    .cta-seller { display: inline-block; background: #f5f2ed; color: var(--text); padding: 13px 22px; font-weight: 600; text-decoration: none; }
-    .cta-seller:hover { background: #fff; }
-
+    .hero-cta { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 26px; }
+    .btn-demo { display: inline-block; background: var(--accent); color: #fff; padding: 13px 24px; font-weight: 600; text-decoration: none; }
+    .btn-demo:hover { background: var(--text); }
+    .btn-how { display: inline-block; border: 1px solid #cfc5b8; color: var(--text); padding: 12px 20px; font-weight: 500; text-decoration: none; background: var(--white); }
+    .btn-how:hover { border-color: var(--text); }
+    .demo-warn { font-size: .75rem; color: var(--muted); margin-top: 8px; }
+    section.why { margin-top: 80px; }
+    .why-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .why-col { background: var(--white); border: 1px solid var(--border); padding: 24px; }
+    .why-col h3 { font-family: var(--font-h); font-weight: 400; font-size: 1.3rem; margin-bottom: 10px; }
+    .why-col ul { list-style: none; font-size: .95rem; }
+    .why-col li { padding: 4px 0 4px 22px; position: relative; color: #4a4239; }
+    .why-col li::before { content: "—"; position: absolute; left: 0; color: var(--accent); }
+    .why-pro { margin-top: 14px; font-size: .9rem; }
+    .final-cta { text-align: center; margin-top: 36px; }
     footer { max-width: 1080px; margin: 0 auto; padding: 30px 24px 50px; font-size: .8rem; color: var(--muted);
       display: flex; flex-wrap: wrap; gap: 18px; justify-content: space-between; border-top: 1px solid var(--border); }
     footer button { background: none; color: var(--muted); padding: 0; font-weight: 400; text-decoration: underline; }
@@ -103,7 +109,7 @@
       main { padding-top: 36px; }
       .hero { grid-template-columns: 1fr; gap: 36px; }
       .steps { grid-template-columns: 1fr 1fr; }
-      section.sellers { grid-template-columns: 1fr; padding: 28px 22px; }
+      .why-grid { grid-template-columns: 1fr; }
     }
     @media (max-width: 480px) {
       .row { flex-direction: column; }
@@ -116,7 +122,7 @@
 <body>
   <header>
     <a class="logo" href="/">BLOCK<span>&amp;</span>PAY</a>
-    <a class="header-link" href="#vendeurs">Vous êtes vendeur ?</a>
+    <a class="header-link" href="/demo/">Voir la démo →</a>
   </header>
 
   <main>
@@ -124,18 +130,19 @@
       <div>
         <div class="badge"><i></i> Lancement prochainement</div>
         <h1>Le prix baisse.<br><em>Vous décidez quand bloquer.</em></h1>
-        <p class="lead">Block&amp;Pay est la place de marché française où le prix de chaque pièce baisse en direct.
+        <p class="lead">Block&amp;Pay est une place de marché française où le prix de chaque pièce baisse en direct.
           Vintage, sneakers, collectors, bijoux : attendez le bon moment, bloquez votre prix… avant que quelqu'un d'autre ne le fasse.</p>
+        <div class="hero-cta">
+          <a class="btn-demo" href="/demo/">Essayer la démo</a>
+          <a class="btn-how" href="#comment">Comment ça marche</a>
+        </div>
+        <p class="demo-warn">Démo interactive : aucun achat réel. N'entrez pas votre vraie carte bancaire.</p>
 
         <form id="wl" novalidate>
-          <label class="t" for="wl-email">Soyez prévenu du lancement</label>
+          <label class="t" for="wl-email">Soyez prévenu de l’ouverture des ventes</label>
           <div class="row">
             <input type="email" id="wl-email" placeholder="votre@email.fr" autocomplete="email" required>
             <button type="submit" id="wl-btn">Me prévenir</button>
-          </div>
-          <div class="roles">
-            <label><input type="radio" name="role" value="acheteur" checked> Je veux acheter</label>
-            <label><input type="radio" name="role" value="vendeur"> Je veux vendre</label>
           </div>
           <input type="text" class="hp" id="wl-hp" tabindex="-1" autocomplete="off" aria-hidden="true">
           <p class="consent">Votre e-mail sert uniquement à vous prévenir du lancement de Block&amp;Pay. Pas de spam, désinscription sur simple demande.
@@ -163,7 +170,7 @@
       </div>
     </div>
 
-    <section class="how" aria-labelledby="how-t">
+    <section class="how" id="comment" aria-labelledby="how-t">
       <h2 id="how-t">Comment ça marche</h2>
       <div class="steps">
         <div class="step"><b>01</b><h3>Le vendeur fixe ses prix</h3><p>Un prix de départ et un prix minimum qu'il choisit lui-même.</p></div>
@@ -174,20 +181,29 @@
       <div class="cats"><span>Vintage</span><span>Friperie</span><span>Sneakers</span><span>Collectors</span><span>Bijoux</span><span>Accessoires</span></div>
     </section>
 
-    <section class="sellers" id="vendeurs" aria-labelledby="sel-t">
-      <div>
-        <h2 id="sel-t">Vous êtes vendeur ?</h2>
-        <ul>
-          <li>Un canal de vente en plus, sans abonnement ni frais fixes</li>
-          <li>Vous fixez votre prix minimum : jamais en dessous</li>
-          <li>12 % de commission, uniquement quand vous vendez</li>
-          <li>Vos premières annonces offertes pour le lancement</li>
-        </ul>
+    <section class="why" aria-labelledby="why-t">
+      <h2 id="why-t">Pourquoi c'est différent</h2>
+      <div class="why-grid">
+        <div class="why-col">
+          <h3>Pour les acheteurs</h3>
+          <ul>
+            <li>Payez souvent moins que le prix affiché au départ</li>
+            <li>Des pièces souvent uniques, sélectionnées par des boutiques</li>
+            <li>Pas de négociation ni d'attente de réponse : vous décidez seul</li>
+            <li>Le petit frisson : attendre encore… ou bloquer maintenant ?</li>
+          </ul>
+        </div>
+        <div class="why-col">
+          <h3>Pour les vendeurs</h3>
+          <ul>
+            <li>Des ventes rapides grâce à l'effet d'urgence</li>
+            <li>Un prix minimum fixé par le vendeur : jamais en dessous</li>
+            <li>Pas d'abonnement : une commission seulement en cas de vente</li>
+          </ul>
+          <p class="why-pro">Vous êtes commerçant ? <a href="mailto:contact@blockandpay.fr?subject=Vendre%20sur%20Block%26Pay">Écrivez-nous</a>.</p>
+        </div>
       </div>
-      <div>
-        <p style="margin-bottom:16px">Nous recrutons les premières boutiques pour le lancement : friperies, vintage, sneakers, collectors, bijoux.</p>
-        <a class="cta-seller" href="mailto:contact@blockandpay.fr?subject=Vendre%20sur%20Block%26Pay">Nous contacter</a>
-      </div>
+      <div class="final-cta"><a class="btn-demo" href="/demo/">Essayer la démo</a></div>
     </section>
   </main>
 
@@ -251,7 +267,7 @@
     form.addEventListener('submit', function (ev) {
       ev.preventDefault();
       const email = document.getElementById('wl-email').value.trim().toLowerCase();
-      const role = (form.querySelector('input[name=role]:checked') || {}).value || 'acheteur';
+      const role = 'acheteur';
       if (document.getElementById('wl-hp').value) return; // robot
       if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email) || email.length > 200) {
         msg.className = 'msg err'; msg.textContent = 'Merci d’entrer une adresse e-mail valide.'; return;
@@ -261,9 +277,7 @@
       db.ref('waitlist').push({ email: email, role: role, ts: firebase.database.ServerValue.TIMESTAMP, consent: true })
         .then(function () {
           msg.className = 'msg ok';
-          msg.textContent = role === 'vendeur'
-            ? 'Merci ! On vous recontacte très vite pour le lancement.'
-            : 'C’est noté ! On vous prévient dès l’ouverture des ventes.';
+          msg.textContent = 'C’est noté ! On vous prévient dès l’ouverture des ventes.';
           form.reset();
           try { localStorage.setItem('bp_waitlist', '1'); } catch (e) {}
         })
