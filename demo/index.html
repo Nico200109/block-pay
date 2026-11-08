@@ -3068,7 +3068,7 @@ const POOL = [
   { name:'Trench-coat camel · Vintage 80s',        price:120, minPrice:55,  img:'../images/trench.jpg',             desc:'Trench-coat camel style années 80, doublure soie, taille L, très bon état. Coupe intemporelle.', cat:'Vintage', stock:1 },
   { name:'Chemise western à carreaux · 90s',       price:45,  minPrice:18,  img:'../images/chemise-western.jpg',    desc:'Chemise western vintage à carreaux rouges, taille L, boutons nacre, excellent état général.', cat:'Vintage', stock:1 },
   { name:'Veste blazer à carreaux · Années 80',    price:90,  minPrice:38,  img:'../images/veste-blazer.jpg',       desc:'Blazer à carreaux façon prince-de-galles, taille M, épaulettes légères, doublure soie.', cat:'Vintage', stock:1 },
-  { name:'Robe longue bohème · Vintage 70s',       price:70,  minPrice:28,  img:'../images/robe-longue.jpg',        desc:'Robe longue bohème années 70, tissu fleuri, taille S, très bon état, pièce rare.', cat:'Vintage', stock:1 },
+  { name:'Robe longue bohème · Vintage 70s',       price:70,  minPrice:28,  img:'../images/robe-longue.jpg',        desc:'Robe longue bohème années 70, tissu fleuri, taille S, très bon état, article rare.', cat:'Vintage', stock:1 },
 
   // Sneakers
   { name:'Nike Air Force 1 · White/White',         price:110, minPrice:65,  img:'../images/nike-af1.jpg',           desc:'Nike Air Force 1 coloris blanc, pointure 42, portées 2 fois, état quasi-neuf, avec boîte.', cat:'Sneakers', stock:2 },
@@ -4239,7 +4239,7 @@ function renderCatalogue(cat) {
     const stock = item.stock || 1;
     const isUnique = stock === 1;
     const stockBadge = isUnique
-      ? '<span class="cat-stock-badge unique">Pièce unique</span>'
+      ? '<span class="cat-stock-badge unique">Article unique</span>'
       : '<span class="cat-stock-badge">' + stock + ' disponibles</span>';
     return '<div class="cat-card">' +
       '<img class="cat-card-img" src="' + item.img + '" alt="' + item.name + '">' +
