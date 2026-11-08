@@ -164,7 +164,7 @@
             </div>
             <div class="bar"><i id="demo-bar"></i></div>
             <button type="button" class="demo-btn" id="demo-btn">Bloquer ce prix</button>
-            <p class="demo-note">Exemple animé — les ventes ouvriront au lancement.</p>
+            <p class="demo-note">Exemple animé au rythme réel : −0,05 € toutes les 200 ms. Les ventes ouvriront au lancement.</p>
           </div>
         </div>
       </div>
@@ -309,9 +309,9 @@
     }
     function tick() {
       if (locked) return;
-      price = Math.max(cur.min, price - (cur.start - cur.min) / 120);
+      price = Math.max(cur.min, Math.round((price - 0.05) * 100) / 100); // même rythme que la vraie plateforme : −0,05 € toutes les 200 ms
       render();
-      if (price <= cur.min) { clearInterval(timer); setTimeout(startItem, 1500); }
+      if (price <= cur.min) { clearInterval(timer); el('demo-btn').textContent = 'Prix minimum atteint'; el('demo-btn').disabled = true; setTimeout(startItem, 2500); }
     }
     function render() {
       el('demo-now').textContent = fmt(price);
