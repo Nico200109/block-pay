@@ -1,0 +1,60 @@
+{
+  "vente": {
+    "config": {
+      ".read": true,
+      ".write": "auth != null && auth.uid === 'UID_ADMIN'"
+    },
+    "articles": {
+      ".read": true,
+      ".write": "auth != null && auth.uid === 'UID_ADMIN'"
+    },
+    "etat": {
+      ".read": true,
+      ".write": "auth != null && auth.uid === 'UID_ADMIN'",
+      "$id": {
+        ".write": "data.child('statut').val() === 'en_baisse' && newData.child('statut').val() === 'bloque' && newData.child('debut').val() === data.child('debut').val() && newData.child('blocageA').val() === now && now <= data.child('debut').val() + root.child('vente/articles/' + $id + '/duree').val() * 1000 + 60000 && newData.child('prixBloque').isNumber() && newData.child('prixBloque').val() >= root.child('vente/articles/' + $id + '/prixMin').val() && newData.child('prixBloque').val() >= root.child('vente/articles/' + $id + '/prixDepart').val() - (root.child('vente/articles/' + $id + '/prixDepart').val() - root.child('vente/articles/' + $id + '/prixMin').val()) * (now + 3000 - data.child('debut').val()) / (root.child('vente/articles/' + $id + '/duree').val() * 1000) - 0.02 && newData.child('pseudo').isString() && newData.child('pseudo').val().length >= 1 && newData.child('pseudo').val().length <= 30 && newData.parent().parent().child('verrous/' + $id).isString()",
+        "$champ": {
+          ".validate": "$champ === 'statut' || $champ === 'debut' || $champ === 'blocageA' || $champ === 'prixBloque' || $champ === 'pseudo'"
+        }
+      }
+    },
+    "verrous": {
+      ".read": "auth != null && auth.uid === 'UID_ADMIN'",
+      ".write": "auth != null && auth.uid === 'UID_ADMIN'",
+      "$id": {
+        ".write": "root.child('vente/etat/' + $id + '/statut').val() === 'en_baisse' && newData.parent().parent().child('etat/' + $id + '/statut').val() === 'bloque'",
+        ".validate": "newData.isString() && newData.val().length >= 16 && newData.val().length <= 40 && newData.parent().parent().child('contacts/' + newData.val() + '/article').val() === $id"
+      }
+    },
+    "contacts": {
+      ".read": "auth != null && auth.uid === 'UID_ADMIN'",
+      ".write": "auth != null && auth.uid === 'UID_ADMIN'",
+      "$cle": {
+        ".write": "!data.exists() && newData.parent().parent().child('verrous/' + newData.child('article').val()).val() === $cle",
+        ".validate": "newData.hasChildren(['article', 'pseudo', 'email', 'prix', 'ts'])",
+        "email": { ".validate": "newData.isString() && newData.val().length <= 120 && newData.val().matches(/^[^@ ]+@[^@ ]+[.][^@ ]+$/)" },
+        "pseudo": { ".validate": "newData.isString() && newData.val().length <= 30" },
+        "nom": { ".validate": "newData.isString() && newData.val().length <= 120" },
+        "prix": { ".validate": "newData.isNumber()" },
+        "ts": { ".validate": "newData.val() === now" },
+        "article": { ".validate": "newData.isString()" },
+        "$autre": { ".validate": false }
+      }
+    },
+    "paye": {
+      ".read": true,
+      ".write": "auth != null && auth.uid === 'UID_ADMIN'",
+      "$id": {
+        "$cle": {
+          ".write": "!data.exists() && newData.val() === now && root.child('vente/verrous/' + $id).val() === $cle"
+        }
+      }
+    },
+    "presence": {
+      ".read": true,
+      "$k": {
+        ".write": "(!data.exists() && newData.val() === true) || !newData.exists()"
+      }
+    }
+  }
+}

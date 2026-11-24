@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Block&amp;Pay – Vente en direct</title>
+  <meta name="description" content="Vente en direct Block&amp;Pay : le prix baisse en direct, le premier qui clique bloque le prix.">
+  <meta property="og:title" content="Block&amp;Pay – Vente en direct">
+  <meta property="og:description" content="Le prix baisse en direct. Le premier qui clique bloque le prix.">
+  <meta property="og:image" content="https://blockandpay.fr/images/partage.png">
+  <meta name="theme-color" content="#1C1917">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="/favicon-32.png" sizes="32x32" type="image/png">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;1,400&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root { --bg: #F5F2ED; --white: #FBFAF7; --dark: #1C1917; --text: #1C1917; --accent: #6B4226; --sand: #D9B48F;
+      --muted: #8A7F72; --track: #E4DCD0; --green: #1E8449; --red: #C0392B; --border: rgba(28,25,23,0.10); }
+    html { -webkit-text-size-adjust: 100%; }
+    body { font-family: 'Inter', Arial, sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; font-size: 16px; }
+    header { background: var(--dark); height: 60px; padding: 0 24px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 20; }
+    .logo { display: inline-flex; align-items: center; font-weight: 800; font-size: 1.05rem; letter-spacing: .28em; color: #F5F2ED; text-decoration: none; }
+    .logo span { color: var(--sand); }
+    .logo svg { width: 26px; height: 26px; margin-right: 12px; }
+    .live { color: #CFC6BA; font-size: .8rem; display: flex; align-items: center; gap: 8px; white-space: nowrap; }
+    .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--sand); }
+    .dot.on { background: #E5533D; animation: pulse 1.4s infinite; }
+    @keyframes pulse { 50% { opacity: .35; } }
+    main { max-width: 980px; margin: 0 auto; padding: 40px 24px 72px; }
+    .tag { font-size: .72rem; font-weight: 600; letter-spacing: 3px; text-transform: uppercase; color: var(--accent); }
+    h1 { font-family: 'Lora', Georgia, serif; font-style: italic; font-weight: 400; font-size: clamp(1.9rem, 5vw, 2.7rem); line-height: 1.15; margin: 8px 0 10px; }
+    h2 { font-family: 'Lora', Georgia, serif; font-weight: 400; font-size: 1.45rem; margin: 48px 0 14px; }
+    .lead { color: #4a4239; font-size: 1.02rem; max-width: 640px; }
+    .annonce { margin-top: 16px; background: var(--white); border-left: 3px solid var(--accent); padding: 12px 16px; font-size: .92rem; color: #4a4239; max-width: 640px; }
+    .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; border: 0; cursor: pointer; font: inherit; font-weight: 700; padding: 14px 22px; background: var(--dark); color: #F5F2ED; text-decoration: none; border-radius: 2px; }
+    .btn.sable { background: var(--sand); color: var(--dark); }
+    .btn.vert { background: var(--green); color: #fff; }
+    .btn.ligne { background: transparent; color: var(--dark); border: 1px solid var(--dark); }
+    .btn:disabled { background: var(--track); color: var(--muted); cursor: not-allowed; }
+    .btn.large { width: 100%; padding: 17px 22px; font-size: 1.05rem; }
+    .lien { background: none; border: 0; color: var(--accent); font: inherit; font-weight: 600; cursor: pointer; text-decoration: underline; padding: 0; }
+
+    /* Identité acheteur */
+    .ident { margin-top: 26px; background: var(--white); border: 1px solid var(--border); padding: 20px 22px; max-width: 640px; }
+    .ident h3 { font-size: 1rem; margin-bottom: 4px; }
+    .ident p.s { font-size: .86rem; color: var(--muted); margin-bottom: 14px; }
+    .champs { display: grid; grid-template-columns: 1fr 1.4fr; gap: 10px; }
+    label.l { display: block; font-size: .7rem; letter-spacing: 1px; text-transform: uppercase; color: var(--muted); font-weight: 600; margin-bottom: 4px; }
+    input[type=text], input[type=email] { width: 100%; font: inherit; padding: 11px 12px; border: 1px solid #CFC6BA; background: #fff; border-radius: 2px; color: var(--text); }
+    .coche { display: flex; gap: 10px; align-items: flex-start; font-size: .86rem; color: #4a4239; margin: 14px 0; }
+    .coche input { margin-top: 4px; width: 18px; height: 18px; flex: none; }
+    .moi { font-size: .92rem; color: #4a4239; }
+    .err { color: var(--red); font-size: .85rem; margin-top: 8px; min-height: 1em; }
+
+    /* Cartes article */
+    .direct { display: grid; gap: 22px; }
+    .carte { background: var(--white); border: 1px solid var(--border); display: grid; grid-template-columns: 1fr 1.1fr; overflow: hidden; align-items: start; }
+    .carte .photo { background: var(--track); aspect-ratio: 1 / 1; max-height: 480px; overflow: hidden; }
+    .carte .photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .carte .corps { padding: 24px 24px 22px; display: flex; flex-direction: column; }
+    .vendeur { font-size: .72rem; letter-spacing: 1.5px; text-transform: uppercase; color: var(--muted); font-weight: 600; }
+    .nom { font-family: 'Lora', Georgia, serif; font-size: 1.5rem; line-height: 1.2; margin: 4px 0 8px; }
+    .desc { font-size: .9rem; color: #4a4239; margin-bottom: 18px; white-space: pre-line; }
+    .prix { font-size: clamp(2.6rem, 7vw, 3.4rem); font-weight: 800; letter-spacing: -1px; font-variant-numeric: tabular-nums; line-height: 1; }
+    .prix.bloque { color: var(--accent); }
+    .barre { height: 4px; background: var(--track); margin: 14px 0 8px; overflow: hidden; }
+    .barre i { display: block; height: 100%; background: var(--dark); width: 100%; }
+    .infos { display: flex; justify-content: space-between; gap: 10px; font-size: .8rem; color: var(--muted); margin-bottom: 18px; flex-wrap: wrap; }
+    .etat { font-size: .9rem; padding: 12px 14px; background: var(--bg); margin-bottom: 14px; }
+    .etat b { color: var(--accent); }
+    .carte .bas { margin-top: 4px; }
+
+    /* Mon blocage */
+    .monbloc { position: fixed; inset: 0; background: rgba(28,25,23,.55); z-index: 50; display: none; align-items: center; justify-content: center; padding: 16px; }
+    .monbloc.ouvert { display: flex; }
+    .panneau { background: var(--white); max-width: 460px; width: 100%; padding: 26px 24px; max-height: 92vh; overflow: auto; }
+    .panneau h3 { font-family: 'Lora', Georgia, serif; font-style: italic; font-weight: 400; font-size: 1.6rem; line-height: 1.2; }
+    .chrono { font-size: 2.2rem; font-weight: 800; font-variant-numeric: tabular-nums; margin: 6px 0 2px; }
+    .chrono.urgent { color: var(--red); }
+    .etapes { margin: 16px 0 18px; padding-left: 20px; font-size: .92rem; color: #3d3630; }
+    .etapes li { margin: 6px 0; }
+    .montant { display: flex; align-items: center; justify-content: space-between; gap: 10px; background: var(--bg); padding: 12px 14px; margin: 10px 0 16px; }
+    .montant strong { font-size: 1.6rem; font-variant-numeric: tabular-nums; }
+    .petit { font-size: .8rem; color: var(--muted); margin-top: 12px; }
+
+    /* Listes */
+    .liste { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 14px; }
+    .mini { background: var(--white); border: 1px solid var(--border); }
+    .mini .photo { aspect-ratio: 1 / 1; background: var(--track); overflow: hidden; }
+    .mini .photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .mini .t { padding: 10px 12px 12px; font-size: .85rem; }
+    .mini .t b { display: block; font-size: .92rem; margin-bottom: 2px; }
+    .mini .t span { color: var(--muted); }
+    .mini.passe .photo { filter: grayscale(.7); opacity: .75; }
+    .badge { display: inline-block; font-size: .68rem; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; padding: 3px 8px; margin-top: 6px; background: var(--track); color: #4a4239; }
+    .badge.vendu { background: var(--dark); color: #F5F2ED; }
+    .vide { color: var(--muted); font-size: .95rem; background: var(--white); border: 1px dashed #CFC6BA; padding: 22px; text-align: center; }
+
+    .merci { background: var(--green); color: #fff; padding: 18px 20px; margin-bottom: 26px; }
+    .merci h3 { font-size: 1.05rem; margin-bottom: 4px; }
+    .merci p { font-size: .92rem; opacity: .95; }
+
+    .conditions { background: var(--white); border: 1px solid var(--border); padding: 20px 22px; font-size: .9rem; color: #3d3630; }
+    .conditions li { margin: 5px 0 5px 18px; }
+    footer { text-align: center; font-size: .8rem; color: var(--muted); padding: 24px; }
+    footer a { color: var(--muted); }
+
+    .toast { position: fixed; left: 50%; bottom: 22px; transform: translateX(-50%); background: var(--dark); color: #F5F2ED; padding: 12px 18px; font-size: .9rem; z-index: 60; max-width: calc(100% - 32px); display: none; }
+
+    @media (max-width: 720px) {
+      main { padding: 28px 16px 56px; }
+      header { padding: 0 16px; }
+      .live .txt-long { display: none; }
+      .carte { grid-template-columns: 1fr; }
+      .carte .photo { aspect-ratio: 16 / 10; max-height: 27vh; width: 100%; }
+      body.endirect #tag, body.endirect #titreDirect { display: none; }
+      body.endirect main { padding-top: 16px; }
+      body.endirect h1 { margin-bottom: 14px; }
+      .infos { margin-bottom: 12px; } .barre { margin: 10px 0 6px; }
+      body.endirect .lead, body.endirect #annonce { display: none; }
+      body.endirect h1 { font-size: 1.5rem; }
+      .nom { font-size: 1.25rem; } .desc { margin-bottom: 10px; }
+      .carte .corps { padding: 18px 16px; }
+      .champs { grid-template-columns: 1fr; }
+      .liste { grid-template-columns: 1fr 1fr; gap: 10px; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <a class="logo" href="/" aria-label="Block&amp;Pay"><svg viewBox="0 0 48 48" aria-hidden="true"><path d="M6 10 H18 V22 H28 V34 H35" fill="none" stroke="#F5F2ED" stroke-width="5" stroke-linecap="square"/><circle cx="40" cy="34" r="5" fill="#D9B48F"/></svg>BLOCK<span>&amp;</span>PAY</a>
+    <div class="live"><span class="dot" id="dot"></span><span id="connectes">…</span></div>
+  </header>
+
+  <main>
+    <div id="merci"></div>
+
+    <div class="tag" id="tag">Vente en direct</div>
+    <h1 id="titre">La vente Block&amp;Pay</h1>
+    <p class="lead" id="sousTitre">Le prix de chaque article baisse en direct jusqu'à son prix minimum. Le premier qui clique sur « Bloquer ce prix » réserve l'article et a 3 minutes pour payer.</p>
+    <div id="annonce"></div>
+
+    <div class="ident" id="ident"></div>
+
+    <h2 id="titreDirect">En ce moment</h2>
+    <div class="direct" id="direct"></div>
+
+    <h2>À venir</h2>
+    <div class="liste" id="avenir"></div>
+
+    <div id="blocPasses" style="display:none">
+      <h2>Déjà passés</h2>
+      <div class="liste" id="passes"></div>
+    </div>
+
+    <h2>Les règles de cette vente</h2>
+    <div class="conditions">
+      <ul>
+        <li>Le prix baisse en direct depuis le prix de départ jusqu'au prix minimum affiché, jamais en dessous. Ce n'est pas une vente aux enchères.</li>
+        <li>Le premier qui clique sur « Bloquer ce prix » réserve l'article au prix affiché à ce moment-là.</li>
+        <li>Il a ensuite <strong>3 minutes pour payer</strong> par carte bancaire, sur la page de paiement sécurisée de Stripe. Sans paiement dans ce délai, le blocage est annulé et l'article est retiré de la vente en cours.</li>
+        <li>Le vendeur de chaque article est indiqué sur sa fiche. La livraison est offerte, l'envoi se fait sous 5 jours ouvrés avec un numéro de suivi.</li>
+        <li>Vous avez 14 jours après réception pour changer d'avis (retour à vos frais, remboursement sous 14 jours).</li>
+        <li>Votre prénom est affiché aux autres participants quand vous bloquez un article. Votre e-mail n'est jamais affiché : il sert seulement à vous contacter pour la livraison.</li>
+      </ul>
+      <p style="margin-top:10px">Conditions complètes : <a href="/demo/#cgv">conditions générales de vente</a>. Une question : <a href="mailto:contact@blockandpay.fr">contact@blockandpay.fr</a>.</p>
+    </div>
+  </main>
+
+  <div class="monbloc" id="monbloc"><div class="panneau" id="panneau"></div></div>
+  <div class="toast" id="toast"></div>
+
+  <footer>© 2026 Block&amp;Pay · Nicolas Butez, entrepreneur individuel · <a href="/demo/#mentions">Mentions légales</a></footer>
+
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
+  <script src="/vente/commun.js"></script>
+  <script>
+  // ------------------------------------------------------------
+  // Données en direct
+  // ------------------------------------------------------------
+  let config = {}, articles = {}, etats = {}, payes = {};
+  let charge = { config: false, articles: false, etat: false, paye: false };
+  let moi = lireLocal('bp_acheteur');         // { pseudo, email }
+  let monBlocage = lireLocal('bp_blocage');   // { id, cle, prix, nom, a }
+  let signatureListe = '';
+  let enCours = false;
+
+  function pret() { return charge.config && charge.articles && charge.etat && charge.paye; }
+
+  db.ref(V + '/config').on('value', s => { config = s.val() || {}; charge.config = true; toutAfficher(); });
+  db.ref(V + '/articles').on('value', s => { articles = s.val() || {}; charge.articles = true; toutAfficher(); });
+  db.ref(V + '/etat').on('value', s => { etats = s.val() || {}; charge.etat = true; toutAfficher(); });
+  db.ref(V + '/paye').on('value', s => { payes = s.val() || {}; charge.paye = true; toutAfficher(); });
+
+  // Compteur honnête : nombre réel de pages ouvertes en ce moment
+  db.ref('.info/connected').on('value', s => {
+    if (s.val() !== true) return;
+    const ref = db.ref(V + '/presence').push();
+    ref.onDisconnect().remove();
+    ref.set(true);
+  });
+  db.ref(V + '/presence').on('value', s => {
+    const n = s.numChildren();
+    document.getElementById('connectes').innerHTML = n + ' <span class="txt-long">' + (n > 1 ? 'personnes connectées' : 'personne connectée') + '</span>';
+  });
+
+  // ------------------------------------------------------------
+  // Retour de Stripe après paiement (?paye=1)
+  // ------------------------------------------------------------
+  (function retourPaiement() {
+    const p = new URLSearchParams(location.search);
+    if (p.get('paye') !== '1') return;
+    history.replaceState(null, '', location.pathname);
+    const b = monBlocage;
+    let html = '<div class="merci"><h3>Merci pour votre paiement !</h3><p>';
+    if (b && b.id && b.cle) {
+      db.ref(V + '/paye/' + b.id + '/' + b.cle).set(firebase.database.ServerValue.TIMESTAMP).catch(() => {});
+      html += 'Votre paiement pour « ' + esc(b.nom) + ' » (' + euros(b.prix) + ') a bien été transmis. ';
+    }
+    html += 'Stripe vous envoie un reçu par e-mail. Nous vérifions le paiement et vous écrivons pour l\'expédition (sous 5 jours ouvrés).</p></div>';
+    document.getElementById('merci').innerHTML = html;
+  })();
+
+  // ------------------------------------------------------------
+  // Affichage
+  // ------------------------------------------------------------
+  function trier() {
+    return Object.keys(articles).map(id => ({ id, a: articles[id], e: etats[id] || {}, p: !!payes[id] }))
+      .sort((x, y) => (Number(x.a.ordre) || 0) - (Number(y.a.ordre) || 0));
+  }
+
+  function photo(a) {
+    return a.photo ? '<img src="' + esc(a.photo) + '" alt="' + esc(a.nom) + '">' : '';
+  }
+
+  function toutAfficher() {
+    if (!pret()) return;
+    const t = maintenant();
+
+    // En-tête
+    document.getElementById('titre').textContent = config.titre || 'La vente Block&Pay';
+    document.getElementById('tag').textContent = config.date ? 'Vente en direct · ' + dateLongue(config.date) : 'Vente en direct';
+    document.getElementById('annonce').innerHTML = config.annonce ? '<p class="annonce">' + esc(config.annonce) + '</p>' : '';
+    afficherIdent();
+
+    const liste = trier().map(x => Object.assign(x, { s: statutAffiche(x.a, x.e, x.p, t) }));
+    signatureListe = liste.map(x => x.id + ':' + x.s).join('|');
+
+    const direct = liste.filter(x => ['en_baisse', 'bloque', 'paye'].includes(x.s));
+    const avenir = liste.filter(x => x.s === 'attente');
+    const passes = liste.filter(x => ['vendu', 'termine', 'delai_depasse', 'retire'].includes(x.s));
+
+    const live = direct.length > 0;
+    document.getElementById('dot').classList.toggle('on', direct.some(x => x.s === 'en_baisse'));
+    document.body.classList.toggle('endirect', live);
+    // Pendant la vente, l'article en direct passe avant le formulaire d'identité
+    const ident = document.getElementById('ident'), zdir = document.getElementById('direct');
+    if (live && ident.nextElementSibling !== null && zdir.compareDocumentPosition(ident) & Node.DOCUMENT_POSITION_PRECEDING) zdir.after(ident);
+    if (!live && zdir.compareDocumentPosition(ident) & Node.DOCUMENT_POSITION_FOLLOWING) document.getElementById('titreDirect').before(ident);
+
+    const zd = document.getElementById('direct');
+    if (!direct.length) {
+      let msg;
+      if (!liste.length) msg = 'Les articles de la prochaine vente seront bientôt présentés ici.';
+      else if (avenir.length && config.date && config.date > t) msg = 'La vente commence ' + dateLongue(config.date) + '. Restez sur cette page : les articles apparaîtront ici en direct.';
+      else if (avenir.length) msg = 'Le prochain article va bientôt passer en vente. Restez sur cette page.';
+      else msg = 'La vente est terminée. Merci à tous les participants !';
+      zd.innerHTML = '<div class="vide">' + msg + '</div>';
+    } else {
+      zd.innerHTML = direct.map(carteDirect).join('');
+    }
+
+    document.getElementById('avenir').innerHTML = avenir.length
+      ? avenir.map(x => '<div class="mini"><div class="photo">' + photo(x.a) + '</div><div class="t"><b>' + esc(x.a.nom) + '</b><span>Départ ' + euros(x.a.prixDepart) + ' · minimum ' + euros(x.a.prixMin) + '</span></div></div>').join('')
+      : '<div class="vide" style="grid-column:1/-1">Aucun autre article prévu pour l\'instant.</div>';
+
+    document.getElementById('blocPasses').style.display = passes.length ? '' : 'none';
+    const libelles = { vendu: 'Vendu', termine: 'Sans acheteur', delai_depasse: 'Non payé à temps', retire: 'Retiré' };
+    document.getElementById('passes').innerHTML = passes.map(x =>
+      '<div class="mini passe"><div class="photo">' + photo(x.a) + '</div><div class="t"><b>' + esc(x.a.nom) + '</b>' +
+      (x.s === 'vendu' && x.e.prixBloque != null ? '<span>Parti à ' + euros(x.e.prixBloque) + '</span><br>' : '') +
+      '<span class="badge ' + (x.s === 'vendu' ? 'vendu' : '') + '">' + libelles[x.s] + '</span></div></div>').join('');
+
+    afficherMonBlocage();
+    tic();
+  }
+
+  function carteDirect(x) {
+    const a = x.a, e = x.e;
+    let bas;
+    if (x.s === 'en_baisse') {
+      bas = '<button class="btn large" onclick="bloquer(\'' + x.id + '\')" id="btn-' + x.id + '">Bloquer ce prix</button>';
+    } else if (x.s === 'bloque') {
+      const mien = monBlocage && monBlocage.id === x.id && monBlocage.a === e.blocageA;
+      bas = '<div class="etat">' + (mien ? '<b>Vous avez bloqué cet article.</b>' : 'Bloqué par <b>' + esc(e.pseudo) + '</b>.') +
+        ' Paiement en cours : <span data-chrono="' + x.id + '">3:00</span></div>' +
+        (mien ? '<button class="btn sable large" onclick="ouvrirMonBlocage()">Payer maintenant</button>' : '');
+    } else {
+      bas = '<div class="etat"><b>Paiement reçu</b>, en cours de vérification.</div>';
+    }
+    return '<article class="carte"><div class="photo">' + photo(a) + '</div><div class="corps">' +
+      '<div class="vendeur">Vendu par ' + esc(a.vendeur || 'Block&Pay') + '</div>' +
+      '<div class="nom">' + esc(a.nom) + '</div>' +
+      (a.description ? '<div class="desc">' + esc(a.description) + '</div>' : '') +
+      '<div class="prix' + (x.s !== 'en_baisse' ? ' bloque' : '') + '" data-prix="' + x.id + '">' + euros(x.s === 'en_baisse' ? prixA(a, e, maintenant()) : e.prixBloque) + '</div>' +
+      '<div class="barre"><i data-barre="' + x.id + '"></i></div>' +
+      '<div class="infos"><span>Départ ' + euros(a.prixDepart) + '</span><span>Minimum ' + euros(a.prixMin) + '</span></div>' +
+      '<div class="bas">' + bas + '</div></div></article>';
+  }
+
+  // Mise à jour rapide (toutes les 200 ms) des prix et des chronos
+  function tic() {
+    if (!pret()) return;
+    const t = maintenant();
+    const sig = trier().map(x => x.id + ':' + statutAffiche(x.a, x.e, x.p, t)).join('|');
+    if (sig !== signatureListe) { toutAfficher(); return; }
+    document.querySelectorAll('[data-prix]').forEach(el => {
+      const id = el.dataset.prix, a = articles[id], e = etats[id] || {};
+      if (e.statut === 'en_baisse') el.textContent = euros(prixA(a, e, t));
+    });
+    document.querySelectorAll('[data-barre]').forEach(el => {
+      const id = el.dataset.barre, a = articles[id], e = etats[id] || {};
+      const p = e.statut === 'en_baisse' ? prixA(a, e, t) : e.prixBloque;
+      const pct = a.prixDepart > a.prixMin ? (p - a.prixMin) / (a.prixDepart - a.prixMin) * 100 : 0;
+      el.style.width = Math.max(0, Math.min(100, pct)) + '%';
+    });
+    document.querySelectorAll('[data-chrono]').forEach(el => {
+      const e = etats[el.dataset.chrono] || {};
+      el.textContent = chrono(e.blocageA + DELAI_PAIEMENT * 1000 - t);
+    });
+    const c = document.getElementById('chronoMoi');
+    if (c && monBlocage) {
+      const reste = monBlocage.a + DELAI_PAIEMENT * 1000 - t;
+      c.textContent = chrono(reste);
+      c.classList.toggle('urgent', reste < 60000);
+    }
+  }
+  setInterval(tic, TICK);
+
+  function chrono(ms) {
+    const s = Math.max(0, Math.ceil(ms / 1000));
+    return Math.floor(s / 60) + ':' + String(s % 60).padStart(2, '0');
+  }
+
+  // ------------------------------------------------------------
+  // Identité de l'acheteur (une seule fois, avant la vente)
+  // ------------------------------------------------------------
+  let identOuverte = false;
+  function afficherIdent() {
+    const z = document.getElementById('ident');
+    if (moi && !identOuverte) {
+      z.innerHTML = '<p class="moi">Vous participez en tant que <strong>' + esc(moi.pseudo) + '</strong> (' + esc(moi.email) + '). <button class="lien" onclick="modifierIdent()">Modifier</button></p>';
+      return;
+    }
+    if (z.dataset.form === '1') return; // ne pas effacer la saisie en cours
+    z.dataset.form = '1';
+    z.innerHTML = '<h3>Préparez-vous avant la vente</h3>' +
+      '<p class="s">Pour pouvoir bloquer un prix en un clic, indiquez votre prénom (affiché aux autres) et votre e-mail (jamais affiché, seulement pour la livraison).</p>' +
+      '<div class="champs"><div><label class="l" for="fPseudo">Prénom</label><input type="text" id="fPseudo" maxlength="30" autocomplete="given-name" value="' + esc(moi ? moi.pseudo : '') + '"></div>' +
+      '<div><label class="l" for="fEmail">E-mail</label><input type="email" id="fEmail" maxlength="120" autocomplete="email" value="' + esc(moi ? moi.email : '') + '"></div></div>' +
+      '<label class="coche"><input type="checkbox" id="fCgv"' + (moi ? ' checked' : '') + '><span>J\'ai lu les règles de la vente ci-dessous et j\'accepte les <a href="/demo/#cgv" target="_blank">conditions générales de vente</a>.</span></label>' +
+      '<button class="btn" onclick="enregistrerIdent()">C\'est parti</button><div class="err" id="fErr"></div>';
+  }
+  function modifierIdent() { identOuverte = true; document.getElementById('ident').dataset.form = ''; afficherIdent(); }
+  function enregistrerIdent() {
+    const pseudo = document.getElementById('fPseudo').value.trim();
+    const email = document.getElementById('fEmail').value.trim();
+    const err = document.getElementById('fErr');
+    if (!pseudo) { err.textContent = 'Indiquez votre prénom.'; return false; }
+    if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) { err.textContent = 'Cette adresse e-mail ne semble pas valide.'; return false; }
+    if (!document.getElementById('fCgv').checked) { err.textContent = 'Cochez la case pour accepter les conditions.'; return false; }
+    moi = { pseudo: pseudo.slice(0, 30), email: email.slice(0, 120) };
+    ecrireLocal('bp_acheteur', moi);
+    identOuverte = false;
+    document.getElementById('ident').dataset.form = '';
+    afficherIdent();
+    return true;
+  }
+
+  // ------------------------------------------------------------
+  // Bloquer un prix
+  // ------------------------------------------------------------
+  function bloquer(id) {
+    if (enCours) return;
+    if (!moi) {
+      document.getElementById('ident').scrollIntoView({ behavior: 'smooth', block: 'center' });
+      toast('Indiquez d\'abord votre prénom et votre e-mail, puis cliquez à nouveau.');
+      return;
+    }
+    const a = articles[id], e = etats[id];
+    if (!a || !e || e.statut !== 'en_baisse') return;
+    const prix = prixA(a, e, maintenant());
+    const cle = cleAleatoire(24);
+    const TS = firebase.database.ServerValue.TIMESTAMP;
+    enCours = true;
+    const btn = document.getElementById('btn-' + id);
+    if (btn) { btn.disabled = true; btn.textContent = 'Blocage…'; }
+
+    const maj = {};
+    maj['etat/' + id] = { statut: 'bloque', debut: e.debut, blocageA: TS, prixBloque: prix, pseudo: moi.pseudo };
+    maj['verrous/' + id] = cle;
+    maj['contacts/' + cle] = { article: id, nom: String(a.nom).slice(0, 120), pseudo: moi.pseudo, email: moi.email, prix: prix, ts: TS };
+
+    db.ref(V).update(maj).then(() => db.ref(V + '/etat/' + id + '/blocageA').once('value')).then(s => {
+      monBlocage = { id, cle, prix, nom: a.nom, a: s.val() };
+      ecrireLocal('bp_blocage', monBlocage);
+      enCours = false;
+      toutAfficher();
+      ouvrirMonBlocage();
+    }).catch(err => {
+      console.warn('Blocage refusé', err && err.message);
+      enCours = false;
+      toast('Trop tard : quelqu\'un a bloqué cet article juste avant vous.');
+      toutAfficher();
+    });
+  }
+
+  // ------------------------------------------------------------
+  // Mon blocage : payer dans les 3 minutes
+  // ------------------------------------------------------------
+  let monBlocOuvert = false;
+  function ouvrirMonBlocage() { monBlocOuvert = true; afficherMonBlocage(); }
+  function fermerMonBlocage() { monBlocOuvert = false; document.getElementById('monbloc').classList.remove('ouvert'); }
+
+  function lienPaiement() {
+    if (!config.lienPaiement || !monBlocage) return '';
+    const u = new URL(config.lienPaiement);
+    u.searchParams.set('client_reference_id', monBlocage.cle);
+    if (moi && moi.email) u.searchParams.set('prefilled_email', moi.email);
+    return u.toString();
+  }
+
+  function afficherMonBlocage() {
+    const z = document.getElementById('monbloc');
+    if (!monBlocage || !monBlocOuvert) { z.classList.remove('ouvert'); return; }
+    const e = etats[monBlocage.id] || {};
+    const a = articles[monBlocage.id] || { nom: monBlocage.nom };
+    const toujoursMien = e.statut === 'bloque' && e.blocageA === monBlocage.a;
+    const t = maintenant();
+    const p = document.getElementById('panneau');
+    let html;
+    if (toujoursMien && payes[monBlocage.id]) {
+      html = '<h3>Paiement reçu</h3><p style="margin:10px 0 18px">Merci ! Nous vérifions votre paiement et vous écrivons pour l\'expédition.</p><button class="btn ligne large" onclick="fermerMonBlocage()">Fermer</button>';
+    } else if (toujoursMien && t <= monBlocage.a + DELAI_PAIEMENT * 1000) {
+      const lien = lienPaiement();
+      html = '<div class="tag">Article bloqué</div><h3>' + esc(a.nom) + '</h3>' +
+        '<p style="margin-top:10px;font-size:.9rem;color:#4a4239">Temps restant pour payer :</p><div class="chrono" id="chronoMoi">3:00</div>' +
+        '<div class="montant"><span>Montant à payer<br><strong>' + euros(monBlocage.prix) + '</strong></span><button class="btn ligne" onclick="copierMontant()">Copier</button></div>' +
+        '<ol class="etapes"><li>Cliquez sur le bouton ci-dessous : la page de paiement sécurisée Stripe s\'ouvre.</li>' +
+        '<li>Saisissez <strong>exactement ' + euros(monBlocage.prix) + '</strong> dans le champ du montant.</li>' +
+        '<li>Indiquez votre carte et votre adresse de livraison, puis validez.</li></ol>' +
+        (lien ? '<a class="btn vert large" href="' + esc(lien) + '">Payer ' + euros(monBlocage.prix) + ' par carte</a>'
+              : '<div class="etat">Le paiement en ligne n\'est pas encore activé sur cette vente. Écrivez à <a href="mailto:contact@blockandpay.fr">contact@blockandpay.fr</a>.</div>') +
+        '<p class="petit">Un montant différent du prix bloqué sera remboursé. Paiement traité par Stripe : Block&amp;Pay ne voit jamais votre numéro de carte.</p>' +
+        '<p style="text-align:center;margin-top:10px"><button class="lien" onclick="fermerMonBlocage()">Revenir à la salle</button></p>';
+    } else {
+      html = '<h3>Délai dépassé</h3><p style="margin:10px 0 18px">Les 3 minutes sont écoulées sans paiement confirmé : le blocage de « ' + esc(a.nom) + ' » est annulé. Si vous avez payé quand même, écrivez à <a href="mailto:contact@blockandpay.fr">contact@blockandpay.fr</a>, nous vérifions.</p><button class="btn ligne large" onclick="oublierBlocage()">Fermer</button>';
+    }
+    p.innerHTML = html;
+    z.classList.add('ouvert');
+    tic();
+  }
+
+  function oublierBlocage() { monBlocage = null; ecrireLocal('bp_blocage', null); fermerMonBlocage(); }
+
+  function copierMontant() {
+    const txt = monBlocage.prix.toFixed(2).replace('.', ',');
+    (navigator.clipboard ? navigator.clipboard.writeText(txt) : Promise.reject()).then(() => toast('Montant copié : ' + txt + ' €'), () => toast('Montant : ' + txt + ' €'));
+  }
+
+  // Si la personne revient sur la page avec un blocage encore valide, on rouvre le panneau
+  setTimeout(() => {
+    if (!monBlocage || !pret()) return;
+    const e = etats[monBlocage.id] || {};
+    if (e.statut === 'bloque' && e.blocageA === monBlocage.a && !payes[monBlocage.id] && maintenant() <= monBlocage.a + DELAI_PAIEMENT * 1000) ouvrirMonBlocage();
+  }, 1500);
+
+  let toastTmr;
+  function toast(m) {
+    const t = document.getElementById('toast');
+    t.textContent = m; t.style.display = 'block';
+    clearTimeout(toastTmr); toastTmr = setTimeout(() => t.style.display = 'none', 4000);
+  }
+  </script>
+</body>
+</html>

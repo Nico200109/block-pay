@@ -5253,6 +5253,9 @@ updateStatSold();
 startHeroDemoCard();
 startAuctions(); // démarre les offres et les bots en arrière-plan dès le chargement
 initSellerAuth();
+// Lien direct vers les CGV ou les mentions légales (ex. /demo/#cgv)
+if (location.hash === '#cgv') showPage('page-cgv');
+if (location.hash === '#mentions') showPage('page-legal');
 </script>
 </body>
 </html>
