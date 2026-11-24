@@ -5,8 +5,17 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="robots" content="noindex, nofollow">
-  <title>Block&Pay – Ventes à Prix Dynamique</title>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Inter:wght@300;400;500;600&family=Bebas+Neue&display=swap" rel="stylesheet">
+  <title>Block&amp;Pay – Le prix baisse. Vous décidez quand bloquer.</title>
+  <meta name="theme-color" content="#1C1917">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="/favicon-32.png" sizes="32x32" type="image/png">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <meta property="og:title" content="Block&amp;Pay – Démo">
+  <meta property="og:description" content="Essayez la démo : le prix baisse en direct, le premier qui clique bloque le prix.">
+  <meta property="og:image" content="https://blockandpay.fr/images/partage.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,700;1,400;1,500&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
     /* =============================================
        VARIABLES & RESET
@@ -15,21 +24,23 @@
 
     :root {
       --bg:     #F5F2ED;
-      --bg2:    #FFFFFF;
-      --card:   #FFFFFF;
+      --bg2:    #FBFAF7;
+      --card:   #FBFAF7;
       --card2:  #F5F2ED;
-      --accent: #6b4226;
+      --accent: #6B4226;
+      --sand:   #D9B48F;
+      --track:  #E4DCD0;
       --accent2:#6b4226;
-      --green:  #27ae60;
+      --green:  #1E8449;
       --red:    #C0392B;
-      --gold:   #d4a017;
-      --text:   #1a1a1a;
-      --muted:  #9a8f82;
-      --border: rgba(0,0,0,0.08);
+      --gold:   #6B4226; /* ancien or remplacé par le brun de la charte */
+      --text:   #1C1917;
+      --muted:  #8A7F72;
+      --border: rgba(28,25,23,0.08);
       --shadow: 0 1px 3px rgba(0,0,0,0.08);
-      --font-h: 'Playfair Display', serif;
-      --font-b: 'Inter', sans-serif;
-      --font-p: 'Bebas Neue', sans-serif;
+      --font-h: 'Lora', Georgia, serif;
+      --font-b: 'Inter', Arial, sans-serif;
+      --font-p: 'Inter', Arial, sans-serif;
       --r:      4px;
     }
 
@@ -62,7 +73,7 @@
     ============================================= */
     .header {
       position: sticky; top: 0; z-index: 100;
-      background: #FFFFFF;
+      background: #FBFAF7;
       border-bottom: 1px solid var(--border);
       padding: 0 48px;
       height: 60px;
@@ -70,9 +81,9 @@
     }
 
     .logo {
-      font-family: var(--font-p);
-      font-size: 1.75rem;
-      letter-spacing: 3px;
+      font-family: var(--font-p); font-weight: 800;
+      font-size: 1.05rem;
+      letter-spacing: .28em;
       color: var(--text);
     }
     .logo span { color: var(--accent); }
@@ -252,7 +263,7 @@
 
     .btn-main {
       padding: 16px 36px;
-      background: #1a1a1a;
+      background: #1C1917;
       color: #FFFFFF;
       border: none; border-radius: 0;
       font-family: var(--font-b);
@@ -292,7 +303,7 @@
 
     .stat-item { text-align: left; }
     .stat-num {
-      font-family: var(--font-p);
+      font-family: var(--font-p); font-weight: 800;
       font-size: 3rem;
       letter-spacing: 2px;
       color: var(--text);
@@ -360,7 +371,7 @@
     .step-card:hover { background: #FAFAF8; }
 
     .step-num {
-      font-family: var(--font-p);
+      font-family: var(--font-p); font-weight: 800;
       font-size: 3rem;
       letter-spacing: 2px;
       color: rgba(0,0,0,0.05);
@@ -502,8 +513,8 @@
     .hld-price-row { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 8px; }
     .hld-price-label { font-size: 0.68rem; color: var(--muted); text-transform: uppercase; letter-spacing: 1.5px; }
     .hld-price-val {
-      font-family: var(--font-p); font-size: 2.2rem;
-      color: var(--text); line-height: 1; transition: color 0.3s; letter-spacing: 1px;
+      font-family: var(--font-p); font-weight: 800; font-size: 2.2rem;
+      color: var(--text); line-height: 1; transition: color 0.3s; letter-spacing: -0.01em;
     }
     .hld-price-val.warn   { color: var(--gold); }
     .hld-price-val.danger { color: var(--red); animation: hldPulse 0.7s ease-in-out infinite alternate; }
@@ -512,7 +523,7 @@
     .hld-bar { height: 100%; background: var(--accent); transition: width 0.25s ease; }
     .hld-cta {
       width: 100%; padding: 14px;
-      background: #1a1a1a; border: none;
+      background: #1C1917; border: none;
       border-radius: 0; color: #FFFFFF;
       font-family: var(--font-b); font-size: 0.875rem; font-weight: 500;
       cursor: pointer !important; letter-spacing: 0.3px;
@@ -613,9 +624,9 @@
     }
     .price-label { font-size: 0.65rem; color: var(--muted); text-transform: uppercase; letter-spacing: 1.5px; font-weight: 600; }
     .price-val {
-      font-family: var(--font-p);
+      font-family: var(--font-p); font-weight: 800;
       font-size: 3rem;
-      letter-spacing: 1px;
+      letter-spacing: -0.01em;
       color: var(--text);
       line-height: 1;
       transition: color 0.3s;
@@ -649,8 +660,8 @@
     .card-timer.on { display: block; }
     .timer-label { font-size: 0.65rem; color: var(--red); margin-bottom: 3px; letter-spacing: 1.5px; text-transform: uppercase; font-weight: 600; }
     .timer-val {
-      font-family: var(--font-p);
-      font-size: 1.8rem; letter-spacing: 1px; color: var(--red);
+      font-family: var(--font-p); font-weight: 800;
+      font-size: 1.8rem; letter-spacing: -0.01em; color: var(--red);
     }
     .timer-bar-wrap {
       height: 1px; background: var(--border);
@@ -669,7 +680,7 @@
       margin-top: 6px;
     }
     .btn-lock {
-      background: #1a1a1a;
+      background: #1C1917;
       color: #FFFFFF;
     }
     .btn-lock:hover { background: var(--accent); }
@@ -736,13 +747,13 @@
       color: var(--text); margin-bottom: 2px;
     }
     .rot-next-price {
-      font-family: var(--font-p); font-size: 1.2rem;
-      letter-spacing: 1px;
+      font-family: var(--font-p); font-weight: 800; font-size: 1.2rem;
+      letter-spacing: -0.01em;
       color: var(--text);
     }
     .rot-text { font-size: 0.72rem; color: var(--muted); letter-spacing: 1px; margin-bottom: 4px; }
     .rot-count {
-      font-family: var(--font-p);
+      font-family: var(--font-p); font-weight: 800;
       font-size: 4rem;
       letter-spacing: 2px;
       color: var(--accent);
@@ -778,16 +789,16 @@
     .winner-card:hover { border-color: rgba(0,0,0,0.15); }
 
     .w-rank {
-      font-family: var(--font-p);
+      font-family: var(--font-p); font-weight: 800;
       font-size: 2rem;
-      letter-spacing: 1px;
+      letter-spacing: -0.01em;
       color: rgba(0,0,0,0.07);
       min-width: 46px;
     }
     .w-info { flex: 1; padding: 0 14px; }
     .w-name { font-weight: 600; font-size: 0.95rem; }
     .w-item { font-size: 0.8rem; color: var(--muted); margin-top: 2px; }
-    .w-price { font-family: var(--font-p); font-size: 1.8rem; letter-spacing: 1px; color: var(--green); }
+    .w-price { font-family: var(--font-p); font-weight: 800; font-size: 1.8rem; letter-spacing: -0.01em; color: var(--green); }
     .w-date { font-size: 0.75rem; color: var(--muted); margin-top: 2px; text-align: right; }
 
     .empty-state {
@@ -832,8 +843,8 @@
     .info-row .info-val { font-weight: 500; }
 
     .saved-card-display {
-      background: rgba(39,174,96,0.04);
-      border: 1px solid rgba(39,174,96,0.15);
+      background: rgba(30,132,73,0.04);
+      border: 1px solid rgba(30,132,73,0.15);
       border-radius: var(--r);
       padding: 14px 18px;
       display: flex; justify-content: space-between; align-items: center;
@@ -860,7 +871,7 @@
     }
     .purchase-item .p-name { font-weight: 500; }
     .purchase-item .p-date { color: var(--muted); font-size: 0.8rem; margin-top: 2px; }
-    .purchase-item .p-price { font-family: var(--font-p); font-size: 1.3rem; letter-spacing: 1px; color: var(--green); }
+    .purchase-item .p-price { font-family: var(--font-p); font-weight: 800; font-size: 1.3rem; letter-spacing: -0.01em; color: var(--green); }
 
     /* =============================================
        À PROPOS
@@ -1012,7 +1023,7 @@
 
     .btn-submit {
       width: 100%; padding: 14px;
-      background: #1a1a1a;
+      background: #1C1917;
       color: #FFFFFF; border: none; border-radius: 0;
       font-family: var(--font-b); font-size: 0.9rem; font-weight: 500;
       letter-spacing: 0.3px;
@@ -1023,7 +1034,7 @@
 
     .btn-confirm-pay {
       width: 100%; padding: 14px;
-      background: #1a1a1a;
+      background: #1C1917;
       color: #FFFFFF; border: none; border-radius: 0;
       font-family: var(--font-b); font-size: 0.9rem; font-weight: 500;
       cursor: pointer !important; margin-top: 6px;
@@ -1045,15 +1056,15 @@
 
     .modal-pay-item { font-size: 1.05rem; font-weight: 600; margin: 4px 0; }
     .modal-pay-price {
-      font-family: var(--font-p); font-size: 2.2rem;
-      letter-spacing: 1px;
+      font-family: var(--font-p); font-weight: 800; font-size: 2.2rem;
+      letter-spacing: -0.01em;
       color: var(--text); margin: 6px 0 14px;
     }
     .modal-pay-timer { font-size: 0.82rem; color: var(--muted); margin-bottom: 18px; }
 
     .saved-card-opt {
-      background: rgba(39,174,96,0.04);
-      border: 1px solid rgba(39,174,96,0.15);
+      background: rgba(30,132,73,0.04);
+      border: 1px solid rgba(30,132,73,0.15);
       border-radius: var(--r); padding: 12px 14px;
       margin-bottom: 14px;
     }
@@ -1062,13 +1073,13 @@
 
     .use-saved-btn {
       width: 100%; padding: 10px;
-      background: rgba(39,174,96,0.06);
-      border: 1px solid rgba(39,174,96,0.2);
+      background: rgba(30,132,73,0.06);
+      border: 1px solid rgba(30,132,73,0.2);
       color: var(--green);
       border-radius: 0; font-size: 0.85rem; font-weight: 500;
       cursor: pointer !important; margin-bottom: 12px; transition: all 0.15s ease;
     }
-    .use-saved-btn:hover { background: rgba(39,174,96,0.12); }
+    .use-saved-btn:hover { background: rgba(30,132,73,0.12); }
 
     .divider-or { text-align: center; font-size: 0.75rem; color: var(--muted); margin: 6px 0 14px; }
 
@@ -1095,8 +1106,8 @@
     }
     .pay-sum-name { font-size: 0.85rem; font-weight: 600; }
     .pay-sum-price {
-      font-family: var(--font-p); font-size: 1.5rem;
-      letter-spacing: 1px;
+      font-family: var(--font-p); font-weight: 800; font-size: 1.5rem;
+      letter-spacing: -0.01em;
       color: var(--text); white-space: nowrap;
     }
     .pay-timer-line { font-size: 0.68rem; color: var(--muted); margin-top: 2px; }
@@ -1169,7 +1180,7 @@
 
     .cf-strip {
       height: 32px; margin: 0 -16px;
-      background: linear-gradient(180deg, #0a0a0a 0%, #1a1a1a 50%, #0a0a0a 100%);
+      background: linear-gradient(180deg, #1C1917 0%, #1C1917 50%, #1C1917 100%);
     }
     .cf-sig-row { display: flex; align-items: center; gap: 8px; }
     .cf-sig-tape {
@@ -1327,23 +1338,23 @@
     .cat-badge-tech       { background: rgba(0,0,0,0.05); color: var(--text); }
     .cat-badge-maison     { background: rgba(107,66,38,0.08); color: var(--accent); }
     .cat-badge-mode       { background: rgba(0,0,0,0.05); color: var(--text); }
-    .cat-badge-sport      { background: rgba(39,174,96,0.08); color: var(--green); }
+    .cat-badge-sport      { background: rgba(30,132,73,0.08); color: var(--green); }
     .cat-badge-culture    { background: rgba(0,0,0,0.05); color: var(--text); }
     .cat-badge-voyage     { background: rgba(107,66,38,0.08); color: var(--accent); }
-    .cat-badge-experience { background: rgba(212,160,23,0.08); color: var(--gold); }
+    .cat-badge-experience { background: rgba(107,66,38,0.08); color: var(--gold); }
 
     .cat-name { font-family: var(--font-h); font-size: 1rem; font-weight: 700; margin-bottom: 4px; }
     .cat-desc { font-size: 0.78rem; color: var(--muted); line-height: 1.5; margin-bottom: 10px; }
 
     .cat-price-row { display: flex; align-items: center; justify-content: space-between; }
-    .cat-price-start { font-family: var(--font-p); font-size: 1.6rem; color: var(--text); letter-spacing: 1px; }
+    .cat-price-start { font-family: var(--font-p); font-weight: 800; font-size: 1.6rem; color: var(--text); letter-spacing: -0.01em; }
     .cat-price-min   { font-size: 0.75rem; color: var(--muted); }
 
     .cat-play-btn {
       width: 100%;
       margin-top: 10px;
       padding: 9px;
-      background: #1a1a1a;
+      background: #1C1917;
       color: #FFFFFF;
       border: none;
       border-radius: 0;
@@ -1394,7 +1405,7 @@
     .toast-title { font-weight: 600; font-size: 0.875rem; margin-bottom: 3px; color: var(--text); }
     .toast-msg   { font-size: 0.8rem; color: var(--muted); line-height: 1.5; }
 
-    .toast-success { border-left-color: #27ae60; }
+    .toast-success { border-left-color: #1E8449; }
     .toast-error   { border-left-color: #C0392B; }
     .toast-info    { border-left-color: var(--accent); }
     .toast-warning { border-left-color: var(--gold); }
@@ -1425,16 +1436,16 @@
     }
     .pc-name  { font-size: 1rem; color: var(--muted); margin-bottom: 24px; }
     .pc-box   {
-      background: rgba(39,174,96,0.04); border: 1px solid rgba(39,174,96,0.15);
+      background: rgba(30,132,73,0.04); border: 1px solid rgba(30,132,73,0.15);
       border-radius: var(--r); padding: 18px;
       margin-bottom: 24px;
     }
     .pc-item  { font-family: var(--font-h); font-size: 1.1rem; font-weight: 700; margin-bottom: 8px; color: var(--text); }
-    .pc-price { font-family: var(--font-p); font-size: 3rem; color: var(--green); letter-spacing: 1px; }
+    .pc-price { font-family: var(--font-p); font-weight: 800; font-size: 3rem; color: var(--green); letter-spacing: -0.01em; }
     .pc-del   { font-size: 0.8rem; color: var(--muted); margin-top: 6px; }
     .pc-close {
       width: 100%; padding: 14px;
-      background: #1a1a1a;
+      background: #1C1917;
       color: #FFFFFF; border: none; border-radius: 0;
       font-family: var(--font-b); font-size: 0.9rem; font-weight: 500;
       cursor: pointer !important; transition: background 0.15s ease;
@@ -1467,7 +1478,7 @@
     .star-btn {
       font-size: 2rem; background: none; border: none;
       cursor: pointer !important; transition: transform 0.15s;
-      filter: grayscale(1); opacity: 0.4;
+      color: var(--accent); opacity: 0.35;
     }
     .star-btn.active { filter: none; opacity: 1; transform: scale(1.15); }
     .star-btn:hover  { filter: none; opacity: 1; }
@@ -1498,7 +1509,7 @@
        FOOTER
     ============================================= */
     .site-footer {
-      background: #1a1a1a;
+      background: #1C1917;
       padding: 60px 48px;
       display: grid;
       grid-template-columns: 1fr auto;
@@ -1507,13 +1518,13 @@
     }
 
     .footer-logo {
-      font-family: var(--font-p);
-      font-size: 1.4rem;
-      letter-spacing: 3px;
+      font-family: var(--font-p); font-weight: 800;
+      font-size: 1.05rem;
+      letter-spacing: .28em;
       margin-bottom: 12px;
-      color: #FFFFFF;
+      color: #F5F2ED;
     }
-    .footer-logo span { color: var(--accent); }
+    .footer-logo span { color: var(--sand); }
     .footer-tagline { font-size: 0.875rem; color: rgba(255,255,255,0.4); max-width: 320px; line-height: 1.75; }
     .footer-commission {
       font-size: 0.78rem; color: rgba(255,255,255,0.3);
@@ -1527,7 +1538,7 @@
     .footer-links a:hover { color: rgba(255,255,255,0.85); }
 
     .footer-bottom {
-      background: #1a1a1a;
+      background: #1C1917;
       border-top: 1px solid rgba(255,255,255,0.06);
       padding: 20px 48px;
       display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px;
@@ -1561,7 +1572,7 @@
 
       /* HEADER */
       .header { padding: 0 16px; height: 56px; }
-      .logo { font-size: 1.4rem; letter-spacing: 2px; }
+      .logo { font-size: .95rem; letter-spacing: .24em; }
       .header-nav a:not(.user-wrap *) { display: none; }
       .header-nav { gap: 8px; }
       .burger-btn { display: flex; }
@@ -1682,10 +1693,10 @@
       }
 
       /* FOOTER */
-      .site-footer { grid-template-columns: 1fr; padding: 40px 20px; gap: 32px; background: #1a1a1a; }
+      .site-footer { grid-template-columns: 1fr; padding: 40px 20px; gap: 32px; background: #1C1917; }
       .footer-links { gap: 14px; flex-wrap: wrap; justify-content: flex-start; }
       .footer-links a { font-size: 0.82rem; }
-      .footer-bottom { padding: 16px 20px; font-size: 0.7rem; flex-direction: column; gap: 4px; text-align: center; background: #1a1a1a; }
+      .footer-bottom { padding: 16px 20px; font-size: 0.7rem; flex-direction: column; gap: 4px; text-align: center; background: #1C1917; }
 
       /* COMPTE */
       .acc-wrap { padding: 0 14px 70px; }
@@ -1750,7 +1761,7 @@
       border-radius: var(--r); padding: 32px 28px;
     }
     .v-avantage-number {
-      font-family: var(--font-p); font-size: 2rem;
+      font-family: var(--font-p); font-weight: 800; font-size: 2rem;
       color: var(--accent); margin-bottom: 12px; letter-spacing: 2px;
     }
     .v-avantage-title {
@@ -1806,7 +1817,7 @@
       font-size: 0.75rem; font-weight: 600; letter-spacing: 1px;
       text-transform: uppercase; color: var(--muted); margin-bottom: 8px;
     }
-    .v-stat-value { font-family: var(--font-p); font-size: 2rem; letter-spacing: 1px; color: var(--text); }
+    .v-stat-value { font-family: var(--font-p); font-weight: 800; font-size: 2rem; letter-spacing: -0.01em; color: var(--text); }
 
     /* Article list */
     .v-articles-section { margin-top: 40px; }
@@ -1826,13 +1837,13 @@
     .v-article-info { flex: 1; }
     .v-article-name { font-weight: 500; font-size: 0.9rem; color: var(--text); margin-bottom: 2px; }
     .v-article-meta { font-size: 0.8rem; color: var(--muted); }
-    .v-article-price { font-family: var(--font-p); font-size: 1.2rem; color: var(--accent); letter-spacing: 1px; }
+    .v-article-price { font-family: var(--font-p); font-weight: 800; font-size: 1.2rem; color: var(--accent); letter-spacing: -0.01em; }
     .v-article-badge {
       padding: 3px 10px; border-radius: 2px;
       font-size: 0.7rem; font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase;
     }
-    .v-article-badge.pending { background: rgba(212,160,23,0.12); color: var(--gold); }
-    .v-article-badge.active  { background: rgba(39,174,96,0.1); color: var(--green); }
+    .v-article-badge.pending { background: rgba(107,66,38,0.12); color: var(--gold); }
+    .v-article-badge.active  { background: rgba(30,132,73,0.1); color: var(--green); }
     .v-article-badge.sold    { background: rgba(0,0,0,0.05); color: var(--muted); }
     .v-empty-state { padding: 40px 0; color: var(--muted); font-size: 0.9rem; text-align: center; }
     .v-article-remove {
@@ -1954,6 +1965,17 @@
       .v-field-row { grid-template-columns: 1fr; }
       .btn-vendeur-nav { padding: 7px 14px; font-size: 0.8rem; }
     }
+
+    /* ===== Charte Block&Pay : en-tête noir chaud, logo crème, « & » sable ===== */
+    .header { background: #1C1917; border-bottom-color: #1C1917; }
+    .header .logo { color: #F5F2ED; }
+    .header .logo span { color: var(--sand); }
+    .header-nav > a { color: #CFC6BA; }
+    .header-nav > a:hover { color: #F5F2ED; }
+    .user-btn { color: #F5F2ED; border-color: rgba(245,242,237,0.25); }
+    .user-btn:hover { border-color: #F5F2ED; }
+    .user-dot { border-color: #1C1917; }
+    .burger-btn span { background: #F5F2ED; }
   </style>
 </head>
 <body>
@@ -2031,7 +2053,7 @@
         <div class="stat-label">Offres simultanées</div>
       </div>
       <div class="stat-item">
-        <span class="stat-num">🚀</span>
+        <span class="stat-num">Bientôt</span>
         <div class="stat-label">Lancement imminent</div>
       </div>
       <div class="stat-item">
@@ -2164,7 +2186,7 @@
     <div class="item-card" id="card-1"></div>
   </div>
   <div class="coming-soon-section">
-    <div class="coming-soon-title">🕐 Prochainement en vente</div>
+    <div class="coming-soon-title">Prochainement en vente</div>
     <div class="coming-soon-grid" id="coming-soon-grid"></div>
   </div>
 </div>
@@ -2191,11 +2213,11 @@
   <div class="catalogue-wrap">
     <div class="cat-filters" id="cat-filters">
       <button class="cat-filter-btn active" onclick="filterCat('Tous')">Tous</button>
-      <button class="cat-filter-btn" onclick="filterCat('Vintage')">👗 Vintage</button>
-      <button class="cat-filter-btn" onclick="filterCat('Sneakers')">👟 Sneakers</button>
-      <button class="cat-filter-btn" onclick="filterCat('Collectors')">🎮 Collectors</button>
-      <button class="cat-filter-btn" onclick="filterCat('Bijoux')">💍 Bijoux</button>
-      <button class="cat-filter-btn" onclick="filterCat('Accessoires')">🎒 Accessoires</button>
+      <button class="cat-filter-btn" onclick="filterCat('Vintage')">Vintage</button>
+      <button class="cat-filter-btn" onclick="filterCat('Sneakers')">Sneakers</button>
+      <button class="cat-filter-btn" onclick="filterCat('Collectors')">Collectors</button>
+      <button class="cat-filter-btn" onclick="filterCat('Bijoux')">Bijoux</button>
+      <button class="cat-filter-btn" onclick="filterCat('Accessoires')">Accessoires</button>
     </div>
     <div class="cat-grid" id="cat-grid"></div>
   </div>
@@ -2213,43 +2235,43 @@
     <div class="steps-grid">
       <div class="step-card">
         <div class="step-num">01</div>
-        <span class="step-icon">👤</span>
+        <span class="step-icon">01</span>
         <div class="step-title">Créez un compte</div>
         <p class="step-desc">Inscription gratuite en 30 secondes. Un prénom, un email, un mot de passe.</p>
       </div>
       <div class="step-card">
         <div class="step-num">02</div>
-        <span class="step-icon">👁️</span>
+        <span class="step-icon">02</span>
         <div class="step-title">Observez le prix</div>
         <p class="step-desc">Regardez le prix descendre en temps réel. Estimez le bon moment selon votre budget.</p>
       </div>
       <div class="step-card">
         <div class="step-num">03</div>
-        <span class="step-icon">🔒</span>
+        <span class="step-icon">03</span>
         <div class="step-title">Bloquez votre prix</div>
         <p class="step-desc">Cliquez sur "Bloquer mon prix". Vous disposez de 3 minutes pour finaliser l'achat.</p>
       </div>
       <div class="step-card">
         <div class="step-num">04</div>
-        <span class="step-icon">💳</span>
+        <span class="step-icon">04</span>
         <div class="step-title">Payez</div>
         <p class="step-desc">Renseignez vos coordonnées bancaires. Vous pouvez sauvegarder votre carte pour aller plus vite.</p>
       </div>
       <div class="step-card">
         <div class="step-num">05</div>
-        <span class="step-icon">📦</span>
+        <span class="step-icon">05</span>
         <div class="step-title">Recevez votre article</div>
         <p class="step-desc">L'article vous est réservé au prix bloqué. Livraison dans les délais annoncés.</p>
       </div>
       <div class="step-card">
         <div class="step-num">06</div>
-        <span class="step-icon">🔄</span>
+        <span class="step-icon">06</span>
         <div class="step-title">Un nouvel article arrive</div>
         <p class="step-desc">Après chaque achat, un nouvel article est proposé. Revenez régulièrement !</p>
       </div>
     </div>
     <div class="about-card" style="margin-top:24px">
-      <h3>⚖️ Information légale</h3>
+      <h3>Information légale</h3>
       <p>Block&Pay est une plateforme de vente en ligne proposant des articles à <strong>prix dynamique dégressif</strong>. Le mécanisme de baisse automatique du prix est un algorithme de tarification progressive. Toute transaction confirmée constitue un achat ferme et définitif au prix affiché au moment du blocage. Ce service ne constitue pas une vente aux enchères au sens de la réglementation française.</p>
     </div>
   </div>
@@ -2266,19 +2288,19 @@
     </div>
     <div class="about-grid">
       <div class="about-card">
-        <h3>🎯 Notre mission</h3>
+        <h3>Notre mission</h3>
         <p>Rendre l'achat en ligne plus engageant et avantageux pour les acheteurs, en proposant des articles premium à des prix accessibles grâce à notre technologie de prix dégressif.</p>
       </div>
       <div class="about-card">
-        <h3>💡 Notre innovation</h3>
+        <h3>Notre innovation</h3>
         <p>Notre algorithme de prix dynamique crée une expérience unique : chaque seconde compte. Le timing et la stratégie remplacent le simple acte d'achat passif.</p>
       </div>
       <div class="about-card">
-        <h3>🔒 Transparence totale</h3>
+        <h3>Transparence totale</h3>
         <p>Le prix affiché est le prix payé. Aucuns frais cachés, aucune commission surprise. Block&Pay s'engage sur une politique tarifaire 100% transparente.</p>
       </div>
       <div class="about-card">
-        <h3>🚀 Notre vision</h3>
+        <h3>Notre vision</h3>
         <p>Devenir la référence européenne du commerce à prix dynamique, avec une application mobile et des milliers d'articles proposés chaque jour.</p>
       </div>
     </div>
@@ -2294,7 +2316,7 @@
       <p style="text-align:center;margin-top:16px;color:var(--muted);font-size:0.875rem">Block&Pay est un projet indépendant, conçu et développé en France.</p>
     </div>
     <div class="about-card" style="margin-top:24px; text-align:center">
-      <h3 style="justify-content:center">📩 Nous contacter</h3>
+      <h3 style="justify-content:center">Nous contacter</h3>
       <p>Pour toute question, partenariat ou demande investisseur :<br>
         <strong style="color:var(--accent)">contact@blockandpay.fr</strong>
       </p>
@@ -2313,7 +2335,7 @@
   <div class="account-wrap">
 
     <div class="account-card">
-      <h3>👤 Mes informations</h3>
+      <h3>Mes informations</h3>
       <div class="info-row">
         <span class="info-label">Prénom</span>
         <span class="info-val" id="acc-name">—</span>
@@ -2329,12 +2351,12 @@
     </div>
 
     <div class="account-card">
-      <h3>💳 Carte enregistrée</h3>
+      <h3>Carte enregistrée</h3>
       <div id="acc-card-section"></div>
     </div>
 
     <div class="account-card">
-      <h3>🛍️ Mes achats</h3>
+      <h3>Mes achats</h3>
       <div id="acc-purchases"></div>
     </div>
 
@@ -2490,7 +2512,7 @@
 <!-- Confirmation achat -->
 <div class="purchase-confirm" id="purchase-confirm">
   <div class="purchase-confirm-box">
-    <span class="pc-emoji">🎉</span>
+    <span class="pc-emoji">✓</span>
     <div class="pc-title">Achat confirmé !</div>
     <div class="pc-name" id="pc-name"></div>
     <div class="pc-box">
@@ -2508,15 +2530,15 @@
 <div class="modal-bg" id="modal-feedback">
   <div class="feedback-modal">
     <button class="modal-close" onclick="closeModals()">✕</button>
-    <h2>Votre avis compte 🙏</h2>
+    <h2>Votre avis compte </h2>
     <p class="fm-sub">Aidez-nous à améliorer Block&Pay — 2 minutes suffisent.</p>
 
     <div class="stars-row" id="stars-row">
-      <button class="star-btn" onclick="setStar(1)">⭐</button>
-      <button class="star-btn" onclick="setStar(2)">⭐</button>
-      <button class="star-btn" onclick="setStar(3)">⭐</button>
-      <button class="star-btn" onclick="setStar(4)">⭐</button>
-      <button class="star-btn" onclick="setStar(5)">⭐</button>
+      <button class="star-btn" onclick="setStar(1)">★</button>
+      <button class="star-btn" onclick="setStar(2)">★</button>
+      <button class="star-btn" onclick="setStar(3)">★</button>
+      <button class="star-btn" onclick="setStar(4)">★</button>
+      <button class="star-btn" onclick="setStar(5)">★</button>
     </div>
 
     <span class="fm-label">Ce que vous avez aimé ou à améliorer</span>
@@ -2580,10 +2602,10 @@
 
     <!-- Carte enregistrée -->
     <div class="saved-card-opt" id="mp-saved" style="display:none">
-      <div class="sc-label">💾 Carte enregistrée</div>
+      <div class="sc-label">Carte enregistrée</div>
       <div class="sc-info" id="mp-saved-info"></div>
     </div>
-    <button class="use-saved-btn" id="mp-use-saved" onclick="useSaved()" style="display:none">✅ Utiliser ma carte enregistrée</button>
+    <button class="use-saved-btn" id="mp-use-saved" onclick="useSaved()" style="display:none">Utiliser ma carte enregistrée</button>
     <div class="divider-or" id="mp-divider" style="display:none">— ou entrer une autre carte —</div>
 
     <!-- Formulaire -->
@@ -2620,13 +2642,13 @@
     </div>
 
     <button class="btn-confirm-pay" onclick="confirmPay()">
-      <span>✅ Confirmer l'achat</span>
+      <span>Confirmer l'achat</span>
       <span class="btn-pay-badge" id="mp-btn-price"></span>
     </button>
     <button class="btn-ghost-modal" onclick="cancelPay()">↩ Annuler</button>
 
     <!-- Sécurité — ligne discrète en bas -->
-    <div class="pay-security-line">🔒 Paiement sécurisé SSL · Données protégées</div>
+    <div class="pay-security-line">Paiement sécurisé SSL · Données protégées</div>
   </div>
 </div>
 
@@ -2846,10 +2868,10 @@ function refreshHeroBtn() {
   const btn = document.querySelector('.hld-cta');
   if (!btn) return;
   if (isLogged()) {
-    btn.textContent = '🔒 Bloquer ce prix →';
+    btn.textContent = 'Bloquer ce prix →';
     btn.onclick = () => { showPage('page-ventes'); startAuctions(); };
   } else {
-    btn.textContent = '🔒 Inscrivez-vous pour bloquer →';
+    btn.textContent = 'Inscrivez-vous pour bloquer →';
     btn.onclick = () => openModal('modal-register');
   }
 }
@@ -2858,7 +2880,7 @@ function updateUserUI() {
   const logged = isLogged(), user = getUser();
   document.getElementById('user-dot').classList.toggle('on', logged);
   document.getElementById('user-btn').classList.toggle('logged', logged);
-  document.getElementById('user-menu-name').textContent = logged ? '👋 ' + (user.username || '') : 'Non connecté';
+  document.getElementById('user-menu-name').textContent = logged ? '' + (user.username || '') : 'Non connecté';
   document.getElementById('ml-login').style.display    = logged ? 'none'  : 'block';
   document.getElementById('ml-register').style.display = logged ? 'none'  : 'block';
   document.getElementById('ml-account').style.display  = logged ? 'block' : 'none';
@@ -2948,7 +2970,7 @@ function register() {
       err.textContent = '';
       closeModals();
       updateUserUI();
-      showToast('success', '✅ Compte créé !', 'Bienvenue ' + name + ' — bonne navigation !');
+      showToast('success', 'Compte créé !', 'Bienvenue ' + name + ' — bonne navigation !');
     }).catch(() => {
       // Firebase failed but user is saved locally
       localStorage.setItem('cw_logged',   'true');
@@ -2956,7 +2978,7 @@ function register() {
       err.textContent = '';
       closeModals();
       updateUserUI();
-      showToast('success', '✅ Compte créé !', 'Bienvenue ' + name + ' — bonne navigation !');
+      showToast('success', 'Compte créé !', 'Bienvenue ' + name + ' — bonne navigation !');
     });
   });
 }
@@ -2968,7 +2990,7 @@ function login() {
 
   if (!email || !pass) { err.textContent = 'Veuillez remplir tous les champs.'; return; }
 
-  err.textContent = '⏳ Connexion…';
+  err.textContent = 'Connexion…';
 
   // Fallback : vérif locale (localStorage + sessionStorage)
   try {
@@ -2981,7 +3003,7 @@ function login() {
       err.textContent = '';
       closeModals();
       updateUserUI();
-      showToast('success', '✅ Connexion réussie !', 'Bienvenue ' + localUser.username + ' — les offres vous attendent.');
+      showToast('success', 'Connexion réussie !', 'Bienvenue ' + localUser.username + ' — les offres vous attendent.');
       return;
     }
   } catch(e) {}
@@ -3005,7 +3027,7 @@ function login() {
     err.textContent = '';
     closeModals();
     updateUserUI();
-    showToast('success', '✅ Connexion réussie !', 'Bienvenue ' + user.username + ' — les offres vous attendent.');
+    showToast('success', 'Connexion réussie !', 'Bienvenue ' + user.username + ' — les offres vous attendent.');
   }, () => { err.textContent = 'Erreur réseau — réessayez.'; });
 }
 
@@ -3321,7 +3343,7 @@ function startAuctions() {
     const card = document.getElementById('card-' + i);
     if (card) card.innerHTML = `
       <div style="padding:40px;text-align:center;color:var(--muted)">
-        <div style="font-size:2rem;margin-bottom:12px">⏳</div>
+        <div style="font-size:2rem;margin-bottom:12px"></div>
         <div style="font-size:0.9rem">Chargement de l'offre…</div>
       </div>`;
   });
@@ -3483,9 +3505,9 @@ function startAuctions() {
     // Ignorer les événements vieux de plus de 15 s (initiaux au chargement)
     if (serverNow() - ev.ts > 15000) return;
     if (ev.type === 'lock') {
-      showToast('warning', `🔒 ${ev.buyer} vient de bloquer !`, `${ev.item} — ${parseFloat(ev.price).toFixed(2)} €`);
+      showToast('warning', `${ev.buyer} vient de bloquer !`, `${ev.item} — ${parseFloat(ev.price).toFixed(2)} €`);
     } else if (ev.type === 'pay') {
-      showToast('info', `🛍️ ${ev.buyer} vient de payer !`, `${ev.item} à ${parseFloat(ev.price).toFixed(2)} €`);
+      showToast('info', `${ev.buyer} vient de payer !`, `${ev.item} à ${parseFloat(ev.price).toFixed(2)} €`);
     }
   });
 }
@@ -3545,7 +3567,7 @@ function renderSlot(i) {
     <div class="card-body">
       <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:8px;margin-bottom:4px">
         <div class="card-name" style="margin-bottom:0;flex:1;min-width:0">${item.name}</div>
-        <span class="pv-pct-${i}" style="background:rgba(0,230,118,0.12);border:1px solid rgba(0,230,118,0.3);color:var(--green);font-size:0.68rem;font-weight:700;padding:2px 6px;border-radius:99px;white-space:nowrap;flex-shrink:0;margin-top:4px;width:56px;text-align:center;display:inline-block;font-variant-numeric:tabular-nums;box-sizing:border-box">−${Math.round((1 - price / s.startPrice) * 100)}%</span>
+        <span class="pv-pct-${i}" style="background:rgba(30,132,73,0.12);border:1px solid rgba(30,132,73,0.3);color:var(--green);font-size:0.68rem;font-weight:700;padding:2px 6px;border-radius:99px;white-space:nowrap;flex-shrink:0;margin-top:4px;width:56px;text-align:center;display:inline-block;font-variant-numeric:tabular-nums;box-sizing:border-box">−${Math.round((1 - price / s.startPrice) * 100)}%</span>
       </div>
       <p class="card-desc">${item.desc}</p>
       <div class="card-watchers">
@@ -3566,30 +3588,30 @@ function renderSlot(i) {
         <div class="price-bar pb-bar-${i}" style="width:${p}%"></div>
       </div>
       ${isOther ? `
-        <div style="background:rgba(255,193,60,0.08);border:1px solid rgba(255,193,60,0.25);
+        <div style="background:rgba(107,66,38,0.08);border:1px solid rgba(107,66,38,0.25);
           border-radius:10px;padding:10px 12px;text-align:center;margin-bottom:10px;
           font-size:0.82rem;color:var(--gold);">
-          🔒 Prix bloqué — nouvelle offre dans quelques secondes…
+          Prix bloqué — nouvelle offre dans quelques secondes…
         </div>` : ''}
       <div class="card-timer ${isMine ? 'on' : ''}" id="ct-${i}">
-        <div class="timer-label">⏱ Temps pour finaliser</div>
+        <div class="timer-label">Temps pour finaliser</div>
         <div class="timer-val" id="tv-${i}">10:00</div>
         <div class="timer-bar-wrap">
           <div class="timer-bar" id="tb-${i}" style="width:100%"></div>
         </div>
       </div>
       <button class="card-btn btn-lock ${isOther || isMine || !logged ? 'off' : ''}" id="lb-${i}">
-        ${isMine ? '✅ Prix bloqué !' : '🔒 Bloquer mon prix'}
+        ${isMine ? 'Prix bloqué !' : 'Bloquer mon prix'}
       </button>
       ${isMine ? `
-        <button class="card-btn btn-pay" id="pb-${i}">💳 Finaliser l'achat</button>
+        <button class="card-btn btn-pay" id="pb-${i}">Finaliser l'achat</button>
         <button class="card-btn btn-cancel-lock" id="cb-${i}">
           ↩ Annuler — <span id="cs-${i}">30</span>s
         </button>` : ''}
-      ${!logged ? `<p class="login-hint" id="lh-${i}">👤 Connectez-vous pour participer</p>` : ''}
+      ${!logged ? `<p class="login-hint" id="lh-${i}">Connectez-vous pour participer</p>` : ''}
     </div>
     <div class="rotation-overlay ${isRot ? 'on' : ''}" id="ro-${i}">
-      <div class="rot-next-label">🔜 Prochain article</div>
+      <div class="rot-next-label">Prochain article</div>
       <div class="rot-next-preview" id="rnp-${i}">
         ${s.nextItemIndex != null && POOL[s.nextItemIndex] ? `
           <img class="rot-next-img" src="${POOL[s.nextItemIndex].img}" alt="${POOL[s.nextItemIndex].name}" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1560243563-062bfc001d68?w=400&q=80'">
@@ -3851,7 +3873,7 @@ function lockPrice(i) {
     };
   }).then(res => {
     if (!res.committed) {
-      showToast('warning', '⚡ Prix déjà bloqué !', 'Quelqu\'un vient de le bloquer. Essayez l\'autre offre !');
+      showToast('warning', 'Prix déjà bloqué !', 'Quelqu\'un vient de le bloquer. Essayez l\'autre offre !');
       return;
     }
 
@@ -4019,7 +4041,7 @@ function openPayModal(i) {
   const tickM = () => {
     const rem = Math.max(0, Math.floor((dl - serverNow()) / 1000));
     const el  = document.getElementById('mp-timer');
-    if (el) el.textContent = '⏱ Il vous reste ' + fmtTime(rem) + ' pour finaliser';
+    if (el) el.textContent = 'Il vous reste ' + fmtTime(rem) + ' pour finaliser';
     if (rem <= 0) { clearInterval(modalPayTmr); cancelPay(); }
   };
   tickM();
@@ -4035,7 +4057,7 @@ function useSaved() {
   document.getElementById('mp-exp').value   = s.exp   || '';
   document.getElementById('mp-cvv').value   = s.cvv   || '000';
   updateCardPreview();
-  showToast('info', '💾 Carte pré-remplie', 'Vous pouvez confirmer directement.');
+  showToast('info', 'Carte pré-remplie', 'Vous pouvez confirmer directement.');
 }
 
 function confirmPay() {
@@ -4160,12 +4182,12 @@ function cancelPay() {
 // ============================================
 function showWinners() {
   const list = document.getElementById('winners-list');
-  list.innerHTML = '<div class="empty-state"><div class="empty-icon">⏳</div><p>Chargement…</p></div>';
+  list.innerHTML = '<div class="empty-state"><div class="empty-icon"></div><p>Chargement…</p></div>';
 
   db.ref('winners').orderByKey().limitToLast(30).once('value', snap => {
     const data = snap.val();
     if (!data) {
-      list.innerHTML = '<div class="empty-state"><div class="empty-icon">🎯</div><p>Aucun achat pour le moment.<br>Soyez le premier !</p></div>';
+      list.innerHTML = '<div class="empty-state"><div class="empty-icon"></div><p>Aucun achat pour le moment.<br>Soyez le premier !</p></div>';
     } else {
       list.innerHTML = Object.values(data).reverse().map((w, idx) => `
         <div class="winner-card" style="animation-delay:${idx * 0.07}s">
@@ -4272,14 +4294,14 @@ function showToast(type, title, msg, duration = 4000) {
 }
 
 function _renderToast(type, title, msg, duration) {
-  const icons = { success:'✅', error:'❌', info:'ℹ️', warning:'⚡' };
+  const icons = { success:'✓', error:'✕', info:'i', warning:'!' };
   const container = document.getElementById('toast-container');
   if (!container) return;
 
   const toast = document.createElement('div');
   toast.className = 'toast toast-' + type;
   toast.innerHTML = `
-    <div class="toast-icon">${icons[type] || 'ℹ️'}</div>
+    <div class="toast-icon">${icons[type] || ''}</div>
     <div class="toast-body">
       <div class="toast-title">${title}</div>
       ${msg ? '<div class="toast-msg">' + msg + '</div>' : ''}
@@ -4305,7 +4327,7 @@ function _flushToastQueue() {
 // CONFIRMATION ACHAT
 // ============================================
 function showPurchaseConfirm(name, item, price) {
-  document.getElementById('pc-name').textContent  = '🎊 Félicitations ' + name + ' !';
+  document.getElementById('pc-name').textContent  = 'Félicitations ' + name + ' !';
   document.getElementById('pc-item').textContent  = item;
   document.getElementById('pc-price').textContent = price.toFixed(2) + ' €';
   document.getElementById('purchase-confirm').classList.add('on');
@@ -4313,7 +4335,7 @@ function showPurchaseConfirm(name, item, price) {
 
 function closePurchaseConfirm() {
   document.getElementById('purchase-confirm').classList.remove('on');
-  showToast('info', '📦 Commande enregistrée', 'Vous recevrez votre article sous 3 à 5 jours ouvrables.');
+  showToast('info', 'Commande enregistrée', 'Vous recevrez votre article sous 3 à 5 jours ouvrables.');
 }
 
 // ============================================
@@ -4352,7 +4374,7 @@ function submitFeedback() {
     document.getElementById('fm-comment').value = '';
     document.getElementById('fm-name').value    = '';
     document.getElementById('fm-email').value   = '';
-    showToast('success', '💬 Merci pour votre avis !', 'Votre retour nous aide énormément à améliorer Block&Pay.');
+    showToast('success', 'Merci pour votre avis !', 'Votre retour nous aide énormément à améliorer Block&Pay.');
   }).catch(() => {
     showToast('error', 'Erreur', 'Impossible d\'envoyer votre avis. Réessayez dans un instant.');
   });
@@ -4403,8 +4425,8 @@ function updateCardPreview() {
   const brandIconEl  = document.getElementById('cf-brand-icon');
   const frontFace    = document.getElementById('card-front');
 
-  if (brandEl)     brandEl.textContent     = brandTxt || '💳';
-  if (brandBackEl) brandBackEl.textContent = brandTxt || '💳';
+  if (brandEl)     brandEl.textContent     = brandTxt || '';
+  if (brandBackEl) brandBackEl.textContent = brandTxt || '';
   if (brandIconEl) brandIconEl.textContent = brandTxt || '';
   if (frontFace) {
     frontFace.classList.remove('visa-card','mc-card','amex-card');
@@ -4562,7 +4584,7 @@ function botLockPrice(slot) {
 
   const buyer = FAKE_BUYERS[Math.floor(Math.random() * FAKE_BUYERS.length)];
 
-  // ⏳ Délai de réflexion humaine : l'acheteur regarde le prix baisser
+  // Délai de réflexion humaine : l'acheteur regarde le prix baisser
   // avant de se décider à cliquer (8 à 25 secondes).
   const thinkMs = (8 + Math.floor(Math.random() * 17)) * 1000;
   const t = setTimeout(() => {
@@ -4681,7 +4703,7 @@ function startHeroDemoCard() {
     if (!card) return;
 
     if (!data || data.itemIndex == null || !POOL[data.itemIndex]) {
-      card.innerHTML = '<div class="hld-loading">⏳ Chargement de l\'offre…</div>';
+      card.innerHTML = '<div class="hld-loading">Chargement de l\'offre…</div>';
       return;
     }
 
@@ -4694,7 +4716,7 @@ function startHeroDemoCard() {
       if (ni) { const _pre = new Image(); _pre.src = ni.img; }
       card.innerHTML = `
         <div class="hld-body" style="text-align:center;padding:32px">
-          <div style="font-size:1.8rem;margin-bottom:8px">🔄</div>
+          <div style="font-size:1.8rem;margin-bottom:8px"></div>
           <div style="font-family:var(--font-h);font-size:1rem;color:var(--accent);letter-spacing:1px">Prochain article</div>
           ${ni ? `<div style="font-family:var(--font-h);font-size:1.1rem;margin-top:10px;color:var(--text)">${esc(ni.name)}</div>` : ''}
         </div>`;
@@ -4708,8 +4730,8 @@ function startHeroDemoCard() {
         <div class="hld-body">
           <div class="hld-name">${esc(item.name)}</div>
           <div class="hld-watchers"><span class="watch-dot"></span>${data.watchers || 15} personnes regardent</div>
-          <div style="padding:14px;background:rgba(255,193,60,0.08);border:1px solid rgba(255,193,60,0.25);border-radius:10px;color:var(--gold);font-size:0.78rem;text-align:center">
-            🔒 Prix bloqué — en cours de paiement
+          <div style="padding:14px;background:rgba(107,66,38,0.08);border:1px solid rgba(107,66,38,0.25);border-radius:10px;color:var(--gold);font-size:0.78rem;text-align:center">
+            Prix bloqué — en cours de paiement
           </div>
         </div>`;
       return;
@@ -4724,8 +4746,8 @@ function startHeroDemoCard() {
       const r     = price / data.startPrice;
       const tc    = r < 0.3 ? 'danger' : r < 0.55 ? 'warn' : '';
       const btn   = isLogged()
-        ? `<button class="hld-cta" onclick="showPage('page-ventes'); startAuctions()">🔒 Bloquer ce prix →</button>`
-        : `<button class="hld-cta" onclick="openModal('modal-register')">🔒 Inscrivez-vous pour bloquer →</button>`;
+        ? `<button class="hld-cta" onclick="showPage('page-ventes'); startAuctions()">Bloquer ce prix →</button>`
+        : `<button class="hld-cta" onclick="openModal('modal-register')">Inscrivez-vous pour bloquer →</button>`;
 
       const saved   = (data.startPrice - price).toFixed(2);
       const savePct = Math.round((1 - price / data.startPrice) * 100);
@@ -4735,7 +4757,7 @@ function startHeroDemoCard() {
         <div class="hld-body">
           <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
             <div class="hld-name" style="margin-bottom:0">${esc(item.name)}</div>
-            <span class="hld-save-pct" style="background:rgba(0,230,118,0.12);border:1px solid rgba(0,230,118,0.3);color:var(--green);font-size:0.72rem;font-weight:700;padding:3px 9px;border-radius:99px;white-space:nowrap">−${savePct}%</span>
+            <span class="hld-save-pct" style="background:rgba(30,132,73,0.12);border:1px solid rgba(30,132,73,0.3);color:var(--green);font-size:0.72rem;font-weight:700;padding:3px 9px;border-radius:99px;white-space:nowrap">−${savePct}%</span>
           </div>
           <div class="hld-watchers"><span class="watch-dot"></span><span class="hld-wc">${data.watchers || 15}</span> personnes regardent</div>
           <div class="hld-price-row" style="align-items:flex-end">

@@ -9,23 +9,34 @@
   <meta property="og:description" content="Articles vintage, sneakers, collectors et bijoux à prix qui baisse en direct. Lancement prochainement.">
   <meta property="og:url" content="https://blockandpay.fr/">
   <meta property="og:type" content="website">
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;500;600&family=Bebas+Neue&display=swap" rel="stylesheet">
+  <meta property="og:image" content="https://blockandpay.fr/images/partage.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Block&amp;Pay – Le prix baisse. Vous décidez quand bloquer.">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="theme-color" content="#1C1917">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="/favicon-32.png" sizes="32x32" type="image/png">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;1,400;1,500&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
-      --bg: #F5F2ED; --white: #FFFFFF; --accent: #6b4226; --text: #1a1a1a;
-      --muted: #8a7f72; --border: rgba(0,0,0,0.08); --green: #27ae60; --red: #C0392B;
-      --font-h: 'Playfair Display', serif; --font-b: 'Inter', sans-serif; --font-p: 'Bebas Neue', sans-serif;
+      /* Charte Block&Pay */
+      --bg: #F5F2ED; --white: #FBFAF7; --accent: #6B4226; --text: #1C1917; --dark: #1C1917;
+      --sand: #D9B48F; --muted: #8A7F72; --muted-dark: #CFC6BA; --track: #E4DCD0;
+      --border: rgba(28,25,23,0.08); --green: #1E8449; --red: #C0392B;
+      --font-h: 'Lora', Georgia, serif; --font-b: 'Inter', Arial, sans-serif; --font-p: 'Inter', Arial, sans-serif;
     }
     html { scroll-behavior: smooth; }
     body { font-family: var(--font-b); background: var(--bg); color: var(--text); line-height: 1.7; font-size: 16px; }
     a { color: var(--accent); }
 
-    header { background: var(--white); border-bottom: 1px solid var(--border); height: 60px; padding: 0 24px;
+    header { background: var(--dark); height: 60px; padding: 0 24px;
       display: flex; align-items: center; justify-content: space-between; }
-    .logo { font-family: var(--font-p); font-size: 1.75rem; letter-spacing: 3px; color: var(--text); text-decoration: none; }
-    .logo span { color: var(--accent); }
-    .header-link { font-size: .85rem; font-weight: 500; text-decoration: none; letter-spacing: .5px; }
+    .logo { font-family: var(--font-p); font-weight: 800; font-size: 1.05rem; letter-spacing: .28em; color: #F5F2ED; text-decoration: none; }
+    .logo span { color: var(--sand); }
+    .header-link { font-size: .85rem; font-weight: 500; text-decoration: none; letter-spacing: .5px; color: var(--sand); }
 
     main { max-width: 1080px; margin: 0 auto; padding: 56px 24px 40px; }
     .hero { display: grid; grid-template-columns: 1.1fr .9fr; gap: 56px; align-items: center; }
@@ -46,7 +57,8 @@
     button { background: var(--text); color: #fff; border: 0; padding: 12px 18px; font: inherit; font-weight: 600; cursor: pointer; white-space: nowrap; }
     button:hover { background: var(--accent); }
     button:disabled { opacity: .6; cursor: default; }
-    .roles { display: flex; gap: 18px; margin-top: 12px; font-size: .88rem; }
+    .roles { display: flex; flex-wrap: wrap; gap: 6px 18px; margin: 0 0 12px; font-size: .88rem; border: 0; }
+    .roles input { accent-color: var(--accent); }
     .roles label { display: flex; align-items: center; gap: 6px; cursor: pointer; }
     .consent { font-size: .75rem; color: var(--muted); margin-top: 12px; line-height: 1.5; }
     .msg { margin-top: 12px; font-size: .9rem; font-weight: 500; min-height: 1.2em; }
@@ -60,12 +72,12 @@
       letter-spacing: 2px; text-transform: uppercase; padding: 4px 10px; }
     .demo-body { padding: 18px 20px 20px; }
     .demo-cat { font-size: .7rem; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); }
-    .demo-name { font-family: var(--font-h); font-size: 1.15rem; margin: 2px 0 12px; }
+    .demo-name { font-family: var(--font-h); font-size: 1.2rem; margin: 2px 0 12px; }
     .demo-prices { display: flex; align-items: baseline; gap: 12px; }
-    .demo-now { font-family: var(--font-p); font-size: 2.6rem; letter-spacing: 1px; line-height: 1; }
+    .demo-now { font-family: var(--font-p); font-weight: 800; font-size: 2.4rem; letter-spacing: -.02em; line-height: 1; font-variant-numeric: tabular-nums; }
     .demo-old { color: var(--muted); text-decoration: line-through; font-size: .95rem; }
     .demo-off { color: var(--green); font-weight: 600; font-size: .9rem; }
-    .bar { height: 4px; background: #eee6db; margin: 14px 0; overflow: hidden; }
+    .bar { height: 4px; background: var(--track); margin: 14px 0; overflow: hidden; }
     .bar i { display: block; height: 100%; background: var(--accent); width: 100%; transition: width .2s linear; }
     .demo-btn { width: 100%; padding: 13px; }
     .demo-note { font-size: .72rem; color: var(--muted); text-align: center; margin-top: 10px; }
@@ -74,7 +86,7 @@
     h2 { font-family: var(--font-h); font-weight: 400; font-size: 2rem; margin-bottom: 26px; }
     .steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
     .step { background: var(--white); border: 1px solid var(--border); padding: 20px; }
-    .step b { font-family: var(--font-p); font-size: 2rem; color: var(--accent); display: block; line-height: 1; margin-bottom: 8px; }
+    .step b { font-family: var(--font-p); font-weight: 800; font-size: 2.2rem; letter-spacing: -.02em; color: var(--accent); display: block; line-height: 1; margin-bottom: 8px; }
     .step h3 { font-size: 1rem; margin-bottom: 4px; }
     .step p { font-size: .9rem; color: #5a5148; }
     .cats { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 28px; }
@@ -95,6 +107,12 @@
     .why-col li::before { content: "—"; position: absolute; left: 0; color: var(--accent); }
     .why-pro { margin-top: 14px; font-size: .9rem; }
     .final-cta { text-align: center; margin-top: 36px; }
+    .signature { background: var(--dark); color: #F5F2ED; text-align: center; padding: 72px 24px; }
+    .signature p.s { font-family: var(--font-h); font-style: italic; font-size: clamp(1.8rem, 4.5vw, 2.8rem); line-height: 1.2; margin-bottom: 14px; }
+    .signature p.s em { color: var(--sand); }
+    .signature p.sub { color: var(--muted-dark); font-size: .95rem; margin-bottom: 26px; }
+    .signature .btn-demo { background: var(--sand); color: var(--dark); }
+    .signature .btn-demo:hover { background: #F5F2ED; }
     footer { max-width: 1080px; margin: 0 auto; padding: 30px 24px 50px; font-size: .8rem; color: var(--muted);
       display: flex; flex-wrap: wrap; gap: 18px; justify-content: space-between; border-top: 1px solid var(--border); }
     footer button { background: none; color: var(--muted); padding: 0; font-weight: 400; text-decoration: underline; }
@@ -140,6 +158,11 @@
 
         <form id="wl" novalidate>
           <label class="t" for="wl-email">Soyez prévenu de l’ouverture des ventes</label>
+          <fieldset class="roles">
+            <legend class="hp">Vous êtes</legend>
+            <label><input type="radio" name="wl-role" value="acheteur" checked> Je veux acheter</label>
+            <label><input type="radio" name="wl-role" value="vendeur"> Je suis vendeur (boutique)</label>
+          </fieldset>
           <div class="row">
             <input type="email" id="wl-email" placeholder="votre@email.fr" autocomplete="email" required>
             <button type="submit" id="wl-btn">Me prévenir</button>
@@ -188,7 +211,7 @@
           <h3>Pour les acheteurs</h3>
           <ul>
             <li>Payez souvent moins que le prix affiché au départ</li>
-            <li>Des articles souvent uniques, sélectionnées par des boutiques</li>
+            <li>Des articles souvent uniques, sélectionnés par des boutiques</li>
             <li>Pas de négociation ni d'attente de réponse : vous décidez seul</li>
             <li>Le petit frisson : attendre encore… ou bloquer maintenant ?</li>
           </ul>
@@ -203,9 +226,14 @@
           <p class="why-pro">Vous êtes commerçant ? <a href="mailto:contact@blockandpay.fr?subject=Vendre%20sur%20Block%26Pay">Écrivez-nous</a>.</p>
         </div>
       </div>
-      <div class="final-cta"><a class="btn-demo" href="/demo/">Essayer la démo</a></div>
     </section>
   </main>
+
+  <section class="signature" aria-label="Block&amp;Pay">
+    <p class="s">Le prix baisse.<br><em>Vous décidez quand bloquer.</em></p>
+    <p class="sub">Attendre encore… ou bloquer maintenant ?</p>
+    <a class="btn-demo" href="/demo/">Essayer la démo</a>
+  </section>
 
   <footer>
     <span>© 2026 Block&amp;Pay — Fait en France</span>
@@ -267,7 +295,8 @@
     form.addEventListener('submit', function (ev) {
       ev.preventDefault();
       const email = document.getElementById('wl-email').value.trim().toLowerCase();
-      const role = 'acheteur';
+      const roleEl = document.querySelector('input[name="wl-role"]:checked');
+      const role = roleEl && roleEl.value === 'vendeur' ? 'vendeur' : 'acheteur';
       if (document.getElementById('wl-hp').value) return; // robot
       if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email) || email.length > 200) {
         msg.className = 'msg err'; msg.textContent = 'Merci d’entrer une adresse e-mail valide.'; return;
@@ -277,7 +306,9 @@
       db.ref('waitlist').push({ email: email, role: role, ts: firebase.database.ServerValue.TIMESTAMP, consent: true })
         .then(function () {
           msg.className = 'msg ok';
-          msg.textContent = 'C’est noté ! On vous prévient dès l’ouverture des ventes.';
+          msg.textContent = role === 'vendeur'
+            ? 'C’est noté ! Nous vous écrirons pour préparer le lancement avec vous.'
+            : 'C’est noté ! On vous prévient dès l’ouverture des ventes.';
           form.reset();
           try { localStorage.setItem('bp_waitlist', '1'); } catch (e) {}
         })
