@@ -1976,6 +1976,9 @@
     .user-btn:hover { border-color: #F5F2ED; }
     .user-dot { border-color: #1C1917; }
     .burger-btn span { background: #F5F2ED; }
+    .logo, .footer-logo { display: inline-flex; align-items: center; }
+    .logo-mark { width: 26px; height: 26px; flex-shrink: 0; margin-right: 12px; }
+    @media (max-width: 480px) { .logo-mark { width: 22px; height: 22px; margin-right: 9px; } }
   </style>
 </head>
 <body>
@@ -1984,7 +1987,7 @@
      HEADER
 ============================================= -->
 <header class="header" id="main-header">
-  <a class="logo" onclick="showPage('page-landing')">BLOCK<span>&</span>PAY</a>
+  <a class="logo" onclick="showPage('page-landing')" aria-label="Block&amp;Pay"><svg class="logo-mark" viewBox="0 0 48 48" aria-hidden="true"><path d="M6 10 H18 V22 H28 V34 H35" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="square"/><circle cx="40" cy="34" r="5" fill="#D9B48F"/></svg>BLOCK<span>&amp;</span>PAY</a>
   <div class="header-nav">
     <a onclick="showPage('page-ventes'); startAuctions()">Offres</a>
     <a onclick="showCatalogue()">Catalogue</a>
@@ -2152,7 +2155,7 @@
   <!-- FOOTER -->
   <footer class="site-footer">
     <div>
-      <div class="footer-logo">BLOCK<span>&</span>PAY</div>
+      <div class="footer-logo"><svg class="logo-mark" viewBox="0 0 48 48" aria-hidden="true"><path d="M6 10 H18 V22 H28 V34 H35" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="square"/><circle cx="40" cy="34" r="5" fill="#D9B48F"/></svg>BLOCK<span>&amp;</span>PAY</div>
       <p class="footer-tagline">La plateforme de vente à prix dynamique dégressif. Bloquez votre prix, finalisez votre achat.</p>
       <p class="footer-commission">Block&amp;Pay prend une commission de 12% sur chaque vente réalisée. Le vendeur récupère 88% du prix final bloqué. <a onclick="showPage('page-vendeur'); refreshVendeurPage()" style="color:rgba(255,255,255,0.45);text-decoration:underline;cursor:pointer">Vous êtes commerçant ?</a> Contactez-nous : contact@blockandpay.fr</p>
     </div>

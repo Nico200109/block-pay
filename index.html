@@ -36,6 +36,8 @@
       display: flex; align-items: center; justify-content: space-between; }
     .logo { font-family: var(--font-p); font-weight: 800; font-size: 1.05rem; letter-spacing: .28em; color: #F5F2ED; text-decoration: none; }
     .logo span { color: var(--sand); }
+    .logo { display: inline-flex; align-items: center; }
+    .logo-mark { width: 26px; height: 26px; flex-shrink: 0; margin-right: 12px; }
     .header-link { font-size: .85rem; font-weight: 500; text-decoration: none; letter-spacing: .5px; color: var(--sand); }
 
     main { max-width: 1080px; margin: 0 auto; padding: 56px 24px 40px; }
@@ -139,7 +141,7 @@
 </head>
 <body>
   <header>
-    <a class="logo" href="/">BLOCK<span>&amp;</span>PAY</a>
+    <a class="logo" href="/" aria-label="Block&amp;Pay"><svg class="logo-mark" viewBox="0 0 48 48" aria-hidden="true"><path d="M6 10 H18 V22 H28 V34 H35" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="square"/><circle cx="40" cy="34" r="5" fill="#D9B48F"/></svg>BLOCK<span>&amp;</span>PAY</a>
     <a class="header-link" href="/demo/">Voir la démo →</a>
   </header>
 
