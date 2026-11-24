@@ -1966,6 +1966,20 @@
       .btn-vendeur-nav { padding: 7px 14px; font-size: 0.8rem; }
     }
 
+    /* ===== Écran « Bravo » de la démo (remplace la saisie de carte) ===== */
+    .bravo-modal { max-width: 420px; text-align: center; padding: 36px 28px 28px; }
+    .bv-tag { font-size: .7rem; font-weight: 600; letter-spacing: 3px; text-transform: uppercase; color: var(--green); }
+    .bv-title { font-family: var(--font-h); font-style: italic; font-weight: 400; font-size: 1.8rem; margin: 8px 0 14px; }
+    .bv-name { font-family: var(--font-h); font-size: 1.05rem; color: var(--text); }
+    .bv-prices { display: flex; justify-content: center; align-items: baseline; gap: 10px; margin: 6px 0 16px; }
+    .bv-price { font-family: var(--font-p); font-weight: 800; font-size: 2.4rem; letter-spacing: -.02em; color: var(--green); }
+    .bv-start { color: var(--muted); text-decoration: line-through; font-size: .95rem; }
+    .bv-off { color: var(--green); font-weight: 600; font-size: .95rem; }
+    .bv-text { font-size: .95rem; color: #4a4239; line-height: 1.6; }
+    .bv-note { font-size: .78rem; color: var(--muted); margin: 10px 0 20px; }
+    .bv-cta { display: block; width: 100%; text-decoration: none; text-align: center; margin-bottom: 10px; }
+    .bv-replay { width: 100%; }
+
     /* ===== Charte Block&Pay : en-tête noir chaud, logo crème, « & » sable ===== */
     .header { background: #1C1917; border-bottom-color: #1C1917; }
     .header .logo { color: #F5F2ED; }
@@ -2134,19 +2148,19 @@
   <div class="section" style="padding-top:0">
     <div class="section-label">Lancement</div>
     <h2 class="section-title">Block&Pay arrive bientôt</h2>
-    <p class="section-sub">La plateforme ouvre ses portes prochainement. Créez votre compte dès maintenant pour être parmi les premiers à participer.</p>
+    <p class="section-sub">Les vraies ventes ouvrent prochainement. Laissez votre e-mail pour être prévenu de l'ouverture.</p>
     <div style="display:flex;justify-content:center;margin-top:24px">
-      <button class="btn-main" onclick="openModal('modal-register')">Créer mon compte gratuitement</button>
+      <a class="btn-main" href="/go/" style="text-decoration:none">Être prévenu de l'ouverture</a>
     </div>
   </div>
 
   <!-- CTA FINAL -->
   <div class="cta-section">
     <h2>Prêt à saisir votre opportunité ?</h2>
-    <p>Créez votre compte gratuitement et participez dès maintenant aux offres en direct.</p>
+    <p>Pas besoin de compte : essayez tout de suite de bloquer un prix.</p>
     <div style="display:flex;gap:16px;flex-wrap:wrap">
       <button class="btn-main" onclick="showPage('page-ventes'); startAuctions()">Voir les offres</button>
-      <button class="btn-outline" onclick="openModal('modal-register')">Créer mon compte</button>
+      <a class="btn-outline" href="/go/" style="text-decoration:none">Être prévenu de l'ouverture</a>
     </div>
   </div>
 
@@ -2594,6 +2608,20 @@
 </div>
 
 <!-- Paiement -->
+<div class="modal-bg" id="modal-bravo">
+  <div class="modal bravo-modal">
+    <button class="modal-close" onclick="closeModals()">✕</button>
+    <div class="bv-tag">Prix bloqué</div>
+    <h2 class="bv-title">Bravo, vous l'avez bloqué !</h2>
+    <div class="bv-name" id="bv-name"></div>
+    <div class="bv-prices"><span class="bv-price" id="bv-price"></span><span class="bv-start" id="bv-start"></span><span class="bv-off" id="bv-off"></span></div>
+    <p class="bv-text">Le jour de la vraie vente, vous auriez <strong>3 minutes pour payer</strong> par carte, et l'article serait à vous, livraison offerte.</p>
+    <p class="bv-note">Ceci est une démo : rien n'est payé, rien n'est réservé.</p>
+    <a class="btn-main bv-cta" href="/go/">Être prévenu de l'ouverture des ventes</a>
+    <button class="btn-outline bv-replay" onclick="replayDemo()">Rejouer</button>
+  </div>
+</div>
+
 <div class="modal-bg" id="modal-pay">
   <div class="modal pay-modal">
     <button class="modal-close" onclick="cancelPay()">✕</button>
@@ -2892,6 +2920,10 @@ function updateUserUI() {
   document.getElementById('ml-register').style.display = logged ? 'none'  : 'block';
   document.getElementById('ml-account').style.display  = logged ? 'block' : 'none';
   document.getElementById('ml-logout').style.display   = logged ? 'block' : 'none';
+  if (user.guest) {
+    document.getElementById('ml-account').style.display = 'none';
+    document.getElementById('ml-logout').style.display  = 'none';
+  }
   // Re-rendre les cartes pour refléter l'état connecté/déconnecté
   [0, 1].forEach(i => { if (fbStates[i]) renderSlot(i); });
   refreshHeroBtn();
@@ -2906,6 +2938,16 @@ function isLogged() {
 function getUser() {
   return JSON.parse(localStorage.getItem('cw_user') || sessionStorage.getItem('cw_user') || '{}');
 }
+// Démo sans inscription : chaque visiteur reçoit un pseudo temporaire
+// (« Visiteur 1234 ») pour pouvoir bloquer un prix tout de suite.
+function ensureGuest() {
+  if (isLogged()) return;
+  try {
+    sessionStorage.setItem('cw_user', JSON.stringify({ username: 'Visiteur ' + (1000 + Math.floor(Math.random() * 9000)), guest: true }));
+    sessionStorage.setItem('cw_logged', 'true');
+  } catch (e) {}
+}
+ensureGuest();
 
 let _scrollY = 0;
 function lockBodyScroll() {
@@ -3856,7 +3898,7 @@ function releaseLockedOffer(i, lockedBy) {
 // BLOQUER LE PRIX — transaction anti-doublon
 // ============================================
 function lockPrice(i) {
-  if (!isLogged()) { openLoginModal(); return; }
+  ensureGuest();
   const s = fbStates[i];
   if (!s || s.locked || s.status !== 'active') return;
 
@@ -3884,21 +3926,13 @@ function lockPrice(i) {
       return;
     }
 
-    // Sauvegarder le paiement en attente (survit à la fermeture de la modale)
-    savePendingPayment({
-      slot:      i,
-      itemIndex: s.itemIndex,
-      itemName:  item.name,
-      price:     price,
-      deadline:  deadline,
-      username:  user.username,
-      createdAt: now
-    });
+    // Démo : pas de saisie de carte, on retient l'article bloqué pour l'écran « Bravo »
+    lastLock = { slot: i, itemIndex: s.itemIndex, price: price };
 
     // Notifier tous les appareils du blocage
     db.ref('events').push({ type: 'lock', buyer: user.username, item: item.name, price, ts: now });
 
-    // Ouvrir immédiatement la modale de paiement pour le bloqueur
+    // Ouvrir immédiatement l'écran « Bravo » pour le bloqueur
     openPayModal(i);
 
     // Après 3s : libérer le slot pour les autres (rotation + décompte),
@@ -4008,54 +4042,27 @@ function startCardPayCountdown(i, deadline) {
 // ============================================
 // MODALE PAIEMENT
 // ============================================
+let lastLock = null;
 function openPayModal(i) {
-  const localPayment = pendingPayment && pendingPayment.slot === i ? pendingPayment : null;
+  // Démo : pas de saisie de carte. On montre directement le résultat du blocage.
+  const localPayment = lastLock && lastLock.slot === i ? lastLock : null;
   const s = fbStates[i];
   if (!localPayment && !s) return;
-  modalSlot = i;
-
   const item  = localPayment ? POOL[localPayment.itemIndex] : POOL[s.itemIndex];
-  const user  = getUser();
-  const saved = getSavedCard();
-  const price = localPayment ? localPayment.price : s.lockedPrice;
-  const deadline = localPayment ? localPayment.deadline : s.payDeadline;
-
-  document.getElementById('mp-name').textContent     = item.name;
-  document.getElementById('mp-price').textContent    = price.toFixed(2) + ' €';
-  const btnP = document.getElementById('mp-btn-price');
-  if (btnP) btnP.textContent = price.toFixed(2) + ' €';
-
-  ['mp-cname', 'mp-cnum', 'mp-exp', 'mp-cvv'].forEach(id => document.getElementById(id).value = '');
-  document.getElementById('mp-cname').value   = user.username || '';
-  document.getElementById('mp-save').checked  = false;
-
-  // Réinitialiser la carte visuelle
-  flipCard(false);
-  updateCardPreview();
-
-  const mpS = document.getElementById('mp-saved');
-  const mpU = document.getElementById('mp-use-saved');
-  const mpD = document.getElementById('mp-divider');
-  if (saved) {
-    document.getElementById('mp-saved-info').textContent = saved.display + '  ·  ' + saved.exp;
-    mpS.style.display = mpU.style.display = mpD.style.display = 'block';
-  } else {
-    mpS.style.display = mpU.style.display = mpD.style.display = 'none';
-  }
-
-  // Timer modal synchronisé sur la session de paiement locale.
-  const dl = deadline;
-  const tickM = () => {
-    const rem = Math.max(0, Math.floor((dl - serverNow()) / 1000));
-    const el  = document.getElementById('mp-timer');
-    if (el) el.textContent = 'Il vous reste ' + fmtTime(rem) + ' pour finaliser';
-    if (rem <= 0) { clearInterval(modalPayTmr); cancelPay(); }
-  };
-  tickM();
-  clearInterval(modalPayTmr);
-  modalPayTmr = setInterval(tickM, 1000);
-
-  openModal('modal-pay');
+  const price = localPayment ? localPayment.price : (s.lockedPrice != null ? s.lockedPrice : calcPrice(s));
+  if (!item || price == null) return;
+  const fmt = v => v.toFixed(2).replace('.', ',') + ' €';
+  document.getElementById('bv-name').textContent  = item.name;
+  document.getElementById('bv-price').textContent = fmt(price);
+  document.getElementById('bv-start').textContent = fmt(item.price);
+  const off = Math.round((1 - price / item.price) * 100);
+  document.getElementById('bv-off').textContent   = off > 0 ? '−' + off + ' %' : '';
+  openModal('modal-bravo');
+}
+function replayDemo() {
+  closeModals();
+  showPage('page-ventes');
+  startAuctions();
 }
 function useSaved() {
   const s = getSavedCard(); if (!s) return;
