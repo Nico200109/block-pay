@@ -34,7 +34,6 @@
     td.n { text-align: right; font-weight: 600; font-variant-numeric: tabular-nums; white-space: nowrap; }
     tr.total td { border-bottom: 0; font-weight: 800; font-size: 1.1rem; padding-top: 14px; }
     tr.total td.n { color: var(--green); }
-    .cols { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
     .cols h3 { font-size: .8rem; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); margin-bottom: 8px; }
     .small { font-size: .82rem; color: var(--muted); margin-top: 10px; }
     .cta { background: var(--dark); color: #F5F2ED; padding: 32px 24px; margin-top: 48px; text-align: center; }
@@ -58,59 +57,36 @@
     <h2><b>01</b>Ce que vous payez</h2>
     <ul>
       <li><strong>Aucun abonnement, aucun frais d'inscription.</strong> Vous ne payez que si vous vendez.</li>
-      <li><strong>Commission de 12 %</strong> du prix bloqué par l'acheteur, prélevée seulement sur les ventes conclues.</li>
       <li><strong>Vos 3 premières ventes sont sans commission.</strong></li>
+      <li><strong>À partir de la 4e vente : commission de 12 %</strong> du prix bloqué par l'acheteur, prélevée seulement sur les ventes conclues.</li>
       <li><strong>Frais de paiement par carte</strong>, prélevés par le prestataire de paiement (Stripe) : environ 1,5 % + 0,25 € par vente avec une carte européenne. Montant exact confirmé à l'ouverture des paiements.</li>
       <li><strong>L'envoi est à votre charge</strong> : la livraison est offerte à l'acheteur.</li>
     </ul>
 
-    <h2><b>02</b>Ce que vous touchez : exemple sur 45 €</h2>
-    <div class="cols">
-      <div class="card">
-        <h3>Vos 3 premières ventes</h3>
-        <table>
-          <tr><td>Prix bloqué par l'acheteur</td><td class="n">45,00 €</td></tr>
-          <tr><td>Commission Block&amp;Pay</td><td class="n">0,00 €</td></tr>
-          <tr><td>Frais de carte (environ)</td><td class="n">− 0,93 €</td></tr>
-          <tr class="total"><td>Vous recevez</td><td class="n">≈ 44,07 €</td></tr>
-        </table>
-      </div>
-      <div class="card">
-        <h3>Ensuite</h3>
-        <table>
-          <tr><td>Prix bloqué par l'acheteur</td><td class="n">45,00 €</td></tr>
-          <tr><td>Commission Block&amp;Pay (12 %)</td><td class="n">− 5,40 €</td></tr>
-          <tr><td>Frais de carte (environ)</td><td class="n">− 0,93 €</td></tr>
-          <tr class="total"><td>Vous recevez</td><td class="n">≈ 38,67 €</td></tr>
-        </table>
-      </div>
-    </div>
-    <p class="small">Le prix de votre envoi est à déduire de ces montants.</p>
-
-    <h2><b>03</b>Bien choisir votre prix minimum</h2>
+    <h2><b>02</b>Bien choisir votre prix minimum</h2>
     <p>Le prix de votre article baisse en direct jusqu'au prix minimum que vous fixez, jamais en dessous. Choisissez-le en pensant à ce qu'il vous restera : commission, frais de carte <em>et</em> envoi compris. Si l'article ne trouve pas preneur, il ne vous coûte rien.</p>
 
-    <h2><b>04</b>Expédition</h2>
+    <h2><b>03</b>Expédition</h2>
     <ul>
-      <li>Expédiez l'article sous 2 jours ouvrés après le paiement, avec un numéro de suivi.</li>
-      <li>L'acheteur doit le recevoir en général sous 3 à 5 jours ouvrables.</li>
+      <li>Expédiez l'article sous 5 jours ouvrés après le paiement, avec un numéro de suivi.</li>
+      <li>Ajoutez le numéro de suivi dès l'envoi : l'acheteur peut ainsi suivre son colis.</li>
       <li>Emballez soigneusement : vous êtes responsable de l'article jusqu'à sa livraison.</li>
     </ul>
 
-    <h2><b>05</b>Un article, une seule vente</h2>
+    <h2><b>04</b>Un article, une seule vente</h2>
     <p>Un article en vente sur Block&amp;Pay doit être réellement disponible. S'il part ailleurs (boutique, Instagram, Vinted…), retirez-le de Block&amp;Pay tout de suite. Si un acheteur a payé un article qui n'est plus disponible, la vente est annulée et l'acheteur est remboursé intégralement. En cas de répétition, le compte vendeur peut être suspendu.</p>
 
-    <h2><b>06</b>Quand êtes-vous payé ?</h2>
+    <h2><b>05</b>Quand êtes-vous payé ?</h2>
     <p>À l'ouverture des ventes, vous serez payé par virement sur votre compte bancaire, via Stripe, après la confirmation de la livraison à l'acheteur. À l'inscription, Stripe vous demandera une pièce d'identité, votre numéro SIRET et votre IBAN.</p>
 
-    <h2><b>07</b>Retours</h2>
+    <h2><b>06</b>Retours</h2>
     <ul>
       <li>Vous vendez en tant que professionnel : l'acheteur a la loi pour lui, il dispose de 14 jours après réception pour changer d'avis.</li>
       <li>Les frais de retour sont à la charge de l'acheteur. Vous remboursez le prix dès que vous avez récupéré l'article dans son état d'origine.</li>
       <li>Si une vente est annulée ou l'article retourné, aucune commission n'est due.</li>
     </ul>
 
-    <h2><b>08</b>Qui peut vendre ?</h2>
+    <h2><b>07</b>Qui peut vendre ?</h2>
     <p>Block&amp;Pay est réservé aux professionnels (boutiques, friperies, revendeurs, créateurs) disposant d'un numéro SIRET. Vos articles doivent être authentiques, décrits honnêtement et photographiés tels quels. Pas d'abonnement, pas d'engagement : vous retirez vos articles quand vous voulez, sauf pendant qu'un acheteur est en train de payer.</p>
 
     <div class="cta">

@@ -2436,7 +2436,7 @@
     </div>
     <div class="legal-section">
       <h2>5. Livraison</h2>
-      <p>L'article est expédié par la boutique, avec un numéro de suivi, et livré en général sous 3 à 5 jours ouvrables après le paiement. Si votre colis n'arrive pas, écrivez-nous à contact@blockandpay.fr : s'il est perdu, vous êtes remboursé.</p>
+      <p>L'article est expédié par la boutique sous 5 jours ouvrés après le paiement, avec un numéro de suivi, puis livré selon les délais du transporteur. Si votre colis n'arrive pas, écrivez-nous à contact@blockandpay.fr : s'il est perdu, vous êtes remboursé.</p>
     </div>
     <div class="legal-section">
       <h2>6. Droit de rétractation (14 jours)</h2>
@@ -2525,7 +2525,7 @@
     <div class="pc-box">
       <div class="pc-item" id="pc-item"></div>
       <div class="pc-price" id="pc-price"></div>
-      <div class="pc-del">Livraison sous 3 à 5 jours ouvrables</div>
+      <div class="pc-del">Expédition sous 5 jours ouvrés, livraison offerte</div>
     </div>
     <button class="pc-close" onclick="closePurchaseConfirm()">Parfait, merci ! →</button>
   </div>
@@ -4342,7 +4342,7 @@ function showPurchaseConfirm(name, item, price) {
 
 function closePurchaseConfirm() {
   document.getElementById('purchase-confirm').classList.remove('on');
-  showToast('info', 'Commande enregistrée', 'Vous recevrez votre article sous 3 à 5 jours ouvrables.');
+  showToast('info', 'Commande enregistrée', 'Votre article sera expédié sous 5 jours ouvrés.');
 }
 
 // ============================================
