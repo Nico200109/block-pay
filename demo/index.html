@@ -2912,18 +2912,15 @@ function refreshHeroBtn() {
 }
 
 function updateUserUI() {
+  ensureGuest(); // la démo marche toujours sans compte, même après une déconnexion
   const logged = isLogged(), user = getUser();
   document.getElementById('user-dot').classList.toggle('on', logged);
   document.getElementById('user-btn').classList.toggle('logged', logged);
   document.getElementById('user-menu-name').textContent = logged ? '' + (user.username || '') : 'Non connecté';
-  document.getElementById('ml-login').style.display    = logged ? 'none'  : 'block';
-  document.getElementById('ml-register').style.display = logged ? 'none'  : 'block';
-  document.getElementById('ml-account').style.display  = logged ? 'block' : 'none';
-  document.getElementById('ml-logout').style.display   = logged ? 'block' : 'none';
-  if (user.guest) {
-    document.getElementById('ml-account').style.display = 'none';
-    document.getElementById('ml-logout').style.display  = 'none';
-  }
+  // Démo : plus de compte acheteur, on masque connexion, inscription, compte et déconnexion
+  ['ml-login', 'ml-register', 'ml-account', 'ml-logout'].forEach(id => {
+    document.getElementById(id).style.display = 'none';
+  });
   // Re-rendre les cartes pour refléter l'état connecté/déconnecté
   [0, 1].forEach(i => { if (fbStates[i]) renderSlot(i); });
   refreshHeroBtn();
@@ -3084,6 +3081,7 @@ function logout() {
   localStorage.removeItem('cw_logged');
   sessionStorage.removeItem('cw_logged');
   // On garde cw_user (localStorage + sessionStorage) pour pré-remplir l'email
+  ensureGuest();
   closeMenu();
   updateUserUI();
   showPage('page-landing');
@@ -3678,7 +3676,7 @@ function renderSlot(i) {
   const lh = document.getElementById('lh-' + i);
   const pb = document.getElementById('pb-' + i);
   const cb = document.getElementById('cb-' + i);
-  if (lb) lb.onclick = () => (!logged || isOther || isMine) ? openLoginModal() : lockPrice(i);
+  if (lb) lb.onclick = () => (isOther || isMine) ? null : lockPrice(i);
   if (lh) lh.onclick = () => openLoginModal();
   if (pb) pb.onclick = () => openPayModal(i);
   if (cb) {
