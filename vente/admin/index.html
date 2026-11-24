@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Block&amp;Pay – Gestion de la vente</title>
+  <meta name="theme-color" content="#1C1917">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;1,400&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root { --bg: #F5F2ED; --white: #FBFAF7; --dark: #1C1917; --accent: #6B4226; --sand: #D9B48F; --muted: #8A7F72; --track: #E4DCD0; --green: #1E8449; --red: #C0392B; --border: rgba(28,25,23,0.10); }
+    body { font-family: 'Inter', Arial, sans-serif; background: var(--bg); color: var(--dark); line-height: 1.55; font-size: 15px; }
+    header { background: var(--dark); color: #F5F2ED; height: 56px; padding: 0 20px; display: flex; align-items: center; justify-content: space-between; }
+    header b { letter-spacing: .25em; font-weight: 800; }
+    header b span { color: var(--sand); }
+    header a, header button { color: #CFC6BA; font-size: .85rem; background: none; border: 0; cursor: pointer; font: inherit; text-decoration: underline; }
+    main { max-width: 900px; margin: 0 auto; padding: 28px 16px 60px; }
+    h1 { font-family: 'Lora', Georgia, serif; font-style: italic; font-weight: 400; font-size: 1.9rem; margin-bottom: 6px; }
+    h2 { font-size: 1.05rem; margin: 30px 0 10px; }
+    .boite { background: var(--white); border: 1px solid var(--border); padding: 18px; }
+    .grille { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .grille .tout { grid-column: 1 / -1; }
+    label { display: block; font-size: .7rem; letter-spacing: 1px; text-transform: uppercase; color: var(--muted); font-weight: 600; margin-bottom: 4px; }
+    input, textarea { width: 100%; font: inherit; padding: 10px 11px; border: 1px solid #CFC6BA; background: #fff; border-radius: 2px; color: var(--dark); }
+    textarea { min-height: 70px; resize: vertical; }
+    .aide { font-size: .8rem; color: var(--muted); margin-top: 4px; }
+    .btn { display: inline-flex; align-items: center; justify-content: center; border: 0; cursor: pointer; font: inherit; font-weight: 700; padding: 10px 16px; background: var(--dark); color: #F5F2ED; border-radius: 2px; font-size: .88rem; }
+    .btn.vert { background: var(--green); color: #fff; }
+    .btn.sable { background: var(--sand); color: var(--dark); }
+    .btn.ligne { background: transparent; color: var(--dark); border: 1px solid #CFC6BA; }
+    .btn.rouge { background: transparent; color: var(--red); border: 1px solid var(--red); }
+    .actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+    .msg { font-size: .88rem; margin-top: 10px; min-height: 1em; }
+    .msg.ok { color: var(--green); } .msg.ko { color: var(--red); }
+    .art { display: grid; grid-template-columns: 96px 1fr; gap: 14px; background: var(--white); border: 1px solid var(--border); padding: 14px; margin-bottom: 12px; }
+    .art img, .art .ph { width: 96px; height: 96px; object-fit: cover; background: var(--track); display: block; }
+    .art .n { font-weight: 700; }
+    .art .d { font-size: .84rem; color: var(--muted); }
+    .st { display: inline-block; font-size: .68rem; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; padding: 3px 8px; background: var(--track); margin-top: 4px; }
+    .st.en_baisse { background: #E5533D; color: #fff; }
+    .st.bloque { background: var(--sand); }
+    .st.paye { background: var(--green); color: #fff; }
+    .st.vendu { background: var(--dark); color: #fff; }
+    .acheteur { margin-top: 8px; font-size: .85rem; background: var(--bg); padding: 8px 10px; }
+    .acheteur code { font-size: .8rem; background: #fff; padding: 1px 4px; user-select: all; }
+    #apercuPhoto img { max-width: 140px; margin-top: 8px; display: block; }
+    @media (max-width: 640px) { .grille { grid-template-columns: 1fr; } .art { grid-template-columns: 72px 1fr; } .art img, .art .ph { width: 72px; height: 72px; } }
+  </style>
+</head>
+<body>
+  <header><b>BLOCK<span>&amp;</span>PAY</b><span><a href="/vente/" target="_blank">Voir la salle</a> &nbsp; <button id="btnDeco" onclick="firebase.auth().signOut()" style="display:none">Se déconnecter</button></span></header>
+  <main>
+    <h1>Gestion de la vente</h1>
+    <p class="aide" style="font-size:.9rem">Page réservée à Nico. Ici vous préparez la vente, lancez chaque article et vérifiez les paiements.</p>
+
+    <!-- Connexion -->
+    <div id="zoneConnexion" style="display:none">
+      <h2>Connexion</h2>
+      <div class="boite" style="max-width:420px">
+        <label for="cEmail">E-mail</label><input type="email" id="cEmail" autocomplete="username">
+        <label for="cMdp" style="margin-top:10px">Mot de passe</label><input type="password" id="cMdp" autocomplete="current-password">
+        <div class="actions"><button class="btn" onclick="connexion()">Se connecter</button></div>
+        <div class="msg" id="cMsg"></div>
+      </div>
+    </div>
+
+    <div id="zoneAdmin" style="display:none">
+      <!-- Réglages de la vente -->
+      <h2>1. La vente</h2>
+      <div class="boite">
+        <div class="grille">
+          <div class="tout"><label for="gTitre">Titre affiché</label><input type="text" id="gTitre" placeholder="Vente test Block&Pay"></div>
+          <div><label for="gDate">Date et heure de début</label><input type="datetime-local" id="gDate"></div>
+          <div><label for="gLien">Lien de paiement Stripe</label><input type="url" id="gLien" placeholder="https://buy.stripe.com/..."><div class="aide">Lien « le client choisit le montant ». Vide = paiement non activé.</div></div>
+          <div class="tout"><label for="gAnnonce">Message d'annonce (facultatif)</label><textarea id="gAnnonce" placeholder="Première vente test : 4 articles de ma collection personnelle, vendus par Block&Pay."></textarea></div>
+        </div>
+        <div class="actions"><button class="btn" onclick="enregistrerConfig()">Enregistrer</button></div>
+        <div class="msg" id="gMsg"></div>
+      </div>
+
+      <!-- Articles -->
+      <h2>2. Les articles</h2>
+      <div id="listeArticles"></div>
+
+      <h2 id="titreForm">Ajouter un article</h2>
+      <div class="boite">
+        <div class="grille">
+          <div class="tout"><label for="aNom">Nom de l'article</label><input type="text" id="aNom" maxlength="120" placeholder="Veste en jean Levi's années 90"></div>
+          <div class="tout"><label for="aDesc">Description (taille, état, défauts…)</label><textarea id="aDesc" maxlength="600"></textarea></div>
+          <div><label for="aPhoto">Photo</label><input type="file" id="aPhoto" accept="image/*" onchange="choisirPhoto(this)"><div id="apercuPhoto"></div></div>
+          <div><label for="aVendeur">Vendu par</label><input type="text" id="aVendeur" maxlength="80" value="Block&Pay (Nicolas Butez, EI)"></div>
+          <div><label for="aDepart">Prix de départ (€)</label><input type="number" id="aDepart" min="1" step="0.01" oninput="calculBaisse()"></div>
+          <div><label for="aMin">Prix minimum (€)</label><input type="number" id="aMin" min="0.5" step="0.01" oninput="calculBaisse()"></div>
+          <div><label>Vitesse de baisse</label><div class="aide" id="aBaisse" style="font-size:.88rem;margin-top:8px">0,05 € toutes les 200 ms, la même pour tous les articles.</div></div>
+          <div><label for="aOrdre">Ordre de passage</label><input type="number" id="aOrdre" min="1" step="1" value="1"></div>
+        </div>
+        <div class="actions"><button class="btn" onclick="enregistrerArticle()" id="btnArticle">Ajouter l'article</button><button class="btn ligne" onclick="viderForm()">Vider</button></div>
+        <div class="msg" id="aMsg"></div>
+      </div>
+
+      <h2>3. Pendant la vente</h2>
+      <div class="boite" style="font-size:.9rem">
+        <ol style="padding-left:18px">
+          <li>Cliquez sur <b>Lancer la baisse</b> pour l'article à vendre. Le prix commence à baisser pour tout le monde.</li>
+          <li>Quand un acheteur bloque, son prénom, son e-mail et une <b>référence</b> s'affichent ici.</li>
+          <li>Dans Stripe (Paiements), retrouvez le paiement : la référence apparaît dans « ID de référence client ». Vérifiez que le montant est le bon.</li>
+          <li>Cliquez sur <b>Confirmer la vente</b>. Si personne n'a payé dans les 3 minutes, cliquez sur <b>Relancer</b> (repart du prix de départ) ou <b>Remettre à venir</b>.</li>
+        </ol>
+      </div>
+    </div>
+  </main>
+
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+  <script src="/vente/commun.js"></script>
+  <script>
+  let articles = {}, etats = {}, payes = {}, verrous = {}, contacts = {};
+  let photoData = null, modifId = null;
+  const TS = () => firebase.database.ServerValue.TIMESTAMP;
+
+  firebase.auth().onAuthStateChanged(u => {
+    document.getElementById('zoneConnexion').style.display = u ? 'none' : '';
+    document.getElementById('zoneAdmin').style.display = u ? '' : 'none';
+    document.getElementById('btnDeco').style.display = u ? '' : 'none';
+    if (u) demarrer();
+  });
+
+  function connexion() {
+    const m = document.getElementById('cMsg');
+    m.className = 'msg'; m.textContent = 'Connexion…';
+    firebase.auth().signInWithEmailAndPassword(document.getElementById('cEmail').value.trim(), document.getElementById('cMdp').value)
+      .then(() => { m.textContent = ''; })
+      .catch(() => { m.className = 'msg ko'; m.textContent = 'E-mail ou mot de passe incorrect.'; });
+  }
+
+  let demarre = false;
+  function demarrer() {
+    if (demarre) return; demarre = true;
+    db.ref(V + '/config').once('value').then(s => {
+      const c = s.val() || {};
+      const remplir = (id, v) => { const el = document.getElementById(id); if (!el.value) el.value = v || ''; };
+      remplir('gTitre', c.titre); remplir('gLien', c.lienPaiement); remplir('gAnnonce', c.annonce);
+      if (c.date && !document.getElementById('gDate').value) { const d = new Date(c.date - new Date(c.date).getTimezoneOffset() * 60000); document.getElementById('gDate').value = d.toISOString().slice(0, 16); }
+    });
+    db.ref(V + '/articles').on('value', s => { articles = s.val() || {}; afficher(); });
+    db.ref(V + '/etat').on('value', s => { etats = s.val() || {}; afficher(); });
+    db.ref(V + '/paye').on('value', s => { payes = s.val() || {}; afficher(); });
+    db.ref(V + '/verrous').on('value', s => { verrous = s.val() || {}; afficher(); }, erreurDroits);
+    db.ref(V + '/contacts').on('value', s => { contacts = s.val() || {}; afficher(); }, erreurDroits);
+    setInterval(afficherSiChange, 1000);
+  }
+  function erreurDroits() {
+    document.getElementById('listeArticles').insertAdjacentHTML('beforebegin', '<p class="msg ko">Accès refusé aux données des acheteurs : vérifiez que votre identifiant (UID) est bien dans les règles Firebase.</p>');
+  }
+
+  // --------- Réglages
+  function enregistrerConfig() {
+    const m = document.getElementById('gMsg');
+    const lien = document.getElementById('gLien').value.trim();
+    if (lien && !/^https:\/\/(buy\.stripe\.com|checkout\.stripe\.com)\//.test(lien)) { m.className = 'msg ko'; m.textContent = 'Le lien doit commencer par https://buy.stripe.com/'; return; }
+    const d = document.getElementById('gDate').value;
+    db.ref(V + '/config').set({
+      titre: document.getElementById('gTitre').value.trim().slice(0, 120),
+      date: d ? new Date(d).getTime() : null,
+      annonce: document.getElementById('gAnnonce').value.trim().slice(0, 400),
+      lienPaiement: lien || null
+    }).then(() => { m.className = 'msg ok'; m.textContent = 'Enregistré.'; }, e => { m.className = 'msg ko'; m.textContent = 'Erreur : ' + e.message; });
+  }
+
+  // --------- Formulaire article
+  function calculBaisse() {
+    const dep = parseFloat(document.getElementById('aDepart').value), min = parseFloat(document.getElementById('aMin').value);
+    const z = document.getElementById('aBaisse');
+    const base = '0,05 € toutes les 200 ms, la même pour tous les articles.';
+    if (!(dep > min)) { z.textContent = base; return; }
+    z.textContent = base + ' Ici, le prix minimum sera atteint en ' + dureeTexte(dureeBaisse(dep, min)) + '.';
+  }
+
+  function choisirPhoto(input) {
+    const f = input.files && input.files[0];
+    if (!f) return;
+    const img = new Image(), url = URL.createObjectURL(f);
+    img.onload = () => {
+      const MAX = 900; let w = img.width, h = img.height;
+      if (w > MAX || h > MAX) { if (w >= h) { h = Math.round(h * MAX / w); w = MAX; } else { w = Math.round(w * MAX / h); h = MAX; } }
+      const c = document.createElement('canvas'); c.width = w; c.height = h;
+      c.getContext('2d').drawImage(img, 0, 0, w, h);
+      photoData = c.toDataURL('image/jpeg', 0.8);
+      URL.revokeObjectURL(url);
+      document.getElementById('apercuPhoto').innerHTML = '<img src="' + photoData + '" alt="">';
+    };
+    img.src = url;
+  }
+
+  function enregistrerArticle() {
+    const m = document.getElementById('aMsg');
+    const a = {
+      nom: document.getElementById('aNom').value.trim().slice(0, 120),
+      description: document.getElementById('aDesc').value.trim().slice(0, 600),
+      vendeur: document.getElementById('aVendeur').value.trim().slice(0, 80) || 'Block&Pay',
+      prixDepart: Math.round(parseFloat(document.getElementById('aDepart').value) * 100) / 100,
+      prixMin: Math.round(parseFloat(document.getElementById('aMin').value) * 100) / 100,
+      duree: 0,
+      ordre: parseInt(document.getElementById('aOrdre').value, 10) || 1
+    };
+    if (!a.nom) return ko('Indiquez le nom de l\'article.');
+    if (!(a.prixMin >= 0.5)) return ko('Le prix minimum doit être d\'au moins 0,50 €.');
+    if (!(a.prixDepart > a.prixMin)) return ko('Le prix de départ doit être plus haut que le prix minimum.');
+    a.duree = dureeBaisse(a.prixDepart, a.prixMin);
+    if (photoData) a.photo = photoData;
+    else if (modifId && articles[modifId] && articles[modifId].photo) a.photo = articles[modifId].photo;
+    if (modifId) {
+      const s = (etats[modifId] || {}).statut;
+      if (s === 'en_baisse' || s === 'bloque') return ko('Cet article est en vente : attendez la fin avant de le modifier.');
+    }
+    const ref = modifId ? db.ref(V + '/articles/' + modifId) : db.ref(V + '/articles').push();
+    ref.set(a).then(() => { m.className = 'msg ok'; m.textContent = modifId ? 'Article modifié.' : 'Article ajouté.'; viderForm(true); }, e => ko('Erreur : ' + e.message));
+    function ko(t) { m.className = 'msg ko'; m.textContent = t; }
+  }
+
+  function viderForm(garderMsg) {
+    modifId = null; photoData = null;
+    ['aNom', 'aDesc', 'aDepart', 'aMin', 'aPhoto'].forEach(id => document.getElementById(id).value = '');
+    document.getElementById('aOrdre').value = Object.keys(articles).length + 1;
+    document.getElementById('aVendeur').value = 'Block&Pay (Nicolas Butez, EI)';
+    document.getElementById('apercuPhoto').innerHTML = '';
+    document.getElementById('titreForm').textContent = 'Ajouter un article';
+    document.getElementById('btnArticle').textContent = 'Ajouter l\'article';
+    if (!garderMsg) document.getElementById('aMsg').textContent = '';
+    calculBaisse();
+  }
+
+  function modifier(id) {
+    const a = articles[id]; modifId = id; photoData = null;
+    document.getElementById('aNom').value = a.nom || '';
+    document.getElementById('aDesc').value = a.description || '';
+    document.getElementById('aVendeur').value = a.vendeur || '';
+    document.getElementById('aDepart').value = a.prixDepart;
+    document.getElementById('aMin').value = a.prixMin;
+    document.getElementById('aOrdre').value = a.ordre || 1;
+    document.getElementById('apercuPhoto').innerHTML = a.photo ? '<img src="' + a.photo + '" alt="">' : '';
+    document.getElementById('titreForm').textContent = 'Modifier : ' + a.nom;
+    document.getElementById('btnArticle').textContent = 'Enregistrer les modifications';
+    calculBaisse();
+    document.getElementById('titreForm').scrollIntoView({ behavior: 'smooth' });
+  }
+
+  // --------- Actions de vente
+  function lancer(id) {
+    const maj = {};
+    maj['etat/' + id] = { statut: 'en_baisse', debut: TS() };
+    maj['verrous/' + id] = null;
+    maj['paye/' + id] = null;
+    db.ref(V).update(maj).catch(e => alerte(e));
+  }
+  function changerStatut(id, statut, question) {
+    if (question && !confirm(question)) return;
+    const e = etats[id] || {};
+    const n = Object.assign({}, e, { statut });
+    if (statut === 'attente' || statut === 'retire') { delete n.blocageA; delete n.prixBloque; delete n.pseudo; delete n.debut; }
+    const maj = {}; maj['etat/' + id] = n;
+    if (statut !== 'vendu') { maj['verrous/' + id] = null; maj['paye/' + id] = null; }
+    db.ref(V).update(maj).catch(e => alerte(e));
+  }
+  function supprimer(id) {
+    if (!confirm('Supprimer définitivement « ' + articles[id].nom + ' » ?')) return;
+    const maj = {}; maj['articles/' + id] = null; maj['etat/' + id] = null; maj['verrous/' + id] = null; maj['paye/' + id] = null;
+    db.ref(V).update(maj).catch(e => alerte(e));
+  }
+  function alerte(e) { alert('Action refusée : ' + e.message); }
+
+  // --------- Liste
+  let derniereSig = '';
+  function afficherSiChange() {
+    const t = maintenant();
+    const sig = Object.keys(articles).map(id => id + statutAffiche(articles[id], etats[id], payes[id], t)).join();
+    if (sig !== derniereSig) afficher();
+  }
+
+  function afficher() {
+    const t = maintenant();
+    const ids = Object.keys(articles).sort((x, y) => (articles[x].ordre || 0) - (articles[y].ordre || 0));
+    derniereSig = ids.map(id => id + statutAffiche(articles[id], etats[id], payes[id], t)).join();
+    const lib = { attente: 'À venir', en_baisse: 'Prix en baisse', termine: 'Terminé sans acheteur', bloque: 'Bloqué, paiement en cours', paye: 'Payé (à vérifier dans Stripe)', delai_depasse: 'Délai de 3 min dépassé', vendu: 'Vendu', retire: 'Retiré' };
+    const z = document.getElementById('listeArticles');
+    if (!ids.length) { z.innerHTML = '<p class="aide">Aucun article pour l\'instant. Ajoutez-en un ci-dessous.</p>'; return; }
+    z.innerHTML = ids.map(id => {
+      const a = articles[id], e = etats[id] || {}, s = statutAffiche(a, e, payes[id], t);
+      const cle = verrous[id], c = cle ? contacts[cle] : null;
+      let acheteur = '';
+      if (e.pseudo && (s === 'bloque' || s === 'paye' || s === 'delai_depasse' || s === 'vendu')) {
+        acheteur = '<div class="acheteur">Acheteur : <b>' + esc(e.pseudo) + '</b>' + (c ? ' · ' + esc(c.email) : '') +
+          ' · prix bloqué <b>' + euros(e.prixBloque) + '</b>' + (e.blocageA ? ' · à ' + new Date(e.blocageA).toLocaleTimeString('fr-FR') : '') +
+          (cle ? '<br>Référence Stripe : <code>' + esc(cle) + '</code>' : '') + '</div>';
+      }
+      const b = [];
+      if (s === 'attente' || s === 'termine' || s === 'delai_depasse' || s === 'retire') b.push('<button class="btn sable" onclick="lancer(\'' + id + '\')">' + (s === 'attente' ? 'Lancer la baisse' : 'Relancer') + '</button>');
+      if (s === 'bloque' || s === 'paye' || s === 'delai_depasse') b.push('<button class="btn vert" onclick="changerStatut(\'' + id + '\',\'vendu\',\'Avez-vous bien vu le paiement de ' + euros(e.prixBloque) + ' dans Stripe ?\')">Confirmer la vente</button>');
+      if (s === 'en_baisse') b.push('<button class="btn ligne" onclick="changerStatut(\'' + id + '\',\'attente\',\'Arrêter la baisse et remettre cet article à venir ?\')">Arrêter</button>');
+      if (s !== 'attente' && s !== 'en_baisse' && s !== 'bloque') b.push('<button class="btn ligne" onclick="changerStatut(\'' + id + '\',\'attente\',\'Remettre cet article dans « À venir » ?\')">Remettre à venir</button>');
+      if (s !== 'en_baisse' && s !== 'bloque') b.push('<button class="btn ligne" onclick="modifier(\'' + id + '\')">Modifier</button>');
+      if (s !== 'retire' && s !== 'en_baisse' && s !== 'bloque') b.push('<button class="btn ligne" onclick="changerStatut(\'' + id + '\',\'retire\',\'Retirer cet article de la vente ?\')">Retirer</button>');
+      if (s !== 'en_baisse' && s !== 'bloque') b.push('<button class="btn rouge" onclick="supprimer(\'' + id + '\')">Supprimer</button>');
+      return '<div class="art">' + (a.photo ? '<img src="' + a.photo + '" alt="">' : '<div class="ph"></div>') + '<div>' +
+        '<div class="n">' + (a.ordre || '') + '. ' + esc(a.nom) + '</div>' +
+        '<div class="d">' + euros(a.prixDepart) + ' → ' + euros(a.prixMin) + ' en ' + dureeTexte(a.duree) + ' · ' + esc(a.vendeur || '') + '</div>' +
+        '<span class="st ' + s + '">' + lib[s] + '</span>' + acheteur +
+        '<div class="actions">' + b.join('') + '</div></div></div>';
+    }).join('');
+  }
+  </script>
+</body>
+</html>
