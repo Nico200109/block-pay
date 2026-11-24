@@ -1991,7 +1991,6 @@
   <div class="header-nav">
     <a onclick="showPage('page-ventes'); startAuctions()">Offres</a>
     <a onclick="showCatalogue()">Catalogue</a>
-    <a onclick="showWinners()">Acheteurs</a>
     <button class="burger-btn" id="burger-btn" onclick="toggleBurger()" aria-label="Menu">
       <span></span><span></span><span></span>
     </button>
@@ -2019,7 +2018,6 @@
 <nav class="mobile-nav" id="mobile-nav">
   <a onclick="closeBurger(); showPage('page-ventes'); startAuctions()">Offres</a>
   <a onclick="closeBurger(); showCatalogue()">Catalogue</a>
-  <a onclick="closeBurger(); showWinners()">Acheteurs</a>
   <a onclick="closeBurger(); showPage('page-how')">Comment ça marche</a>
   <a onclick="closeBurger(); showPage('page-about')">À propos</a>
 </nav>
@@ -2052,16 +2050,16 @@
 
     <div class="stats-bar">
       <div class="stat-item">
-        <span class="stat-num">2<span>+</span></span>
-        <div class="stat-label">Offres simultanées</div>
+        <span class="stat-num">0,05<span>€</span></span>
+        <div class="stat-label">De baisse toutes les 200 ms</div>
       </div>
       <div class="stat-item">
-        <span class="stat-num">Bientôt</span>
-        <div class="stat-label">Lancement imminent</div>
+        <span class="stat-num">Offerte</span>
+        <div class="stat-label">Livraison</div>
       </div>
       <div class="stat-item">
-        <span class="stat-num">Variable</span>
-        <div class="stat-label">Prix minimum garanti</div>
+        <span class="stat-num">14<span>j</span></span>
+        <div class="stat-label">Pour changer d'avis</div>
       </div>
       <div class="stat-item">
         <span class="stat-num">3<span>min</span></span>
@@ -2106,16 +2104,16 @@
     <p class="section-sub">Une expérience d'achat unique, transparente et avantageuse.</p>
     <div class="adv-grid">
       <div class="adv-card">
-        <div class="adv-title">Prix imbattables</div>
-        <p class="adv-desc">Chaque article a son propre prix minimum garanti. Le vendeur ne vend jamais à perte.</p>
+        <div class="adv-title">Un prix minimum par article</div>
+        <p class="adv-desc">Chaque vendeur fixe un prix minimum. Le prix baisse jusque-là, jamais en dessous.</p>
       </div>
       <div class="adv-card">
         <div class="adv-title">100 % transparent</div>
-        <p class="adv-desc">Le prix que vous bloquez est le prix que vous payez. Aucune surprise, aucun frais caché.</p>
+        <p class="adv-desc">Le prix que vous bloquez est le prix que vous payez, livraison offerte. Aucun frais caché.</p>
       </div>
       <div class="adv-card">
-        <div class="adv-title">Achat sécurisé</div>
-        <p class="adv-desc">Données protégées, carte enregistrable pour aller plus vite la prochaine fois.</p>
+        <div class="adv-title">Paiement par carte</div>
+        <p class="adv-desc">Le paiement réel sera activé au lancement. Dans cette démo, aucun paiement n'est effectué.</p>
       </div>
       <div class="adv-card">
         <div class="adv-title">Offres renouvelées</div>
@@ -2156,23 +2154,21 @@
   <footer class="site-footer">
     <div>
       <div class="footer-logo"><svg class="logo-mark" viewBox="0 0 48 48" aria-hidden="true"><path d="M6 10 H18 V22 H28 V34 H35" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="square"/><circle cx="40" cy="34" r="5" fill="#D9B48F"/></svg>BLOCK<span>&amp;</span>PAY</div>
-      <p class="footer-tagline">La plateforme de vente à prix dynamique dégressif. Bloquez votre prix, finalisez votre achat.</p>
-      <p class="footer-commission">Block&amp;Pay prend une commission de 12% sur chaque vente réalisée. Le vendeur récupère 88% du prix final bloqué. <a onclick="showPage('page-vendeur'); refreshVendeurPage()" style="color:rgba(255,255,255,0.45);text-decoration:underline;cursor:pointer">Vous êtes commerçant ?</a> Contactez-nous : contact@blockandpay.fr</p>
+      <p class="footer-tagline">Le site de vente français où le prix baisse en direct. Vous décidez quand bloquer.</p>
+      <p class="footer-commission"><a onclick="showPage('page-vendeur'); refreshVendeurPage()" style="color:rgba(255,255,255,0.45);text-decoration:underline;cursor:pointer">Vous êtes commerçant ?</a> Contactez-nous : contact@blockandpay.fr</p>
     </div>
     <div class="footer-links">
       <a onclick="showPage('page-ventes'); startAuctions()">Offres</a>
       <a onclick="showCatalogue()">Catalogue</a>
-      <a onclick="showWinners()">Acheteurs</a>
       <a onclick="showPage('page-how')">Comment ça marche</a>
       <a onclick="showPage('page-about')">À propos</a>
-      <a onclick="openModal('modal-feedback')">Avis</a>
       <a onclick="showPage('page-legal')">Mentions légales</a>
       <a onclick="showPage('page-cgv')">CGV</a>
     </div>
   </footer>
   <div class="footer-bottom">
-    <span>© 2025 Block&amp;Pay · Tous droits réservés</span>
-    <span>Plateforme de vente en ligne à prix dynamique dégressif</span>
+    <span>© 2026 Block&amp;Pay · Tous droits réservés</span>
+    <span>Démonstration : aucune vente réelle</span>
   </div>
 </div>
 
@@ -2275,7 +2271,7 @@
     </div>
     <div class="about-card" style="margin-top:24px">
       <h3>Information légale</h3>
-      <p>Block&Pay est une plateforme de vente en ligne proposant des articles à <strong>prix dynamique dégressif</strong>. Le mécanisme de baisse automatique du prix est un algorithme de tarification progressive. Toute transaction confirmée constitue un achat ferme et définitif au prix affiché au moment du blocage. Ce service ne constitue pas une vente aux enchères au sens de la réglementation française.</p>
+      <p>Block&Pay est une plateforme de vente en ligne proposant des articles à <strong>prix dynamique dégressif</strong>. Le mécanisme de baisse automatique du prix est un algorithme de tarification progressive. Une fois le paiement confirmé, la vente est conclue au prix bloqué, sous réserve de votre droit de rétractation de 14 jours (voir les CGV). Ce service ne constitue pas une vente aux enchères au sens de la réglementation française.</p>
     </div>
   </div>
 </div>
@@ -2300,7 +2296,7 @@
       </div>
       <div class="about-card">
         <h3>Transparence totale</h3>
-        <p>Le prix affiché est le prix payé. Aucuns frais cachés, aucune commission surprise. Block&Pay s'engage sur une politique tarifaire 100% transparente.</p>
+        <p>Le prix affiché est le prix payé. Livraison offerte, aucun frais caché pour l'acheteur.</p>
       </div>
       <div class="about-card">
         <h3>Notre vision</h3>
@@ -2311,8 +2307,8 @@
       <h2>Le fondateur</h2>
       <div class="team-grid" style="max-width:240px;margin:0 auto">
         <div class="team-card">
-          <div class="team-avatar" style="background:#1a1a2e">N</div>
-          <div class="team-name">Nicolas B.</div>
+          <div class="team-avatar" style="background:#1C1917">N</div>
+          <div class="team-name">Nicolas Butez</div>
           <div class="team-role">Fondateur & Développeur</div>
         </div>
       </div>
@@ -2372,14 +2368,14 @@
 <div class="page" id="page-legal">
   <div class="page-header"><h1>Mentions légales</h1></div>
   <div class="legal-wrap">
-    <p class="legal-date">Dernière mise à jour : janvier 2025</p>
+    <p class="legal-date">Dernière mise à jour : novembre 2026</p>
     <div class="legal-section">
       <h2>1. Éditeur du site</h2>
       <p>Le site Block&Pay est édité par Nicolas Butez, entrepreneur individuel (auto-entrepreneur) domicilié en France. Email de contact : contact@blockandpay.fr</p>
     </div>
     <div class="legal-section">
       <h2>2. Hébergement</h2>
-      <p>Le site est hébergé sur une infrastructure cloud sécurisée. Les données des utilisateurs sont stockées en Europe, conformément au RGPD.</p>
+      <p>Site hébergé par GitHub, Inc. (88 Colin P. Kelly Jr. Street, San Francisco, CA 94107, États-Unis). Données des comptes stockées chez Google Firebase (Google Ireland Ltd., Dublin, Irlande), serveurs en Europe.</p>
     </div>
     <div class="legal-section">
       <h2>3. Propriété intellectuelle</h2>
@@ -2410,46 +2406,54 @@
      PAGE CGV
 ============================================= -->
 <div class="page" id="page-cgv">
-  <div class="page-header"><h1>Conditions Générales de Vente</h1></div>
+  <div class="page-header"><h1>Conditions générales de vente</h1></div>
   <div class="legal-wrap">
-    <p class="legal-date">Dernière mise à jour : janvier 2025</p>
+    <p class="legal-date">Dernière mise à jour : novembre 2026 · Block&amp;Pay est en prélancement : la démo ne réalise aucune vente réelle. Ces conditions s'appliqueront à l'ouverture des ventes.</p>
     <div class="legal-section">
-      <h2>1. Objet</h2>
-      <p>Les présentes CGV régissent les relations contractuelles entre Nicolas Butez (auto-entrepreneur, exploitant la plateforme Block&Pay) et tout utilisateur souhaitant effectuer un achat via la plateforme. Block&Pay propose un service de mise en relation entre vendeurs et acheteurs via un mécanisme de prix dynamique dégressif.</p>
+      <h2>1. Qui vend ?</h2>
+      <p>Les articles sont vendus par des boutiques professionnelles. Block&amp;Pay, édité par Nicolas Butez (entrepreneur individuel), met en relation les acheteurs et les boutiques et gère le paiement. Le contrat de vente est conclu entre vous et la boutique.</p>
     </div>
     <div class="legal-section">
-      <h2>2. Mécanisme de prix dynamique</h2>
-      <p>Block&Pay utilise un système de tarification à prix dégressif automatique. Le prix d'un article diminue progressivement selon un algorithme prédéfini, depuis son prix de départ jusqu'à un prix minimum fixé pour chaque article. Ce prix minimum garantit que le vendeur ne vend pas à perte. Ce mécanisme ne constitue pas une vente aux enchères au sens de l'article L321-1 du Code de commerce.</p>
+      <h2>2. Comment fonctionne le prix</h2>
+      <p>Le prix de chaque article baisse automatiquement depuis son prix de départ jusqu'à un prix minimum fixé par la boutique. Il ne descend jamais en dessous. Ce mécanisme est une vente à prix dégressif : ce n'est pas une vente aux enchères au sens de l'article L321-1 du Code de commerce.</p>
     </div>
     <div class="legal-section">
-      <h2>3. Formation du contrat</h2>
-      <p>Le contrat de vente est formé au moment où l'acheteur clique sur "Bloquer mon prix" et confirme ensuite son paiement dans le délai imparti de 3 minutes. Passé ce délai, le blocage est annulé et le prix continue de baisser.</p>
+      <h2>3. Bloquer et payer</h2>
+      <ul>
+        <li>Le premier acheteur qui clique sur « Bloquer mon prix » réserve l'article au prix affiché à ce moment-là.</li>
+        <li>Il dispose de 3 minutes pour payer. La vente est conclue quand le paiement est confirmé.</li>
+        <li>Sans paiement dans les 3 minutes, le blocage est annulé : l'article est retiré de la vente en cours et pourra être remis en vente plus tard, à son prix de départ.</li>
+        <li>En cas de blocages répétés sans paiement, Block&amp;Pay peut suspendre la possibilité de bloquer un prix.</li>
+      </ul>
     </div>
     <div class="legal-section">
       <h2>4. Prix et paiement</h2>
       <ul>
-        <li>Le prix applicable est celui affiché au moment du blocage par l'acheteur</li>
-        <li>Tous les prix sont indiqués en euros TTC</li>
-        <li>Le paiement doit être finalisé dans les 3 minutes suivant le blocage</li>
-        <li>Les moyens de paiement acceptés : carte bancaire (Visa, Mastercard)</li>
-        <li>Une commission de 12% est prélevée sur le prix final au vendeur — aucun frais supplémentaire n'est facturé à l'acheteur</li>
+        <li>Le prix payé est le prix bloqué, en euros, toutes taxes comprises.</li>
+        <li>La livraison est offerte. Aucun frais n'est ajouté pour l'acheteur.</li>
+        <li>Paiement par carte bancaire (Visa, Mastercard).</li>
       </ul>
     </div>
     <div class="legal-section">
       <h2>5. Livraison</h2>
-      <p>Les articles sont expédiés dans un délai de 3 à 5 jours ouvrables suivant la confirmation du paiement. Les frais de livraison sont offerts pour toute commande.</p>
+      <p>L'article est expédié par la boutique sous 5 jours ouvrés après le paiement, avec un numéro de suivi, puis livré selon les délais du transporteur. Si votre colis n'arrive pas, écrivez-nous à contact@blockandpay.fr : s'il est perdu, vous êtes remboursé.</p>
     </div>
     <div class="legal-section">
-      <h2>6. Droit de rétractation</h2>
-      <p>Conformément aux articles L221-18 et suivants du Code de la consommation, vous disposez d'un délai de 14 jours pour exercer votre droit de rétractation à compter de la réception du bien, sans avoir à justifier votre décision.</p>
+      <h2>6. Droit de rétractation (14 jours)</h2>
+      <p>Conformément aux articles L221-18 et suivants du Code de la consommation, vous pouvez changer d'avis pendant 14 jours à compter de la réception de l'article, sans avoir à vous justifier.</p>
+      <ul>
+        <li>Prévenez-nous par e-mail à contact@blockandpay.fr dans ce délai.</li>
+        <li>Renvoyez l'article dans son état d'origine dans les 14 jours suivants. Les frais de retour sont à votre charge.</li>
+        <li>Vous êtes remboursé dans les 14 jours, au plus tard après la réception de l'article par la boutique.</li>
+      </ul>
     </div>
     <div class="legal-section">
       <h2>7. Garanties</h2>
-      <p>Tous les articles vendus sur Block&Pay bénéficient de la garantie légale de conformité (2 ans) et de la garantie légale contre les vices cachés, conformément aux articles L217-4 et suivants du Code de la consommation.</p>
+      <p>Tous les articles bénéficient de la garantie légale de conformité (2 ans) et de la garantie contre les vices cachés, conformément aux articles L217-3 et suivants du Code de la consommation et 1641 et suivants du Code civil.</p>
     </div>
     <div class="legal-section">
       <h2>8. Service client</h2>
-      <p>Pour toute réclamation ou question : contact@blockandpay.fr — Réponse sous 48h ouvrées.</p>
+      <p>Pour toute question ou réclamation : contact@blockandpay.fr. Réponse sous 48 h ouvrées.</p>
     </div>
   </div>
 </div>
@@ -2521,7 +2525,7 @@
     <div class="pc-box">
       <div class="pc-item" id="pc-item"></div>
       <div class="pc-price" id="pc-price"></div>
-      <div class="pc-del">Livraison sous 3 à 5 jours ouvrables</div>
+      <div class="pc-del">Expédition sous 5 jours ouvrés, livraison offerte</div>
     </div>
     <button class="pc-close" onclick="closePurchaseConfirm()">Parfait, merci ! →</button>
   </div>
@@ -2639,7 +2643,7 @@
       </div>
     </div>
 
-    <div class="save-check-row">
+    <div class="save-check-row" style="display:none">
       <input type="checkbox" id="mp-save">
       <label for="mp-save">Mémoriser cette carte</label>
     </div>
@@ -2651,7 +2655,7 @@
     <button class="btn-ghost-modal" onclick="cancelPay()">↩ Annuler</button>
 
     <!-- Sécurité — ligne discrète en bas -->
-    <div class="pay-security-line">Paiement sécurisé SSL · Données protégées</div>
+    <div class="pay-security-line">Démonstration : aucun paiement réel. N'entrez pas votre vraie carte.</div>
   </div>
 </div>
 
@@ -2717,7 +2721,7 @@
       </div>
       <div class="v-cgv-row">
         <input type="checkbox" id="vr-cgv">
-        <label for="vr-cgv">J'accepte les <a onclick="showPage('page-cgv')" style="color:var(--accent);cursor:pointer">CGV Block&Pay</a></label>
+        <label for="vr-cgv">J'accepte les <a href="/vendeurs/" target="_blank" rel="noopener" style="color:var(--accent);cursor:pointer">conditions vendeurs Block&amp;Pay</a></label>
       </div>
       <button class="btn-main" style="width:100%" onclick="registerVendeur()">Créer mon compte</button>
       <p class="v-auth-switch">Déjà un compte ? <a onclick="showPage('page-vendeur-login')">Se connecter</a></p>
@@ -4338,7 +4342,7 @@ function showPurchaseConfirm(name, item, price) {
 
 function closePurchaseConfirm() {
   document.getElementById('purchase-confirm').classList.remove('on');
-  showToast('info', 'Commande enregistrée', 'Vous recevrez votre article sous 3 à 5 jours ouvrables.');
+  showToast('info', 'Commande enregistrée', 'Votre article sera expédié sous 5 jours ouvrés.');
 }
 
 // ============================================
@@ -4919,7 +4923,7 @@ function registerVendeur() {
   if (!prenom || !nom) { showToast('error', 'Champ manquant', 'Veuillez entrer votre prénom et nom.'); return; }
   if (!email)          { showToast('error', 'Champ manquant', 'Veuillez entrer votre email.'); return; }
   if (pwd.length < 6)  { showToast('error', 'Mot de passe', 'Le mot de passe doit contenir au moins 6 caractères.'); return; }
-  if (!cgv)            { showToast('error', 'CGV requises', 'Vous devez accepter les CGV pour continuer.'); return; }
+  if (!cgv)            { showToast('error', 'Conditions requises', 'Vous devez accepter les conditions vendeurs pour continuer.'); return; }
 
   firebase.auth().createUserWithEmailAndPassword(email, pwd)
     .then(cred => {
