@@ -29,7 +29,7 @@ let ecartServeur = 0;
 db.ref('.info/serverTimeOffset').on('value', s => { ecartServeur = s.val() || 0; });
 function maintenant() { return Date.now() + ecartServeur; }
 
-// Prix à l'instant t : baisse régulière du prix de départ au prix minimum en `duree` secondes.
+// Prix à l'instant t : baisse de 0,05 € toutes les 200 ms (duree = temps pour atteindre le minimum).
 function prixA(article, etat, t) {
   const dep = Number(article.prixDepart), min = Number(article.prixMin);
   if (!etat || !etat.debut) return dep;
@@ -41,17 +41,20 @@ function prixA(article, etat, t) {
   return Math.max(min, Math.round(p * 100) / 100);
 }
 
+// Vitesse fixe, la même pour tous les articles : 0,05 € toutes les 200 ms (soit 0,25 €/s).
+// La durée de la baisse se déduit des prix : (départ - minimum) / 0,25 € par seconde.
+const PAS_EUROS = 0.05;
+function dureeBaisse(dep, min) { return Math.round((dep - min) / PAS_EUROS * TICK) / 1000; }
+function dureeTexte(sec) {
+  const m = Math.floor(sec / 60), s = Math.round(sec % 60);
+  return ((m ? m + ' min ' : '') + (s || !m ? s + ' s' : '')).trim();
+}
+
 // Fin de la baisse (prix minimum atteint + palier)
 function finBaisse(article, etat) {
   return etat.debut + Number(article.duree) * 1000 + PALIER_MIN * 1000;
 }
 
-// Baisse par seconde, pour l'afficher
-function baisseParSeconde(article) {
-  const d = Number(article.duree);
-  if (!d) return 0;
-  return (Number(article.prixDepart) - Number(article.prixMin)) / d;
-}
 
 function euros(n) {
   return Number(n).toLocaleString('fr-FR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' €';

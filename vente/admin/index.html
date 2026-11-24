@@ -93,7 +93,7 @@
           <div><label for="aVendeur">Vendu par</label><input type="text" id="aVendeur" maxlength="80" value="Block&Pay (Nicolas Butez, EI)"></div>
           <div><label for="aDepart">Prix de départ (€)</label><input type="number" id="aDepart" min="1" step="0.01" oninput="calculBaisse()"></div>
           <div><label for="aMin">Prix minimum (€)</label><input type="number" id="aMin" min="0.5" step="0.01" oninput="calculBaisse()"></div>
-          <div><label for="aDuree">Durée de la baisse (minutes)</label><input type="number" id="aDuree" min="0.5" max="60" step="0.5" value="3" oninput="calculBaisse()"><div class="aide" id="aBaisse">Temps pour passer du prix de départ au prix minimum.</div></div>
+          <div><label>Vitesse de baisse</label><div class="aide" id="aBaisse" style="font-size:.88rem;margin-top:8px">0,05 € toutes les 200 ms, la même pour tous les articles.</div></div>
           <div><label for="aOrdre">Ordre de passage</label><input type="number" id="aOrdre" min="1" step="1" value="1"></div>
         </div>
         <div class="actions"><button class="btn" onclick="enregistrerArticle()" id="btnArticle">Ajouter l'article</button><button class="btn ligne" onclick="viderForm()">Vider</button></div>
@@ -141,10 +141,9 @@
     if (demarre) return; demarre = true;
     db.ref(V + '/config').once('value').then(s => {
       const c = s.val() || {};
-      document.getElementById('gTitre').value = c.titre || '';
-      document.getElementById('gLien').value = c.lienPaiement || '';
-      document.getElementById('gAnnonce').value = c.annonce || '';
-      if (c.date) { const d = new Date(c.date - new Date(c.date).getTimezoneOffset() * 60000); document.getElementById('gDate').value = d.toISOString().slice(0, 16); }
+      const remplir = (id, v) => { const el = document.getElementById(id); if (!el.value) el.value = v || ''; };
+      remplir('gTitre', c.titre); remplir('gLien', c.lienPaiement); remplir('gAnnonce', c.annonce);
+      if (c.date && !document.getElementById('gDate').value) { const d = new Date(c.date - new Date(c.date).getTimezoneOffset() * 60000); document.getElementById('gDate').value = d.toISOString().slice(0, 16); }
     });
     db.ref(V + '/articles').on('value', s => { articles = s.val() || {}; afficher(); });
     db.ref(V + '/etat').on('value', s => { etats = s.val() || {}; afficher(); });
@@ -173,11 +172,11 @@
 
   // --------- Formulaire article
   function calculBaisse() {
-    const dep = parseFloat(document.getElementById('aDepart').value), min = parseFloat(document.getElementById('aMin').value), dur = parseFloat(document.getElementById('aDuree').value);
+    const dep = parseFloat(document.getElementById('aDepart').value), min = parseFloat(document.getElementById('aMin').value);
     const z = document.getElementById('aBaisse');
-    if (!(dep > min && dur > 0)) { z.textContent = 'Temps pour passer du prix de départ au prix minimum.'; return; }
-    const parSec = (dep - min) / (dur * 60);
-    z.textContent = 'Le prix baissera d\'environ ' + euros(parSec) + ' par seconde (' + euros(parSec / 5) + ' toutes les 200 ms).';
+    const base = '0,05 € toutes les 200 ms, la même pour tous les articles.';
+    if (!(dep > min)) { z.textContent = base; return; }
+    z.textContent = base + ' Ici, le prix minimum sera atteint en ' + dureeTexte(dureeBaisse(dep, min)) + '.';
   }
 
   function choisirPhoto(input) {
@@ -204,13 +203,13 @@
       vendeur: document.getElementById('aVendeur').value.trim().slice(0, 80) || 'Block&Pay',
       prixDepart: Math.round(parseFloat(document.getElementById('aDepart').value) * 100) / 100,
       prixMin: Math.round(parseFloat(document.getElementById('aMin').value) * 100) / 100,
-      duree: Math.round(parseFloat(document.getElementById('aDuree').value) * 60),
+      duree: 0,
       ordre: parseInt(document.getElementById('aOrdre').value, 10) || 1
     };
     if (!a.nom) return ko('Indiquez le nom de l\'article.');
     if (!(a.prixMin >= 0.5)) return ko('Le prix minimum doit être d\'au moins 0,50 €.');
     if (!(a.prixDepart > a.prixMin)) return ko('Le prix de départ doit être plus haut que le prix minimum.');
-    if (!(a.duree >= 30 && a.duree <= 3600)) return ko('La durée doit être entre 0,5 et 60 minutes.');
+    a.duree = dureeBaisse(a.prixDepart, a.prixMin);
     if (photoData) a.photo = photoData;
     else if (modifId && articles[modifId] && articles[modifId].photo) a.photo = articles[modifId].photo;
     if (modifId) {
@@ -225,7 +224,6 @@
   function viderForm(garderMsg) {
     modifId = null; photoData = null;
     ['aNom', 'aDesc', 'aDepart', 'aMin', 'aPhoto'].forEach(id => document.getElementById(id).value = '');
-    document.getElementById('aDuree').value = 3;
     document.getElementById('aOrdre').value = Object.keys(articles).length + 1;
     document.getElementById('aVendeur').value = 'Block&Pay (Nicolas Butez, EI)';
     document.getElementById('apercuPhoto').innerHTML = '';
@@ -242,7 +240,6 @@
     document.getElementById('aVendeur').value = a.vendeur || '';
     document.getElementById('aDepart').value = a.prixDepart;
     document.getElementById('aMin').value = a.prixMin;
-    document.getElementById('aDuree').value = a.duree / 60;
     document.getElementById('aOrdre').value = a.ordre || 1;
     document.getElementById('apercuPhoto').innerHTML = a.photo ? '<img src="' + a.photo + '" alt="">' : '';
     document.getElementById('titreForm').textContent = 'Modifier : ' + a.nom;
@@ -309,7 +306,7 @@
       if (s !== 'en_baisse' && s !== 'bloque') b.push('<button class="btn rouge" onclick="supprimer(\'' + id + '\')">Supprimer</button>');
       return '<div class="art">' + (a.photo ? '<img src="' + a.photo + '" alt="">' : '<div class="ph"></div>') + '<div>' +
         '<div class="n">' + (a.ordre || '') + '. ' + esc(a.nom) + '</div>' +
-        '<div class="d">' + euros(a.prixDepart) + ' → ' + euros(a.prixMin) + ' en ' + (a.duree / 60).toLocaleString('fr-FR') + ' min · ' + esc(a.vendeur || '') + '</div>' +
+        '<div class="d">' + euros(a.prixDepart) + ' → ' + euros(a.prixMin) + ' en ' + dureeTexte(a.duree) + ' · ' + esc(a.vendeur || '') + '</div>' +
         '<span class="st ' + s + '">' + lib[s] + '</span>' + acheteur +
         '<div class="actions">' + b.join('') + '</div></div></div>';
     }).join('');
